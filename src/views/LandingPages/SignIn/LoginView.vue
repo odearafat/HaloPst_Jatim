@@ -54,16 +54,16 @@ const callback = async (response) => {
     if (apiResponse && apiResponse.status === 200) {
       console.log("API berhasil dilakukan:", apiResponse.data);
       localStorage.setItem("user", JSON.stringify(apiResponse.data.data));
-      router.push({ name: "CardProfil" }).then(() => {
-        window.location.reload();
-      });
-    } else {
-      console.error("API gagal:", apiResponse);
-    }
-  } catch (error) {
-    handleError(error);
-  }
-};
+          router.push({ name: "CardProfil" }).then(() => {
+            window.location.reload();
+          });
+        } else {
+          console.error("API gagal:", apiResponse);
+        }
+      } catch (error) {
+        handleError(error);
+      }
+    };
 
 const verifyToken = async (token) => {
   try {

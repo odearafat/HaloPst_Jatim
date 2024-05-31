@@ -13,7 +13,7 @@
         <thead>
           <tr>
             <th scope="col" class="text-center">Tanggal</th>
-            <th scope="col" class="text-center">Nama Agen</th>
+            <th scope="col" class="text-center">Nama Petugas</th>
             <th scope="col" class="text-center">Status</th>
             <th scope="col" class="text-center">Aksi</th>
           </tr>

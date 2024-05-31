@@ -1,7 +1,7 @@
 <template>
   <div>
     <NavbarDefault />
-    <div class="container-fluid py-4" id="background">
+    <div class=" container-fluid py-2 px-5" id="background">
       <div class="row mt-lg-5 mt-md-3">
         <div class="col-md-4 col-sm-6 position-sticky top-0">
           <!-- User info card -->
@@ -45,5 +45,6 @@ export default {
 <style scoped>
 #background{
   background-color: #F5FDEC;
+  min-height: 100vh;
 }
 </style>

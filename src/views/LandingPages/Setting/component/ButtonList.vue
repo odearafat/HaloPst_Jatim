@@ -5,7 +5,7 @@
         <li
           v-for="card in cards"
           :key="card.id"
-          class="list-group-item btn"
+          class="list-group-item btn btn-outline-dark bg-outline-dark text-start"
           :class="{ active: $route.name === card.id }"
           @click="$emit('select-card', card.id)"
         >
@@ -36,8 +36,28 @@ export default {
           title: "Riwayat Konsultasi",
           icon: "bi bi-clock-history",
         },
+        {
+          id: "CardNotif",
+          title: "Notifikasi",
+          icon: "bi bi-bell-fill",
+        },
+        {
+          id: "CardLogout",
+          title: "Logout",
+          icon: "bi bi-box-arrow-right",
+        },
       ],
     };
   },
 };
 </script>
+<style scoped>
+.list-group-item-divider {
+  border-bottom: 1px solid #191313; /* Warna dan ketebalan garis pemisah */
+}
+
+.list-group-item-divider:last-child {
+  border-bottom: none; /* Hilangkan garis pemisah pada item terakhir */
+}
+
+</style>

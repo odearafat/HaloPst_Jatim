@@ -22,7 +22,7 @@
               <tr>
                 <th scope="col">Tanggal</th>
                 <th scope="col">Jam</th>
-                <th scope="col">Nama Agen</th>
+                <th scope="col">Nama Petugas</th>
                 <th scope="col">Status</th>
                 <th scope="col">Aksi</th>
               </tr>
