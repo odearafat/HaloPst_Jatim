@@ -74,7 +74,7 @@
         </div>
       </div>
     </div>
-    <Modal v-if="isModalVisible" @close="closeModal" />
+    <Modal v-if="isModalVisible" @close="closeModal" :bookingId="bookingId"/>
   </div>
 </template>
 <script>

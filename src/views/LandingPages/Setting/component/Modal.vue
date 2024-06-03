@@ -15,14 +15,13 @@
             <button
               type="button"
               class="btn-close"
-              data-bs-dismiss="modal"
               aria-label="Close"
               @click="close"
             ><i class="bi bi-x"></i></button>
           </div>
           <div class="modal-body py-0">
             <p>
-              Apakah Anda yakin ingin <strong>membatalkan reservasi</strong>  yang telah dibuat?
+              Apakah Anda yakin ingin <strong>membatalkan reservasi</strong> yang telah dibuat?
               Harap dicatat bahwa Anda mungkin harus mengatur ulang seluruh
               proses reservasi jika Anda memutuskan untuk membatalkan.
             </p>
@@ -35,7 +34,7 @@
               v-model="cancelReason"
               class="w-100 p-2"
               rows="4"
-              placeholder="Harap isikan minimal 30 Kata.."
+              placeholder="Harap isikan minimal 30 kata."
             ></textarea>
           </div>
           <div
@@ -45,6 +44,7 @@
               type="button"
               class="btn btn-outline-danger"
               @click="cancelReservation"
+              :disabled="cancelReason.length < 30"
             >
               Batalkan Reservasi
             </button>
@@ -56,8 +56,16 @@
 </template>
 
 <script>
+import { apiService } from "@/api/ApiService";
+
 export default {
   name: "Modal",
+  props: {
+    bookingId: {
+      type: String,
+      required: true,
+    },
+  },
   data() {
     return {
       cancelReason: "",
@@ -67,18 +75,27 @@ export default {
     close() {
       this.$emit("close");
     },
-    cancelReservation() {
-      // Send the cancelReason to the API
-      // ...
-
-      // Close the modal
-      this.close();
+    async cancelReservation() {
+      if (this.cancelReason.length < 30) {
+        alert("Harap isikan minimal 30 kata untuk alasan pembatalan.");
+        return;
+      }
+      try {
+        const data = {
+          alasan_pembatalan: this.cancelReason,
+        };
+        await apiService.cancelConsultation(this.bookingId, data);
+        console.log(`Booking ID ${this.bookingId} dibatalkan.`);
+        this.close();
+      } catch (error) {
+        console.error("Error cancelling reservation:", error);
+      }
     },
   },
 };
 </script>
 
-<style>
+<style scoped>
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -107,7 +124,6 @@ export default {
 .modal-header {
   position: relative;
   border-bottom: 1px solid #eeeeee;
-  color: #4aae9b;
   justify-content: space-between;
 }
 
@@ -119,5 +135,18 @@ export default {
 
 .modal-body {
   position: relative;
+}
+
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  resize: none;
+}
+
+.btn-outline-danger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 </style>
