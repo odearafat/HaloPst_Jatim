@@ -1,4 +1,5 @@
 import axios from 'axios';
+import router from '@/router'; // Import router from your project
 
 // Create an instance of axios
 const apiClient = axios.create({
@@ -12,14 +13,37 @@ const apiClient = axios.create({
 apiClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('id_token');
-    console.log(token);
-    //console.log(localStorage.getItem('token'));
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
   (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Add a response interceptor to handle errors
+apiClient.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    // Check if the error response exists and has a response status
+    if (error.response) {
+      const { status, data } = error.response;
+      if (status === 400 && data.error === 'invalid_token') {
+        // Clear token from localStorage
+        localStorage.removeItem('id_token');
+        // Redirect to login page
+        router.push({ name: 'login' });
+      } else if (status === 401) {
+        // Clear token from localStorage
+        localStorage.removeItem('id_token');
+        // Redirect to login page
+        router.push({ name: 'login' });
+      }
+    }
     return Promise.reject(error);
   }
 );

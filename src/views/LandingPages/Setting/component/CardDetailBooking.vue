@@ -97,6 +97,7 @@ export default {
   },
   methods: {
     async fetchBookingDetails(bookingId) {
+      this.loading=true
       try {
         const response = await apiService.getConsultation(bookingId);
         this.booking = response.data.data;
