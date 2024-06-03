@@ -1,6 +1,6 @@
-  <template>
+<template>
   <div>
-    <NavbarLogin/>
+    <NavbarLogin />
     <!-- SEARCH BAR -->
     <SearchComponent @search-updated="handleSearchUpdate" />
 
@@ -17,7 +17,7 @@
             <li class="nav-item" role="presentation">
               <button
                 :class="{ active: activeTab === 'table' }"
-                class="btn btn-outline-secondary m-1"
+                class="btn btn-outline-secondary m-1 rounded rounded-3"
                 id="table-search-tab"
                 data-bs-toggle="pill"
                 @click="handleButtonClick('table')"
@@ -103,12 +103,9 @@
       </div>
 
       <div v-else>
-        <p class="mb-3">Hasil Pencarian : {{ searchResult }}</p>
-        <div
-          v-if="resultNews == null || resultPub == null || resultTable == null"
-        >
-          <p>Maaf, data tidak tersedia.</p>
-        </div>
+        <p ref="noDataMessage" class="mb-3">
+          Hasil Pencarian : {{ searchResult }}
+        </p>
       </div>
 
       <!-- HASIL PENCARIAN -->
@@ -126,6 +123,9 @@
               <CardPub :item="pub" :keyword="searchResult" />
             </div>
           </div>
+          <div v-else>
+            <p>Maaf, data tidak tersedia.</p>
+          </div>
         </div>
         <div
           class="tab-pane fade show active"
@@ -140,9 +140,9 @@
               <CardTable :item="table" />
             </div>
           </div>
-          <!-- <div v-else>
+          <div v-else>
             <p>Maaf, data tidak tersedia.</p>
-          </div> -->
+          </div>
         </div>
         <div
           class="tab-pane fade"
@@ -157,48 +157,31 @@
               <CardNews :item="news" />
             </div>
           </div>
-          <!-- <div v-else>
+          <div v-else>
             <p>Maaf, data tidak tersedia.</p>
-          </div> -->
+          </div>
         </div>
       </div>
 
       <div class="push"></div>
 
-      <div class="d-flex justify-content-center mt-3">
-        <nav aria-label="Page navigation">
-          <ul class="pagination">
-            <li class="page-item" :class="{ disabled: currentPage === 1 }">
-              <button
-                class="page-link"
-                @click="handlePageChange(currentPage - 1)"
-                aria-label="Previous"
-              >
-                <span aria-hidden="true">&laquo;</span>
-                <span class="sr-only">Previous</span>
-              </button>
-            </li>
-            <li class="page-item">
-              <span class="page-link">{{ currentPage }}</span>
-            </li>
-            <li
-              class="page-item"
-              :class="{ disabled: currentPage === totalPages }"
-            >
-              <button
-                class="page-link"
-                @click="handlePageChange(currentPage + 1)"
-                aria-label="Next"
-              >
-                <span aria-hidden="true">&raquo;</span>
-                <span class="sr-only">Next</span>
-              </button>
-            </li>
-          </ul>
-        </nav>
+      <div class="container pt-5">
+        <div class="row">
+          <div class="col-lg-4 mx-auto">
+            <MaterialPagination :style="{ marginLeft: '80px' }">
+              <MaterialPaginationItem prev />
+              <MaterialPaginationItem label="1" active />
+              <MaterialPaginationItem label="2" />
+              <MaterialPaginationItem label="3" />
+              <MaterialPaginationItem label="4" />
+              <MaterialPaginationItem label="5" />
+              <MaterialPaginationItem next />
+            </MaterialPagination>
+          </div>
+        </div>
       </div>
     </div>
-    <DefaultFooter/>
+    <DefaultFooter />
   </div>
 </template>
 
@@ -209,6 +192,8 @@ import CardPub from "@/views/LandingPages/Search/Component/CardPub.vue";
 import CardNews from "@/views/LandingPages/Search/Component/CardNews.vue";
 import DefaultFooter from "@/examples/footers/FooterDefault.vue";
 import NavbarLogin from "@/examples/navbars/NavbarLogin.vue";
+import MaterialPagination from "@/components/MaterialPagination.vue";
+import MaterialPaginationItem from "@/components/MaterialPaginationItem.vue";
 import axios from "axios";
 
 const apiKey = "2ad01e6a21b015ea1ff8805ced02600c/";
@@ -221,7 +206,9 @@ export default {
     CardPub,
     CardNews,
     DefaultFooter,
-    NavbarLogin
+    NavbarLogin,
+    MaterialPagination,
+    MaterialPaginationItem
   },
   data() {
     return {
@@ -298,10 +285,11 @@ export default {
   methods: {
     async handleSearchUpdate(query) {
       this.searchResult = query.trim();
-      this.resultNews = [];
-      this.resultPub = [];
-      this.resultTable = [];
-      if (this.searchResult) {
+      if (this.searchResult === "") {
+        this.resultNews = [];
+        this.resultPub = [];
+        this.resultTable = [];
+      } else {
         this.handleButtonClick(this.activeTab);
       }
     },
@@ -341,7 +329,13 @@ export default {
         // Update total pages based on response
         this.totalPages = response.data.data[0].pages;
 
-        this[this.resultType] = response.data.data[1];
+        const responseData = response.data.data[1];
+        if (responseData.length === 0) {
+          // Display a message to the user if no data was found
+          this.$refs.noDataMessage.innerHTML = `No data found for "${this.searchResult}"`;
+        } else {
+          this[this.resultType] = responseData;
+        }
         this.loading = false;
       } catch (error) {
         console.error("Error during API request:", error);

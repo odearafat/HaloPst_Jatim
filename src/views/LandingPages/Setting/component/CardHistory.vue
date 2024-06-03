@@ -48,7 +48,7 @@
         </div>
       </div>
     </div>
-    <ModalUlasan v-show="isModalVisible" :history="historyId" @close="closeModal" />
+    <ModalUlasan v-show="isModalVisible" :historyId="historyId" @close="closeModal" />
   </div>
 </template>
 
@@ -97,7 +97,8 @@ export default {
       });
     },
     showModal(historyId) {
-      this.historyId=historyId
+      // this.historyId=historyId
+      console.log(historyId)
       this.isModalVisible = true;
     },
     closeModal() {

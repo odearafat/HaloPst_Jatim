@@ -10,8 +10,11 @@
       <div class="modal-dialog">
         <div class="modal-content rounded-4 shadow px-2">
           <div class="modal-header border-bottom-0">
-            <h5 class="modal-title fs-4 fw-semibold text-success" id="ratingModalLabel">
-              Nilai dan Ulas
+            <h5
+              class="modal-title fs-4 fw-semibold text-success"
+              id="ratingModalLabel"
+            >
+              Nilai dan Ulasan
             </h5>
             <button
               type="button"
@@ -19,14 +22,18 @@
               data-bs-dismiss="modal"
               aria-label="Close"
               @click="close"
-            ><i class="bi bi-x"></i></button>
+            >
+              <i class="bi bi-x"></i>
+            </button>
           </div>
           <div class="modal-body">
-            <form @submit.prevent="sendReview">
+            <form>
               <div class="mb-3">
                 <div class="d-flex justify-content-center">
                   <div class="text-center mb-5">
-                    <label for="review" class="form-label">Berikan Nilai dan Ulasan terkait pelayanan kami</label>
+                    <label for="review" class="form-label"
+                      >Berikan Nilai dan Ulasan terkait pelayanan kami</label
+                    >
                     <div class="rating">
                       <input
                         type="radio"
@@ -71,22 +78,25 @@
                     </div>
                     <div class="mb-3">
                       <textarea
+                        v-model="review"
                         class="w-100 p-2"
                         id="review"
                         rows="3"
                         placeholder="Silahkan masukan saran"
-                        v-model="review"
                       ></textarea>
                       <p class="mt-3">
-                        <small>
-                          Penilaian dan ulasan Anda sangat penting bagi kami
+                        <small
+                          >Penilaian dan ulasan Anda sangat penting bagi kami
                           untuk meningkatkan kualitas layanan Konsultasi Online
                           BPS Provinsi Jawa Timur.
                         </small>
                       </p>
                     </div>
                     <div class="buttons mt-0">
-                      <button type="submit" class="btn btn-success px-4 py-1 rating-submit rounded rounded-4">
+                      <button
+                        class="btn btn-success px-4 py-1 rating-submit rounded rounded-4"
+                        @click="sendReview"
+                      >
                         Submit
                       </button>
                     </div>
@@ -102,7 +112,6 @@
 </template>
 
 <script>
-import { ref } from 'vue';
 import { apiService } from "@/api/ApiService";
 
 export default {
@@ -113,33 +122,48 @@ export default {
       required: true,
     },
   },
-  setup(props) {
-    const rating = ref(null);
-    const review = ref('');
-
-    const sendReview = async () => {
-      try {
-        const data = {
-          rating: rating.value,
-          review: review.value
-        };
-        await apiService.giveFeedback(props.historyId, data);
-        // Setelah berhasil mengirim ulasan, Anda dapat menutup modal atau melakukan tindakan lain
-      } catch (error) {
-        console.error('Error sending review:', error);
-      }
-    };
-
-    const close = () => {
-      this.$emit("close");
-    };
-
+  data() {
     return {
-      rating,
-      review,
-      sendReview,
-      close
+      review: "",
+      rating: "",
     };
+  },
+  methods: {
+    async sendReview() {
+      try {
+        // Validasi
+        if (!this.rating) {
+          throw new Error("Harap pilih nilai rating.");
+        }
+        if (!this.review.trim()) {
+          throw new Error("Harap isi bagian ulasan.");
+        }
+
+        // Persiapan data untuk dikirim
+        const data = {
+          rating: this.rating,
+          kritik_saran: this.review,
+        };
+
+        // Kirim ulasan menggunakan API Service
+        await apiService.giveFeedback(this.historyId, data);
+
+        // Tampilkan pesan sukses
+        console.log(data);
+        console.log(`Booking ID ${this.historyId} sudah di review.`);
+        alert("Ulasan berhasil dikirim.");
+
+        // Tutup modal
+        this.close();
+      } catch (error) {
+        // Tangani kesalahan
+        console.error("Error saat melakukan review:", error.message);
+        alert("Gagal mengirim ulasan. Silakan coba lagi.");
+      }
+    },
+    close() {
+      this.$emit("close");
+    },
   },
 };
 </script>
@@ -231,17 +255,7 @@ export default {
 }
 
 .buttons {
-  top: 36px;
   position: relative;
-}
-
-.rating-submit {
-  border-radius: 8px;
-  color: #fff;
-  height: auto;
-}
-
-.rating-submit:hover {
-  color: #fff;
+  top: 36px;
 }
 </style>
