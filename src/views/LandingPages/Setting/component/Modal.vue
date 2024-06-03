@@ -17,18 +17,22 @@
               class="btn-close"
               aria-label="Close"
               @click="close"
-            ><i class="bi bi-x"></i></button>
+            >
+              <i class="bi bi-x"></i>
+            </button>
           </div>
           <div class="modal-body py-0">
             <p>
-              Apakah Anda yakin ingin <strong>membatalkan reservasi</strong> yang telah dibuat?
-              Harap dicatat bahwa Anda mungkin harus mengatur ulang seluruh
-              proses reservasi jika Anda memutuskan untuk membatalkan.
+              Apakah Anda yakin ingin
+              <strong>membatalkan reservasi</strong> yang telah dibuat? Harap
+              dicatat bahwa Anda mungkin harus mengatur ulang seluruh proses
+              reservasi jika Anda memutuskan untuk membatalkan.
             </p>
           </div>
           <div class="modal-body py-0">
             <p>
-              Harap berikan <strong>Alasan</strong> mengapa Anda ingin membatalkan reservasi Anda.
+              Harap berikan <strong>Alasan</strong> mengapa Anda ingin
+              membatalkan reservasi Anda.
             </p>
             <textarea
               v-model="cancelReason"
@@ -86,6 +90,8 @@ export default {
         };
         await apiService.cancelConsultation(this.bookingId, data);
         console.log(`Booking ID ${this.bookingId} dibatalkan.`);
+        alert("Pembatalan telah berhasil dilakukan.");
+        window.location.href = "/settings/booking";
         this.close();
       } catch (error) {
         console.error("Error cancelling reservation:", error);

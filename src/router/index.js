@@ -9,6 +9,7 @@ import CardBooking from "../views/LandingPages/Setting/component/CardBooking.vue
 import CardHistory from "../views/LandingPages/Setting/component/CardHistory.vue";
 import CardDetailBooking from "../views/LandingPages/Setting/component/CardDetailBooking.vue";
 import CardDetailHistory from "../views/LandingPages/Setting/component/CardDetailHistory.vue";
+import CardNotif from "../views/LandingPages/Setting/component/CardNotif.vue";
 import SearchView from "../views/LandingPages/Search/SearchView.vue";
 
 
@@ -64,6 +65,11 @@ const router = createRouter({
           path: "history/:id", // Parameter dinamis untuk id reservasi
           name: "CardDetailHistory", // Nama rute untuk CardDetailBooking
           component: CardDetailHistory, // Komponen CardDetailBooking yang akan ditampilkan
+        },
+        {
+          path: "notif",
+          name: "CardNotif",
+          component: CardNotif,
         },
       ],
     },

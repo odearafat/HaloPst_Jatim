@@ -11,12 +11,21 @@
         >
           <i :class="card.icon"></i> {{ card.title }}
         </li>
+        <li
+          class="list-group-item btn btn-outline-dark bg-outline-dark text-start"
+          @click="logout"
+        >
+          <i class="bi bi-box-arrow-right"></i> Logout
+        </li>
       </ul>
     </div>
   </div>
 </template>
 
 <script>
+import { googleLogout } from "vue3-google-login";
+import { useRouter } from 'vue-router';
+
 export default {
   data() {
     return {
@@ -41,16 +50,19 @@ export default {
           title: "Notifikasi",
           icon: "bi bi-bell-fill",
         },
-        {
-          id: "CardLogout",
-          title: "Logout",
-          icon: "bi bi-box-arrow-right",
-        },
       ],
     };
   },
+  methods: {
+    logout() {
+      googleLogout();
+      localStorage.clear();
+      this.$router.push("/konsultasi");
+    },
+  },
 };
 </script>
+
 <style scoped>
 .list-group-item-divider {
   border-bottom: 1px solid #191313; /* Warna dan ketebalan garis pemisah */
@@ -59,5 +71,4 @@ export default {
 .list-group-item-divider:last-child {
   border-bottom: none; /* Hilangkan garis pemisah pada item terakhir */
 }
-
 </style>

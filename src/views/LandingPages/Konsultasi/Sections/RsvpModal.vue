@@ -14,7 +14,7 @@
             </h4>
             <button
               type="button"
-              class="btn-close bi bi-x"
+              class="bi bi-x"
               @click="close"
             ></button>
           </div>
@@ -134,10 +134,6 @@ export default {
       type: Object,
       required: true,
     },
-    pengguna: {
-      type: Object,
-      required: true,
-    },
   },
   data() {
     return {
@@ -147,12 +143,28 @@ export default {
       topik: "",
       invalidTime: false,
       invalidDate: false,
+      pengguna:{
+        name:"",
+        email:""
+      }
     };
   },
   created() {
     this.setMinDate();
+    this.fetchData()
   },
   methods: {
+    fetchData(){
+      const storedUser = localStorage.getItem("user");
+      const storedLoggedIn = localStorage.getItem("loggedIn");
+
+      if(storedLoggedIn&&storedUser){
+        const parsedUser = JSON.parse(storedUser);
+        
+        this.pengguna.name=parsedUser.nama_pengguna
+        this.pengguna.email=parsedUser.email_google
+      }
+    },
     setMinDate() {
       const today = new Date();
       const yyyy = today.getFullYear();
@@ -213,6 +225,7 @@ export default {
               // Tambahkan logika tambahan di sini jika diperlukan, seperti menampilkan notifikasi
               alert("Reservasi berhasil dikirim.");
               this.close(); // Menutup modal setelah pengiriman sukses
+              this.$router.push("/settings/booking");
             })
             .catch(error => {
               console.error("Error submitting reservation", error);

@@ -30,7 +30,7 @@
                 <span class="badge bg-danger" v-else-if="history.status === 'Dibatalkan'">Dibatalkan</span>
               </td>
               <td class="d-flex justify-content-center align-items-center">
-                <button class="btn btn-info me-2 btn-sm" v-if="history.status === 'Selesai'" @click="showModal(history.id)">
+                <button class="btn btn-info me-2 btn-sm" v-if="history.status === 'Selesai' && history.rating==null" @click="showModal(history.id)">
                   Ulasan
                 </button>
                 <button class="btn btn-warning me-2 btn-sm" v-if="history.status === 'Selesai'" @click="showDetail(history.id)">
@@ -48,7 +48,7 @@
         </div>
       </div>
     </div>
-    <ModalUlasan v-show="isModalVisible" :historyId="historyId" @close="closeModal" />
+    <ModalUlasan v-if="isModalVisible" :historyId="historyId" @close="closeModal" />
   </div>
 </template>
 
@@ -63,7 +63,7 @@ export default {
       histories: [],
       loading: true,
       isModalVisible: false,
-      historyId: "",
+      historyId: "",  // Tambahkan ini
     };
   },
   mounted() {
@@ -97,8 +97,7 @@ export default {
       });
     },
     showModal(historyId) {
-      // this.historyId=historyId
-      console.log(historyId)
+      this.historyId = historyId;  // Set nilai historyId
       this.isModalVisible = true;
     },
     closeModal() {

@@ -94,8 +94,10 @@
                     </div>
                     <div class="buttons mt-0">
                       <button
-                        class="btn btn-success px-4 py-1 rating-submit rounded rounded-4"
+                        type="button"
+                        class="btn btn-success py-1 rounded rounded-4"
                         @click="sendReview"
+                        :disabled="review.length < 0 && rating.value < 0"
                       >
                         Submit
                       </button>
@@ -118,7 +120,6 @@ export default {
   name: "ModalUlasan",
   props: {
     historyId: {
-      type: String,
       required: true,
     },
   },
@@ -130,6 +131,7 @@ export default {
   },
   methods: {
     async sendReview() {
+      console.log(this.historyId);
       try {
         // Validasi
         if (!this.rating) {
@@ -155,6 +157,9 @@ export default {
 
         // Tutup modal
         this.close();
+
+        // Reload halaman
+        window.location.reload();
       } catch (error) {
         // Tangani kesalahan
         console.error("Error saat melakukan review:", error.message);
