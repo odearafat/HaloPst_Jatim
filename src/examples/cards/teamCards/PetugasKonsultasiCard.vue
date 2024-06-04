@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from "vue";
+import router from "@/router";
 import MaterialBadge from "../../../components/MaterialBadge.vue";
 import Modal from "../../../views/LandingPages/Konsultasi/Sections/RsvpModal.vue";
 
@@ -24,7 +25,13 @@ const isModalVisible = ref(false);
 const user = ref(JSON.parse(localStorage.getItem("userData")) || {});
 
 function showModal() {
-  isModalVisible.value = true;
+  const isLogin = localStorage.getItem("loggedIn");
+
+  if (isLogin === true) {
+    isModalVisible.value = true;
+  }else{
+    router.push({ name: 'login' });
+  }
 }
 
 function closeModal() {

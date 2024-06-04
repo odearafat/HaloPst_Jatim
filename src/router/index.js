@@ -12,7 +12,6 @@ import CardDetailHistory from "../views/LandingPages/Setting/component/CardDetai
 import CardNotif from "../views/LandingPages/Setting/component/CardNotif.vue";
 import SearchView from "../views/LandingPages/Search/SearchView.vue";
 
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -57,14 +56,14 @@ const router = createRouter({
           component: CardHistory,
         },
         {
-          path: "booking/:id", // Parameter dinamis untuk id reservasi
-          name: "CardDetailBooking", // Nama rute untuk CardDetailBooking
-          component: CardDetailBooking, // Komponen CardDetailBooking yang akan ditampilkan
+          path: "booking/:id",
+          name: "CardDetailBooking",
+          component: CardDetailBooking,
         },
         {
-          path: "history/:id", // Parameter dinamis untuk id reservasi
-          name: "CardDetailHistory", // Nama rute untuk CardDetailBooking
-          component: CardDetailHistory, // Komponen CardDetailBooking yang akan ditampilkan
+          path: "history/:id",
+          name: "CardDetailHistory",
+          component: CardDetailHistory,
         },
         {
           path: "notif",
@@ -79,6 +78,17 @@ const router = createRouter({
       component: SearchView,
     },
   ],
+});
+
+// Navigation guard global
+router.beforeEach((to, from, next) => {
+  const isLoggedIn = localStorage.getItem("loggedIn") === "true";
+  
+  if (to.path.startsWith('/settings') && !isLoggedIn) {
+    next({ name: 'login' }); // Redirect ke halaman login jika belum login
+  } else {
+    next(); // Lanjutkan ke rute yang diminta jika sudah login
+  }
 });
 
 export default router;

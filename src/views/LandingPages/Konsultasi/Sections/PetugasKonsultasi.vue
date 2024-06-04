@@ -40,10 +40,10 @@ onMounted(fetchPetugas);
           </p>
         </div>
       </div>
-      <div class="row ">
+      <div class="row">
         <div v-if="loading" class="text-center">
           <img src="/assets/loading_2.svg" alt="Loading..." />
-          <p class=" fw-bold fs-3 text-light">Loading...</p>
+          <p class="fw-bold fs-3 text-light">Loading...</p>
         </div>
         <div v-else-if="petugasKonsultasi.length === 0" class="text-center">
           <p>Tidak ada petugas ditemukan.</p>
@@ -58,20 +58,23 @@ onMounted(fetchPetugas);
         </div>
       </div>
       <div class="container pt-5">
-        <div class="row">
-          <div class="col-lg-4 mx-auto">
-            <MaterialPagination :style="{ marginLeft: '80px' }">
-              <MaterialPaginationItem prev />
-              <MaterialPaginationItem label="1" active />
-              <MaterialPaginationItem label="2" />
-              <MaterialPaginationItem label="3" />
-              <MaterialPaginationItem label="4" />
-              <MaterialPaginationItem label="5" />
-              <MaterialPaginationItem next />
-            </MaterialPagination>
+        <div class="row justify-content-center">
+          <div class="col-lg-4">
+            <div class="pagination-container">
+              <MaterialPagination>
+                <MaterialPaginationItem prev />
+                <MaterialPaginationItem label="1" active />
+                <MaterialPaginationItem label="2" />
+                <MaterialPaginationItem label="3" />
+                <MaterialPaginationItem label="4" />
+                <MaterialPaginationItem label="5" />
+                <MaterialPaginationItem next />
+              </MaterialPagination>
+            </div>
           </div>
         </div>
       </div>
+
       <div class="row">
         <div class="col-md-8 text-start mb-5 mt-2">
           <h3 class="text-white z-index-1 satker-relative">
@@ -86,3 +89,11 @@ onMounted(fetchPetugas);
     </div>
   </section>
 </template>
+
+<style scoped>
+.pagination-container {
+  display: flex;
+  justify-content: center;
+}
+
+</style>
