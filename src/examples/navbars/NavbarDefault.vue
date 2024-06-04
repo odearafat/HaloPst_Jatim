@@ -193,11 +193,10 @@ watch(
         <ul class="navbar-nav d-lg-block d-none">
           <li class="nav-item mx-2">
             <a
-              :href="konsultasi.route"
-              class="btn btn-sm mb-0"
-              :class="konsultasi.color"
+              href="/konsultasi"
+              class="btn btn-sm mb-0 bg-gradient-danger"
               onclick="smoothToPricing('pricing-soft-ui')"
-              >{{ konsultasi.label }}</a
+              >Konsultasi Sekarang</a
             >
           </li>
         </ul>

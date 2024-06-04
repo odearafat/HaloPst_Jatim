@@ -124,6 +124,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import { apiService } from "@/api/ApiService";
 
@@ -143,26 +144,26 @@ export default {
       topik: "",
       invalidTime: false,
       invalidDate: false,
-      pengguna:{
-        name:"",
-        email:""
-      }
+      pengguna: {
+        name: "",
+        email: "",
+      },
     };
   },
   created() {
     this.setMinDate();
-    this.fetchData()
+    this.fetchData();
   },
   methods: {
-    fetchData(){
+    fetchData() {
       const storedUser = localStorage.getItem("user");
       const storedLoggedIn = localStorage.getItem("loggedIn");
 
-      if(storedLoggedIn&&storedUser){
+      if (storedLoggedIn && storedUser) {
         const parsedUser = JSON.parse(storedUser);
-        
-        this.pengguna.name=parsedUser.nama_pengguna
-        this.pengguna.email=parsedUser.email_google
+
+        this.pengguna.name = parsedUser.nama_pengguna;
+        this.pengguna.email = parsedUser.email_google;
       }
     },
     setMinDate() {
@@ -180,16 +181,32 @@ export default {
       const hour = parseInt(jam, 10);
       const minute = parseInt(menit, 10);
 
-      if (
+      const validTime =
         (hour >= 8 && hour < 12) || // Between 08:00 and 11:59
         (hour === 12 && minute === 0) || // Exactly at 12:00
         (hour >= 13 && hour < 16) || // Between 13:00 and 15:59
-        (hour === 16 && minute === 0) // Exactly at 16:00
-      ) {
-        this.invalidTime = false;
-      } else {
+        (hour === 16 && minute === 0); // Exactly at 16:00
+
+      if (!validTime) {
         this.invalidTime = true;
+      } else if (this.isToday(this.tanggal) && !this.validateTimeForToday(hour, minute)) {
+        this.invalidTime = true;
+      } else {
+        this.invalidTime = false;
       }
+    },
+    validateTimeForToday(hour, minute) {
+      const now = new Date();
+      const currentHour = now.getHours();
+      const currentMinute = now.getMinutes();
+
+      const selectedTime = new Date();
+      selectedTime.setHours(hour);
+      selectedTime.setMinutes(minute);
+
+      const oneHourFromNow = new Date(now.getTime() + 60 * 60 * 1000);
+
+      return selectedTime >= oneHourFromNow;
     },
     validateTanggal() {
       const selectedDate = new Date(this.tanggal);
@@ -202,13 +219,23 @@ export default {
         this.invalidDate = false;
       }
     },
+    isToday(date) {
+      const today = new Date();
+      const selectedDate = new Date(date);
+
+      return (
+        today.getFullYear() === selectedDate.getFullYear() &&
+        today.getMonth() === selectedDate.getMonth() &&
+        today.getDate() === selectedDate.getDate()
+      );
+    },
     submitReservation() {
       this.validateJam();
       this.validateTanggal();
-      
+
       if (!this.invalidTime && !this.invalidDate && this.tanggal && this.jam && this.topik) {
         const storedUser = JSON.parse(localStorage.getItem("user"));
-        
+
         if (storedUser) {
           const dataApi = {
             tanggal_konsultasi: this.tanggal,
@@ -220,18 +247,17 @@ export default {
 
           // Mengirim data ke API
           apiService.addConsultation(dataApi)
-            .then(response => {
+            .then((response) => {
               console.log("Reservation submitted successfully", response.data);
               // Tambahkan logika tambahan di sini jika diperlukan, seperti menampilkan notifikasi
               alert("Reservasi berhasil dikirim.");
               this.close(); // Menutup modal setelah pengiriman sukses
               this.$router.push("/settings/booking");
             })
-            .catch(error => {
+            .catch((error) => {
               console.error("Error submitting reservation", error);
               alert("Terjadi kesalahan saat mengirim reservasi. Silakan coba lagi.");
             });
-
         } else {
           alert("Pengguna tidak ditemukan. Silakan login kembali.");
         }
@@ -254,6 +280,7 @@ export default {
   },
 };
 </script>
+
 <style scoped>
 .modal-backdrop {
   position: fixed;
