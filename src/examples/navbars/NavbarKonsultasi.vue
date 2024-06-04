@@ -122,19 +122,27 @@ watch(
   <nav
     class="navbar navbar-expand-lg top-0"
     :class="{
-      'z-index-3 w-100 shadow-none navbar-transparent position-absolute my-3': props.transparent,
-      'my-3 blur border-radius-lg z-index-3 py-2 shadow py-2 start-0 end-0 mx-4 position-absolute mt-4': props.sticky,
+      'z-index-3 w-100 shadow-none navbar-transparent position-absolute my-3':
+        props.transparent,
+      'my-3 blur border-radius-lg z-index-3 py-2 shadow py-2 start-0 end-0 mx-4 position-absolute mt-4':
+        props.sticky,
       'navbar-light bg-white py-3': props.light,
       'navbar-dark bg-gradient-dark z-index-3 py-3': props.dark,
     }"
   >
     <div
-      :class="props.transparent || props.light || props.dark ? 'container' : 'container-fluid px-0'"
+      :class="
+        props.transparent || props.light || props.dark
+          ? 'container'
+          : 'container-fluid px-0'
+      "
     >
       <RouterLink
         class="navbar-brand d-none d-md-block"
         :class="[
-          (props.transparent && textDark.value) || !props.transparent ? 'text-dark font-weight-bolder ms-sm-3' : 'text-white font-weight-bolder ms-sm-3'
+          (props.transparent && textDark.value) || !props.transparent
+            ? 'text-dark font-weight-bolder ms-sm-3'
+            : 'text-white font-weight-bolder ms-sm-3',
         ]"
         :to="{ name: 'presentation' }"
         rel="tooltip"
@@ -145,7 +153,11 @@ watch(
       </RouterLink>
       <RouterLink
         class="navbar-brand d-block d-md-none"
-        :class="props.transparent || props.dark ? 'text-white' : 'font-weight-bolder ms-sm-3'"
+        :class="
+          props.transparent || props.dark
+            ? 'text-white'
+            : 'font-weight-bolder ms-sm-3'
+        "
         to="/"
         rel="tooltip"
         title="Halo PST BPS Jawa Timur"
@@ -153,7 +165,11 @@ watch(
       >
         <img :src="haloPST" alt="Halo PST BPS Jawa Timur" class="arrow" />
       </RouterLink>
-      <a href="/konsultasi" class="btn btn-sm bg-gradient-success mb-0 ms-auto d-lg-none d-block">Konsultasi</a>
+      <a
+        href="/konsultasi"
+        class="btn btn-sm bg-gradient-success mb-0 ms-auto d-lg-none d-block"
+        >Konsultasi</a
+      >
       <button
         class="navbar-toggler shadow-none ms-2"
         type="button"
@@ -169,22 +185,36 @@ watch(
           <span class="navbar-toggler-bar bar3"></span>
         </span>
       </button>
-      <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0" id="navigation">
+      <div
+        class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0"
+        id="navigation"
+      >
         <ul class="navbar-nav navbar-nav-hover ms-auto">
           <li class="nav-item dropdown dropdown-hover mx-2">
-            <RouterLink :to="{ name: 'presentation' }" class="nav-link ps-2 d-flex cursor-pointer align-items-center">
+            <RouterLink
+              :to="{ name: 'presentation' }"
+              class="nav-link ps-2 d-flex cursor-pointer align-items-center"
+            >
               <span>Layanan</span>
             </RouterLink>
           </li>
           <li class="nav-item dropdown dropdown-hover mx-2">
-            <RouterLink :to="{ name: 'aida' }" class="nav-link ps-2 d-flex cursor-pointer align-items-center">
+            <RouterLink
+              :to="{ name: 'aida' }"
+              class="nav-link ps-2 d-flex cursor-pointer align-items-center"
+            >
               <span>Chat AI</span>
             </RouterLink>
           </li>
         </ul>
         <ul class="navbar-nav d-lg-block d-none">
           <li class="nav-item mx-2" v-if="!loggedIn">
-            <a :href="konsultasi.route" class="btn btn-sm mb-0" :class="konsultasi.color">{{ konsultasi.label }}</a>
+            <RouterLink
+              :to="{ name: 'login' }"
+              class="btn btn-sm mb-0"
+              :class="konsultasi.color"
+              >{{ konsultasi.label }}</RouterLink
+            >
           </li>
           <template v-else>
             <li class="nav-item mx-2">
@@ -195,7 +225,13 @@ watch(
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  <img :src="user.foto" alt="User Profile" width="32" height="32" class="rounded-circle me-2" />
+                  <img
+                    :src="user.foto"
+                    alt="User Profile"
+                    width="32"
+                    height="32"
+                    class="rounded-circle me-2"
+                  />
                   Akun
                 </a>
                 <!-- <ul class="dropdown-menu text-small shadow dropdown-menu-end">
