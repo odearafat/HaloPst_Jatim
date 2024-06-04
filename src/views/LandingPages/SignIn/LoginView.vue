@@ -107,7 +107,7 @@ const login = async () => {
     const response = await apiService.login(user.email, user.password);
     console.log("API berhasil dilakukan:", response.data);
     localStorage.setItem("user", JSON.stringify(response.data.data));  
-    this.$router.push("settings/profil").then(() => {
+    this.$router.push("/settings/profil").then(() => {
       window.location.reload();
     });
   } catch (error) {
