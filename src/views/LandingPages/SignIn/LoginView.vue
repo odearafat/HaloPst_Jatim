@@ -10,6 +10,7 @@ import MaterialButton from "@/components/MaterialButton.vue";
 import MaterialSwitch from "@/components/MaterialSwitch.vue";
 import setMaterialInput from "@/assets/js/material-input.js";
 import bg0 from "@/assets/img/bg9.jpg";
+import { RouterLink } from "vue-router";
 
 const user = reactive({
   name: "",
@@ -105,8 +106,8 @@ const login = async () => {
   try {
     const response = await apiService.login(user.email, user.password);
     console.log("API berhasil dilakukan:", response.data);
-    localStorage.setItem("user", JSON.stringify(response.data.data));
-    router.push({ name: "CardProfil" }).then(() => {
+    localStorage.setItem("user", JSON.stringify(response.data.data));  
+    this.$router.push("settings/profil").then(() => {
       window.location.reload();
     });
   } catch (error) {
