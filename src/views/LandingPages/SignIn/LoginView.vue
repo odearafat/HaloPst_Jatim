@@ -21,7 +21,7 @@ const user = reactive({
   email_google: "",
   nama_pengguna: "",
   foto: "",
-  password: ""
+  password: "",
 });
 
 const loggedIn = ref(false);
@@ -52,18 +52,17 @@ const callback = async (response) => {
     const apiResponse = await apiService.addUser(userData);
 
     if (apiResponse && apiResponse.status === 200) {
-      console.log("API berhasil dilakukan:", apiResponse.data);
       localStorage.setItem("user", JSON.stringify(apiResponse.data.data));
-          router.push({ name: "CardProfil" }).then(() => {
-            window.location.reload();
-          });
-        } else {
-          console.error("API gagal:", apiResponse);
-        }
-      } catch (error) {
-        handleError(error);
-      }
-    };
+      router.push({ name: "CardProfil" }).then(() => {
+        window.location.reload();
+      });
+    } else {
+      console.error("API gagal:", apiResponse);
+    }
+  } catch (error) {
+    handleError(error);
+  }
+};
 
 const verifyToken = async (token) => {
   try {
@@ -203,7 +202,7 @@ onMounted(() => {
                       >
                     </div>
                     <p class="mt-4 text-sm text-center">Tidak memiliki akun?</p>
-                    <div class="row" v-if="loggedIn">
+                    <!-- <div class="row" v-if="loggedIn">
                       <div class="col-12">
                         <div class="d-flex gap-3 flex-column mt-3">
                           <MaterialButton @click="logout"
@@ -214,8 +213,8 @@ onMounted(() => {
                           <img :src="user.foto" />
                         </div>
                       </div>
-                    </div>
-                    <div class="row" v-else>
+                    </div> -->
+                    <div class="row">
                       <div class="col-12 text-center">
                         <div
                           class="d-flex gap-3 flex-column mt-3 align-items-center"

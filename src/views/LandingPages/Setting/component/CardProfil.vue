@@ -115,7 +115,7 @@ export default {
             { label: "Karyawan Swasta", value: "karyawan_swasta" },
             { label: "Wiraswasta", value: "wiraswasta" },
             { label: "Peneliti", value: "Peneliti" },
-            { label: "Aparatur Sipil Negara", value: "ASN" },
+            { label: "Aparatur Sipil Negara", value: "Aparatur Sipil Negara" },
           ],
         },
         {
@@ -125,7 +125,7 @@ export default {
           required: true,
           options: [
             { label: "Perempuan", value: "Perempuan" },
-            { label: "Laki-laki", value: "Laki-laki" },
+            { label: "Laki-laki", value: "Laki-Laki" },
           ],
         },
         {

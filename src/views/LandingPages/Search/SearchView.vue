@@ -103,7 +103,7 @@
       </div>
 
       <div v-else>
-        <p ref="noDataMessage" class="mb-3">
+        <p class="mb-3">
           Hasil Pencarian : {{ searchResult }}
         </p>
       </div>

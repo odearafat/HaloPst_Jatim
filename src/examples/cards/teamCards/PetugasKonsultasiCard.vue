@@ -26,8 +26,8 @@ const user = ref(JSON.parse(localStorage.getItem("userData")) || {});
 
 function showModal() {
   const isLogin = localStorage.getItem("loggedIn");
-
-  if (isLogin === true) {
+  console.log(isLogin)
+  if (isLogin === "true") {
     isModalVisible.value = true;
   }else{
     router.push({ name: 'login' });
