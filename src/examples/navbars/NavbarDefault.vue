@@ -192,18 +192,13 @@ watch(
         </ul>
         <ul class="navbar-nav d-lg-block d-none">
           <li class="nav-item mx-2">
-            <!-- <a
-              href="/konsultasi"
-              class="btn btn-sm mb-0 bg-gradient-danger"
+            <a
+              :href="konsultasi.route"
+              class="btn btn-sm mb-0"
+              :class="konsultasi.color"
               onclick="smoothToPricing('pricing-soft-ui')"
-              >Konsultasi Sekarang</a
-            > -->
-            <RouterLink
-              :to="{ name: 'konsultasi' }"
-              class=" text-light btn btn-sm mb-0 bg-gradient-success nav-link ps-2 d-flex cursor-pointer align-items-center"
+              >{{ konsultasi.label }}</a
             >
-              <span>Konsultasi Sekarang</span>
-            </RouterLink>
           </li>
         </ul>
       </div>
