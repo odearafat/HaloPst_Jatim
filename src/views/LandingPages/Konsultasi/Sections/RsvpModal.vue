@@ -1,127 +1,154 @@
 <template>
-  <div class="modal-backdrop">
-    <div
-      class="modal position-static d-block p-4 py-md-5"
-      tabindex="-1"
-      role="dialog"
-      id="modalSheet"
-    >
-      <div class="modal-dialog" role="document">
-        <div class="modal-content rounded-4 shadow px-2">
-          <div class="modal-header border-bottom-0">
-            <h4 class="modal-title fw-semibold text-success d-block">
-              RESERVASI KONSULTASI ONLINE
-            </h4>
-            <button
-              type="button"
-              class="bi bi-x"
-              @click="close"
-            ></button>
-          </div>
-          <div
-            class="alert alert-primary modal-body mx-2 p-2"
-            role="alert"
-            id="alert"
-          >
-            <div class="row">
-              <div class="col-auto ms-1">
-                <i class="bi bi-info-circle" style="color: #ffff"></i>
-              </div>
-              <div class="col p-0">
-                <small style="color: #ffff"
-                  >Petugas pelayanan bisa saja berganti disesuaikan dengan beban
-                  petugas yang ada</small
-                >
-              </div>
+  <div>
+    <!-- Modal Backdrop -->
+    <div class="modal-backdrop">
+      <div
+        class="modal position-static d-block p-4 py-md-5"
+        tabindex="-1"
+        role="dialog"
+        id="modalSheet"
+      >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content rounded-4 shadow px-2">
+            <div class="modal-header border-bottom-0">
+              <h4 class="modal-title fw-semibold text-success d-block">
+                RESERVASI KONSULTASI ONLINE
+              </h4>
+              <button type="button" class="bi bi-x" @click="close"></button>
             </div>
-          </div>
-          <div class="modal-body py-0">
-            <div class="row">
-              <div class="col-md-6 d-flex">
-                <i class="bi bi-person-vcard me-2"></i>
-                <div>
-                  <p class="fw-semibold mb-0 text-muted">Data Petugas:</p>
-                  <p class="mb-0">
-                    <small>{{ petugas.nama_petugas }}</small>
-                  </p>
-                  <p>
-                    <small>{{ petugas.satker.nama_satker }}</small>
-                  </p>
+            <div class="alert alert-primary modal-body mx-2 p-2" role="alert" id="alert">
+              <div class="row">
+                <div class="col-auto ms-1">
+                  <i class="bi bi-info-circle" style="color: #ffff"></i>
                 </div>
-              </div>
-              <div class="col-md-6 d-flex">
-                <i class="bi bi-person-vcard me-2"></i>
-                <div class="pe-2">
-                  <p class="fw-semibold mb-0 text-muted">Data Pengguna:</p>
-                  <p class="mb-0">
-                    <small>{{ pengguna.name }}</small>
-                  </p>
-                  <p>
-                    <small>{{ pengguna.email }}</small>
-                  </p>
+                <div class="col p-0">
+                  <small style="color: #ffff">Petugas pelayanan bisa saja berganti disesuaikan dengan beban petugas yang ada</small>
                 </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col-md-12">
-                <h5>Jadwal Konsultasi:</h5>
-                <div class="form-group">
-                  <label for="tanggal">Tanggal:</label>
-                  <input
-                    type="date"
-                    id="tanggal"
-                    v-model="tanggal"
-                    class="form-control"
-                    :min="minDate"
-                  />
-                  <small v-if="invalidDate" class="text-danger">
-                    Tanggal yang dipilih tidak valid. Pilih hari antara Senin
-                    hingga Jumat.
-                  </small>
+            <div class="modal-body py-0">
+              <div class="row">
+                <div class="col-md-6 d-flex">
+                  <i class="bi bi-person-vcard me-2"></i>
+                  <div>
+                    <p class="fw-semibold mb-0 text-muted">Data Petugas:</p>
+                    <p class="mb-0">
+                      <small>{{ petugas.nama_petugas }}</small>
+                    </p>
+                    <p>
+                      <small>{{ petugas.satker.nama_satker }}</small>
+                    </p>
+                  </div>
                 </div>
-                <div class="form-group mt-3">
-                  <label for="jam">Jam:</label>
-                  <input
-                    type="time"
-                    id="jam"
-                    v-model="jam"
-                    class="form-control"
-                    style="outline-color: #000"
-                  />
-                  <small v-if="invalidTime" class="text-danger">
-                    Jam yang dipilih tidak valid. Pilih jam antara 08.00-12.00
-                    atau 13.00-16.00.
-                  </small>
+                <div class="col-md-6 d-flex">
+                  <i class="bi bi-person-vcard me-2"></i>
+                  <div class="pe-2">
+                    <p class="fw-semibold mb-0 text-muted">Data Pengguna:</p>
+                    <p class="mb-0">
+                      <small>{{ pengguna.name }}</small>
+                    </p>
+                    <p>
+                      <small>{{ pengguna.email }}</small>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <h5>Jadwal Konsultasi:</h5>
+                  <div class="form-group">
+                    <label for="tanggal">Tanggal:</label>
+                    <input
+                      type="date"
+                      id="tanggal"
+                      v-model="tanggal"
+                      class="form-control"
+                      :min="minDate"
+                    />
+                    <small v-if="invalidDate" class="text-danger">
+                      Tanggal yang dipilih tidak valid. Pilih hari antara Senin hingga Jumat.
+                    </small>
+                  </div>
+                  <div class="form-group mt-3">
+                    <label for="jam">Jam:</label>
+                    <input
+                      type="time"
+                      id="jam"
+                      v-model="jam"
+                      class="form-control"
+                      style="outline-color: #000"
+                    />
+                    <small v-if="invalidTime" class="text-danger">
+                      Jam yang dipilih tidak valid. Pilih jam antara 08.00-12.00 atau 13.00-16.00.
+                    </small>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-md-12">
+                  <h5>Topik Konsultasi:</h5>
+                  <textarea
+                    v-model="topik"
+                    rows="5"
+                    cols="30"
+                    class="w-100 rounded rounded-2 p-2"
+                    placeholder="Masukan topik yang ingin Anda diskusikan..."
+                  ></textarea>
                 </div>
               </div>
             </div>
-            <div class="row mt-3">
-              <div class="col-md-12">
-                <h5>Topik Konsultasi:</h5>
-                <textarea
-                  v-model="topik"
-                  rows="5"
-                  cols="30"
-                  class="w-100 rounded rounded-2 p-2"
-                  placeholder="Masukan topik yang ingin Anda diskusikan..."
-                ></textarea>
-              </div>
+            <div class="modal-footer flex-column align-items-stretch w-100 gap-2 pb-3 border-top-0">
+              <button type="button" class="btn btn-success" @click="submitReservation">
+                Kirim!
+              </button>
             </div>
-          </div>
-          <div
-            class="modal-footer flex-column align-items-stretch w-100 gap-2 pb-3 border-top-0"
-          >
-            <button
-              type="button"
-              class="btn btn-success"
-              @click="submitReservation"
-            >
-              Kirim!
-            </button>
           </div>
         </div>
       </div>
     </div>
+    
+    <!-- Modal Loading -->
+    <div v-if="isLoading" class="modal-backdrop">
+      <div class="modal position-static d-block p-4 py-md-5">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content rounded-4 shadow px-2">
+            <div class="modal-body py-5">
+              <div class="d-flex justify-content-center align-items-center">
+                <div class="spinner-border text-success" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <span class="ms-3">Mengirim reservasi...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Success -->
+    <div v-if="isSuccess" class="modal-backdrop">
+      <div class="modal position-static d-block p-4 py-md-5">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content rounded-4 shadow px-2">
+            <div class="modal-body py-5">
+              <div class="d-flex justify-content-center align-items-center">
+                <i class="bi bi-check-circle text-success" style="font-size: 2rem;"></i>
+                <span class="ms-3 fs-5">Reservasi berhasil dikirim.</span>
+              </div>
+              <div class="d-flex justify-content-center mt-1">
+                <span class="fw-semibold text-center ">Dimohon untuk memeriksa inbox email anda secara berkala</span>
+              </div>
+              <div class="d-flex justify-content-center mt-3">
+                <button type="button" class="btn btn-success" @click="closeSuccessModal">
+                  Tutup
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -148,6 +175,8 @@ export default {
         name: "",
         email: "",
       },
+      isLoading: false,
+      isSuccess: false,
     };
   },
   created() {
@@ -169,12 +198,16 @@ export default {
     setMinDate() {
       const today = new Date();
       const yyyy = today.getFullYear();
-      const mm = String(today.getMonth() + 1).padStart(2, "0"); // Bulan dimulai dari 0
+      const mm = String(today.getMonth() + 1).padStart(2, "0");
       const dd = String(today.getDate()).padStart(2, "0");
       this.minDate = `${yyyy}-${mm}-${dd}`;
     },
     close() {
       this.$emit("close");
+    },
+    closeSuccessModal() {
+      this.isSuccess = false;
+      this.$router.push("/settings/booking");
     },
     validateJam() {
       const [jam, menit] = this.jam.split(":");
@@ -182,10 +215,10 @@ export default {
       const minute = parseInt(menit, 10);
 
       const validTime =
-        (hour >= 8 && hour < 12) || // Between 08:00 and 11:59
-        (hour === 12 && minute === 0) || // Exactly at 12:00
-        (hour >= 13 && hour < 16) || // Between 13:00 and 15:59
-        (hour === 16 && minute === 0); // Exactly at 16:00
+        (hour >= 8 && hour < 12) || 
+        (hour === 12 && minute === 0) ||
+        (hour >= 13 && hour < 16) || 
+        (hour === 16 && minute === 0);
 
       if (!validTime) {
         this.invalidTime = true;
@@ -212,7 +245,6 @@ export default {
       const selectedDate = new Date(this.tanggal);
       const day = selectedDate.getUTCDay();
 
-      // Check if the day is Saturday (6) or Sunday (0)
       if (day === 0 || day === 6) {
         this.invalidDate = true;
       } else {
@@ -245,17 +277,16 @@ export default {
             id_pengguna: storedUser.id,
           };
 
-          // Mengirim data ke API
+          this.isLoading = true;
           apiService.addConsultation(dataApi)
             .then((response) => {
               console.log("Reservation submitted successfully", response.data);
-              // Tambahkan logika tambahan di sini jika diperlukan, seperti menampilkan notifikasi
-              alert("Reservasi berhasil dikirim.");
-              this.close(); // Menutup modal setelah pengiriman sukses
-              this.$router.push("/settings/booking");
+              this.isLoading = false;
+              this.isSuccess = true;
             })
             .catch((error) => {
               console.error("Error submitting reservation", error);
+              this.isLoading = false;
               alert("Terjadi kesalahan saat mengirim reservasi. Silakan coba lagi.");
             });
         } else {

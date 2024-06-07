@@ -178,6 +178,14 @@ watch(
               :to="{ name: 'presentation' }"
               class="nav-link ps-2 d-flex cursor-pointer align-items-center"
             >
+              <span>Tentang Kami</span>
+            </RouterLink>
+          </li>
+          <li class="nav-item dropdown dropdown-hover mx-2">
+            <RouterLink
+              :to="{ name: 'presentation' }"
+              class="nav-link ps-2 d-flex cursor-pointer align-items-center"
+            >
               <span>Layanan</span>
             </RouterLink>
           </li>

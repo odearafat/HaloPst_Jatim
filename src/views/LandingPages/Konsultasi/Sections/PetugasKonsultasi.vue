@@ -23,6 +23,23 @@ const fetchPetugas = async () => {
   }
 };
 
+const fetchPetugasBySatker = async (satker) => {
+  loading.value = true;
+  try {
+    const response = await apiService.getOfficersBySatker(satker);
+    petugasKonsultasi.value = response.data.data;
+    console.log(petugasKonsultasi.value);
+  } catch (error) {
+    console.error("Error fetching petugas konsultasi by satker:", error);
+  } finally {
+    loading.value = false;
+  }
+};
+
+const handleCariWilayahInput = (satker) => {
+  fetchPetugasBySatker(satker);
+};
+
 onMounted(fetchPetugas);
 </script>
 <template>
@@ -30,7 +47,7 @@ onMounted(fetchPetugas);
     <div class="container">
       <div class="row">
         <div class="col-md-6 text-start mb-3 mt-5">
-          <CariWilayah />
+          <CariWilayah @input="handleCariWilayahInput" />
         </div>
         <div class="col-md-12 text-start mb-5">
           <h3 class="text-white z-index-1 satker-relative">Konsultasi Umum</h3>
@@ -95,5 +112,4 @@ onMounted(fetchPetugas);
   display: flex;
   justify-content: center;
 }
-
 </style>

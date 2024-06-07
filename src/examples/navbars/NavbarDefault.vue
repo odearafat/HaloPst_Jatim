@@ -1,98 +1,3 @@
-<script setup>
-import { RouterLink } from "vue-router";
-import { ref, watch } from "vue";
-import { useWindowsWidth } from "../../assets/js/useWindowsWidth";
-
-// images
-import ArrDark from "@/assets/img/down-arrow-dark.svg";
-import DownArrWhite from "@/assets/img/down-arrow-white.svg";
-import haloPstBPS from "@/assets/img/halopst-bps.svg";
-import haloPST from "@/assets/img/halopst-logo.svg";
-
-const props = defineProps({
-  konsultasi: {
-    type: Object,
-    route: String,
-    color: String,
-    label: String,
-    default: () => 
-    (
-      {
-        route: "/konsultasi",
-        color: "bg-gradient-danger",
-        label: "Konsultasi Sekarang"
-      }
-    )
-  },
-  transparent: {
-    type: Boolean,
-    default: false
-  },
-  light: {
-    type: Boolean,
-    default: false
-  },
-  dark: {
-    type: Boolean,
-    default: false
-  },
-  sticky: {
-    type: Boolean,
-    default: false
-  },
-  darkText: {
-    type: Boolean,
-    default: false
-  }
-});
-
-// set arrow  color
-function getArrowColor() {
-  if (props.transparent && textDark.value) {
-    return ArrDark;
-  } else if (props.transparent) {
-    return DownArrWhite;
-  } else {
-    return ArrDark;
-  }
-}
-
-// set text color
-const getTextColor = () => {
-  let color;
-  if (props.transparent && textDark.value) {
-    color = "text-dark";
-  } else if (props.transparent) {
-    color = "text-white";
-  } else {
-    color = "text-dark";
-  }
-
-  return color;
-};
-
-// set nav color on mobile && desktop
-
-let textDark = ref(props.darkText);
-const { type } = useWindowsWidth();
-
-if (type.value === "mobile") {
-  textDark.value = true;
-} else if (type.value === "desktop" && textDark.value == false) {
-  textDark.value = false;
-}
-
-watch(
-  () => type.value,
-  (newValue) => {
-    if (newValue === "mobile") {
-      textDark.value = true;
-    } else {
-      textDark.value = false;
-    }
-  }
-);
-</script>
 <template>
   <nav
     class="navbar navbar-expand-lg top-0"
@@ -102,7 +7,7 @@ watch(
       'my-3 blur border-radius-lg z-index-3 py-2 shadow py-2 start-0 end-0 mx-4 position-absolute mt-4':
         props.sticky,
       'navbar-light bg-white py-3': props.light,
-      ' navbar-dark bg-gradient-dark z-index-3 py-3': props.dark
+      'navbar-dark bg-gradient-dark z-index-3 py-3': props.dark
     }"
   >
     <div
@@ -124,11 +29,11 @@ watch(
         title="Halo PST BPS Jawa Timur"
         data-placement="bottom"
       >
-      <img
-        :src="haloPstBPS"
-        alt="Halo PST BPS Jawa Timur"
-        class="arrow"
-      />
+        <img
+          :src="haloPstBPS"
+          alt="Halo PST BPS Jawa Timur"
+          class="arrow"
+        />
       </RouterLink>
       <RouterLink
         class="navbar-brand d-block d-md-none"
@@ -142,17 +47,16 @@ watch(
         title="Halo PST BPS Jawa Timur"
         data-placement="bottom"
       >
-      <img
-        :src="haloPST"
-        alt="Halo PST BPS Jawa Timur"
-        class="arrow"
-      />
+        <img
+          :src="haloPST"
+          alt="Halo PST BPS Jawa Timur"
+          class="arrow"
+        />
       </RouterLink>
       <a
         href="/konsultasi"
         class="btn btn-sm bg-gradient-success mb-0 ms-auto d-lg-none d-block"
-        >Konsultasi</a
-      >
+      >Konsultasi</a>
       <button
         class="navbar-toggler shadow-none ms-2"
         type="button"
@@ -178,6 +82,14 @@ watch(
               :to="{ name: 'presentation' }"
               class="nav-link ps-2 d-flex cursor-pointer align-items-center"
             >
+              <span>Tentang Kami</span>
+            </RouterLink>
+          </li>
+          <li class="nav-item dropdown dropdown-hover mx-2">
+            <RouterLink
+              :to="{ name: 'presentation' }"
+              class="nav-link ps-2 d-flex cursor-pointer align-items-center"
+            >
               <span>Layanan</span>
             </RouterLink>
           </li>
@@ -196,12 +108,98 @@ watch(
               :to="{ name: 'konsultasi' }"
               class="btn btn-sm mb-0 bg-gradient-danger"
               onclick="smoothToPricing('pricing-soft-ui')"
-              >Konsultasi Sekarang</RouterLink
-            >
+            >Konsultasi Sekarang</RouterLink>
           </li>
         </ul>
       </div>
     </div>
   </nav>
-  <!-- End Navbar -->
 </template>
+
+<script setup>
+import { RouterLink } from "vue-router";
+import { ref, watch } from "vue";
+import { useWindowsWidth } from "../../assets/js/useWindowsWidth";
+
+// images
+import ArrDark from "@/assets/img/down-arrow-dark.svg";
+import DownArrWhite from "@/assets/img/down-arrow-white.svg";
+import haloPstBPS from "@/assets/img/halopst-bps.svg";
+import haloPST from "@/assets/img/halopst-logo.svg";
+
+const props = defineProps({
+  konsultasi: {
+    type: Object,
+    route: String,
+    color: String,
+    label: String,
+    default: () => ({
+      route: "/konsultasi",
+      color: "bg-gradient-danger",
+      label: "Konsultasi Sekarang"
+    })
+  },
+  transparent: {
+    type: Boolean,
+    default: false
+  },
+  light: {
+    type: Boolean,
+    default: false
+  },
+  dark: {
+    type: Boolean,
+    default: false
+  },
+  sticky: {
+    type: Boolean,
+    default: false
+  },
+  darkText: {
+    type: Boolean,
+    default: false
+  }
+});
+
+function getArrowColor() {
+  if (props.transparent && textDark.value) {
+    return ArrDark;
+  } else if (props.transparent) {
+    return DownArrWhite;
+  } else {
+    return ArrDark;
+  }
+}
+
+const getTextColor = () => {
+  let color;
+  if (props.transparent && textDark.value) {
+    color = "text-dark";
+  } else if (props.transparent) {
+    color = "text-white";
+  } else {
+    color = "text-dark";
+  }
+  return color;
+};
+
+let textDark = ref(props.darkText);
+const { type } = useWindowsWidth();
+
+if (type.value === "mobile") {
+  textDark.value = true;
+} else if (type.value === "desktop" && textDark.value == false) {
+  textDark.value = false;
+}
+
+watch(
+  () => type.value,
+  (newValue) => {
+    if (newValue === "mobile") {
+      textDark.value = true;
+    } else {
+      textDark.value = false;
+    }
+  }
+);
+</script>

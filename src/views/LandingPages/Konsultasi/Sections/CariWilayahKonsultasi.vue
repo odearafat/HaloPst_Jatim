@@ -14,8 +14,8 @@ const filteredOptions = computed(() => {
   );
 });
 
-const onSearch = () => {
-  // Logic for handling search input
+const onInput = () => {
+  emit("input", satker.value);
 };
 
 const selectOption = option => {
@@ -41,12 +41,11 @@ const onBlur = () => {
           type="text"
           class="form-control bg-white px-3"
           placeholder="Cari berdasarkan wilayah"
-          aria-label="Wilayah BPS"
-          aria-describedby="button-addon2"
           v-model="searchQuery"
           @focus="onFocus"
           @blur="onBlur"
-          @keyup.enter="onSearch"
+          @input="onInput"
+          @keyup.enter="onInput"
         />
         <i class="fa fa-search search-icon"></i>
       </div>

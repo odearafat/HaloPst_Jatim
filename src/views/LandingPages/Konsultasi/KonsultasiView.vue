@@ -1,39 +1,9 @@
-<script setup>
-import { onMounted, onUnmounted } from "vue";
-
-// Example components
-import NavbarKonsultasi from "../../../examples/navbars/NavbarKonsultasi.vue";
-import DefaultFooter from "../../../examples/footers/FooterDefault.vue";
-
-// Image
-import bg0 from "@/assets/img/bg9.jpg";
-
-// Sections
-import Tahapan from "./Sections/TahapKonsultasi.vue";
-import PetugasKonsultasi from "./Sections/PetugasKonsultasi.vue";
-
-
-//hooks
-const body = document.getElementsByTagName("body")[0];
-onMounted(() => {
-  body.classList.add("konsultasi-page");
-  body.classList.add("bg-gray-200");
-});
-onUnmounted(() => {
-  body.classList.remove("konsultasi-page");
-  body.classList.remove("bg-gray-200");
-});
-</script>
-
+<!-- src/views/KonsultasiView.vue -->
 <template>
   <div>
-    <NavbarKonsultasi
-    />
+    <NavbarKonsultasi />
     <header class="bg-gradient-dark">
-      <div
-        class="page-header min-vh-70"
-        :style="{ backgroundImage: `url(${bg0})` }"
-      >
+      <div class="page-header min-vh-70" :style="{ backgroundImage: `url(${bg0})` }">
         <span class="mask bg-gradient-dark opacity-4"></span>
         <div class="container">
           <div class="row justify-content-center">
@@ -51,9 +21,36 @@ onUnmounted(() => {
       </div>
     </header>
     <div class="card card-body shadow-xl mx-3 mx-md-4 mt-n6">
-      <Tahapan />
-      <PetugasKonsultasi />
+      <Tahapan @tahap1Clicked="scrollToPetugasKonsultasi" />
+      <div ref="petugasSection">
+        <PetugasKonsultasi />
+      </div>
     </div>
     <DefaultFooter />
   </div>
 </template>
+
+<script setup>
+import { ref, onMounted, onUnmounted } from 'vue';
+import NavbarKonsultasi from '../../../examples/navbars/NavbarKonsultasi.vue';
+import DefaultFooter from '../../../examples/footers/FooterDefault.vue';
+import bg0 from '@/assets/img/bg9.jpg';
+import Tahapan from './Sections/TahapKonsultasi.vue';
+import PetugasKonsultasi from './Sections/PetugasKonsultasi.vue';
+
+const petugasSection = ref(null);
+
+function scrollToPetugasKonsultasi() {
+  petugasSection.value.scrollIntoView({ behavior: 'smooth' });
+}
+
+const body = document.getElementsByTagName('body')[0];
+onMounted(() => {
+  body.classList.add('konsultasi-page');
+  body.classList.add('bg-gray-200');
+});
+onUnmounted(() => {
+  body.classList.remove('konsultasi-page');
+  body.classList.remove('bg-gray-200');
+});
+</script>
