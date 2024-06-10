@@ -74,9 +74,65 @@
         </div>
       </div>
     </div>
-    <Modal v-if="isModalVisible" @close="closeModal" :bookingId="bookingId"/>
+    <Modal
+      v-if="isModalVisible"
+      @close="closeModal"
+      @loading="setLoading"
+      @success="setSuccess"
+      @hideMainModal="hideMainModal"
+      :bookingId="bookingId"
+      :isModalMainVisible="isModalMainVisible"
+    />
+
+    <!-- Modal Loading -->
+    <div v-if="isLoading" class="modal-backdrop">
+      <div class="modal position-static d-block p-4 py-md-5">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content rounded-4 shadow px-2">
+            <div class="modal-body py-5">
+              <div class="d-flex justify-content-center align-items-center">
+                <div class="spinner-border text-success" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <span class="ms-3">Memproses pembatalan...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Success -->
+    <div v-if="isSuccess" class="modal-backdrop">
+      <div class="modal position-static d-block p-4 py-md-5">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content rounded-4 shadow px-2">
+            <div class="modal-body py-5">
+              <div class="d-flex justify-content-center align-items-center">
+                <i
+                  class="bi bi-check-circle text-success"
+                  style="font-size: 2rem"
+                ></i>
+                <span class="ms-3">Reservasi berhasil dibatalkan.</span>
+              </div>
+              <div class="d-flex justify-content-center mt-3">
+                <button
+                  type="button"
+                  class="btn btn-success"
+                  @click="closeSuccessModal"
+                >
+                  Tutup
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
+
 <script>
 import { apiService } from "@/api/ApiService";
 import Modal from "./Modal.vue";
@@ -89,6 +145,9 @@ export default {
       booking: {},
       loading: true,
       isModalVisible: false,
+      isLoading: false,
+      isSuccess: false,
+      isModalMainVisible: true,
       bookingId: this.$route.params.id, // Ambil parameter dari route
     };
   },
@@ -112,9 +171,23 @@ export default {
     },
     showModal() {
       this.isModalVisible = true;
+      this.isModalMainVisible = true;
     },
     closeModal() {
       this.isModalVisible = false;
+    },
+    setLoading(isLoading) {
+      this.isLoading = isLoading;
+    },
+    setSuccess(isSuccess) {
+      this.isSuccess = isSuccess;
+    },
+    hideMainModal() {
+      this.isModalMainVisible = false;
+    },
+    closeSuccessModal() {
+      this.isSuccess = false;
+      window.location.href = "/settings/booking";
     },
   },
 };
@@ -137,5 +210,59 @@ export default {
 .btn-danger {
   width: 100%;
   margin-top: 1rem;
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #0000009c;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  box-shadow: 2px 2px 20px 1px;
+  overflow-x: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header,
+.modal-footer {
+  padding: 15px;
+  display: flex;
+}
+
+.modal-header {
+  position: relative;
+  border-bottom: 1px solid #eeeeee;
+  justify-content: space-between;
+}
+
+.modal-footer {
+  border-top: 1px solid #eeeeee;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.modal-body {
+  position: relative;
+}
+
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  resize: none;
+}
+
+.btn-outline-danger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 </style>

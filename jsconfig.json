@@ -5,7 +5,5 @@
     }
   },
   "exclude": ["node_modules", "dist"],
-  "types": [
-    "vue-sweetalert2"
-  ],
+  "types": ["vue-sweetalert2"]
 }

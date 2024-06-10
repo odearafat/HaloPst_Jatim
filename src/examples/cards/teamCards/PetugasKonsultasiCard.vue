@@ -55,8 +55,8 @@ function closeModal() {
         <div class="card-body ps-lg-0">
           <h6 class="mb-0">{{ petugas.nama_petugas }}</h6>
           <p
-            class="text-weight-bold text-sm mb-0"
-            :class="`text-${petugas.satker.color}`"
+            class="text-weight-bold text-sm mb-0 text-success"
+            
           >
             {{ petugas.satker.nama_satker }}
           </p>

@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/Home/HomeView.vue";
-import ChatbotView from "../views/ChatbotView.vue";
+import ChatbotView from "../views/LandingPages/Chatbot/ChatbotView.vue";
 import KonsultasiView from "../views/LandingPages/Konsultasi/KonsultasiView.vue";
 import LoginView from "../views/LandingPages/SignIn/LoginView.vue";
 import ProfileView from "../views/LandingPages/Setting/ProfileView.vue";
@@ -83,8 +83,8 @@ const router = createRouter({
 // Navigation guard global
 router.beforeEach((to, from, next) => {
   const isLoggedIn = localStorage.getItem("loggedIn") === "true";
-  
-  if (to.path.startsWith('/settings') && !isLoggedIn) {
+
+  if ((to.path.startsWith('/settings') || to.path === '/aida') && !isLoggedIn) {
     next({ name: 'login' }); // Redirect ke halaman login jika belum login
   } else {
     next(); // Lanjutkan ke rute yang diminta jika sudah login
