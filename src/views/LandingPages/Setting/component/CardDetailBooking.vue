@@ -1,11 +1,12 @@
 <template>
   <div class="card border-0 shadow-sm">
-    <div class="card-header p-4 d-flex align-items-center">
+    <div class="card-header p-4 d-flex align-items-center pb-0">
       <button class="btn m-0" @click="goBack">
         <h5 class="mb-0 bi bi-arrow-left"></h5>
       </button>
       <h4 class="card-title ms-3">Detail Reservasi</h4>
     </div>
+    
     <div class="card-body p-4">
       <div v-if="loading" class="text-center">
         <img src="/assets/loading_2.svg" alt="Loading..." />
@@ -264,5 +265,11 @@ textarea {
 .btn-outline-danger:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+.hairline {
+  width: 100%;
+  border: 0;
+  border-top: 1px solid #141e2a;
+  margin-bottom: 20px;
 }
 </style>

@@ -13,6 +13,7 @@
             </small>
           </p>
         </div>
+        <hr class="hairline" />
         <div class="card-body m-3">
           <table
             class="table table-bordered"
@@ -128,3 +129,12 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.hairline {
+  width: 100%;
+  border: 0;
+  border-top: 1px solid #141e2a;
+  margin-bottom: 20px;
+}
+</style>

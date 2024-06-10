@@ -6,6 +6,7 @@
         <small class="text-muted mb-2">Silahkan lengkapi data diri anda!</small>
       </p>
     </div>
+    <hr class="hairline" />
     <div class="card-body m-3 mt-0">
       <div v-if="isLoading" class="text-center">
         <img src="/assets/loading_2.svg" alt="Loading..." />
@@ -357,6 +358,12 @@ export default {
 
 .invalid-feedback {
   display: block;
+}
+.hairline {
+  width: 100%;
+  border: 0;
+  border-top: 1px solid #141e2a;
+  margin-bottom: 20px;
 }
 
 /* Modal styles */

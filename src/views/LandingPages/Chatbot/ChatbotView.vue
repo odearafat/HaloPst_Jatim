@@ -1,61 +1,86 @@
-<template>
-  <div class="chat-layout">
-    <Sidebar @suggestion-clicked="sendMessageFromSidebar" @load-chat="loadChatFromSidebar" @new-chat="startNewChat" @delete-chat="deleteChat" :chats="chats" />
-    <div class="chat-window">
-      <div class="messages">
-        <div v-for="(message, index) in messages" :key="index" :class="['message', message.role]">
-          <img :src="message.role === 'user' ? userAvatar : aiAvatar" class="avatar" />
-          <div class="text" v-html="formatMessage(message.content)"></div>
+<template >
+  <div  id="view">
+    <NavbarChatbot />
+    <div  class="chat-layout">
+      <Sidebar
+        @suggestion-clicked="sendMessageFromSidebar"
+        @load-chat="loadChatFromSidebar"
+        @new-chat="startNewChat"
+        @delete-chat="deleteChat"
+        :chats="chats"
+      />
+      <div class="chat-window">
+        <div class="messages">
+          <div
+            v-for="(message, index) in messages"
+            :key="index"
+            :class="['message', message.role]"
+          >
+            <img
+              :src="message.role === 'user' ? userAvatar : aiAvatar"
+              class="avatar"
+            />
+            <div class="text" v-html="formatMessage(message.content)"></div>
+          </div>
         </div>
-      </div>
-      <div class="input-box">
-        <input v-model="userInput" @keyup.enter="sendMessage" placeholder="Ketik curhatanmu ke Ning AIDA (misal: berikan insight tentang Data Kemiskinan) . . ." />
-        <button @click="sendMessage">Kirim</button>
+        <div class="input-box">
+          <input
+            v-model="userInput"
+            @keyup.enter="sendMessage"
+            placeholder="Ketik curhatanmu ke Ning AIDA (misal: berikan insight tentang Data Kemiskinan) . . ."
+          />
+          <button @click="sendMessage">Kirim</button>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Sidebar from './SidebarChat.vue';
-import { getAiResponse, getChatSummary } from '../../../api/GeminiApi';
+import Sidebar from "./SidebarChat.vue";
+import { getAiResponse, getChatSummary } from "../../../api/GeminiApi";
+import NavbarChatbot from "../../../examples/navbars/NavbarChatbot.vue";
 
 export default {
-  name: 'Chat',
+  name: "Chat",
   components: {
-    Sidebar
+    Sidebar,NavbarChatbot
   },
   data() {
     return {
-      userInput: '',
-      messages: JSON.parse(localStorage.getItem('currentChat')) || [],
-      chats: JSON.parse(localStorage.getItem('chatHistories')) || [],
-      userAvatar: '',
-      aiAvatar: 'https://images.playground.com/627e2753d36d422d8d8dab3dd2e9b8d1.jpeg',
-      chatSummary: null
+      userInput: "",
+      messages: JSON.parse(localStorage.getItem("currentChat")) || [],
+      chats: JSON.parse(localStorage.getItem("chatHistories")) || [],
+      userAvatar: "",
+      aiAvatar:
+        "https://images.playground.com/627e2753d36d422d8d8dab3dd2e9b8d1.jpeg",
+      chatSummary: null,
     };
   },
-  created(){
+  created() {
     const storedUser = localStorage.getItem("user");
     const storedLoggedIn = localStorage.getItem("loggedIn");
 
     if (storedUser && storedLoggedIn) {
       const parsedUser = JSON.parse(storedUser);
-      this.userAvatar=parsedUser.foto
+      this.userAvatar = parsedUser.foto;
     }
   },
   methods: {
     async sendMessageFromSidebar(message) {
-      this.messages.push({ role: 'user', content: message });
+      this.messages.push({ role: "user", content: message });
       this.saveMessages();
 
       try {
         const aiResponse = await getAiResponse(this.messages);
-        this.messages.push({ role: 'ai', content: aiResponse });
+        this.messages.push({ role: "ai", content: aiResponse });
         this.saveMessages();
       } catch (error) {
-        console.error('Error fetching AI response:', error);
-        this.messages.push({ role: 'ai', content: 'Sorry, there was an error getting the response.' });
+        console.error("Error fetching AI response:", error);
+        this.messages.push({
+          role: "ai",
+          content: "Sorry, there was an error getting the response.",
+        });
         this.saveMessages();
       }
     },
@@ -63,37 +88,40 @@ export default {
       const message = this.userInput.trim();
       if (!message) return;
 
-      this.messages.push({ role: 'user', content: message });
-      this.userInput = '';
+      this.messages.push({ role: "user", content: message });
+      this.userInput = "";
       this.saveMessages();
 
       try {
         const aiResponse = await getAiResponse(this.messages);
-        this.messages.push({ role: 'ai', content: aiResponse });
+        this.messages.push({ role: "ai", content: aiResponse });
         this.saveMessages();
       } catch (error) {
-        console.error('Error fetching AI response:', error);
-        this.messages.push({ role: 'ai', content: 'Sorry, there was an error getting the response.' });
+        console.error("Error fetching AI response:", error);
+        this.messages.push({
+          role: "ai",
+          content: "Sorry, there was an error getting the response.",
+        });
         this.saveMessages();
       }
     },
     async saveMessages() {
-      localStorage.setItem('currentChat', JSON.stringify(this.messages));
+      localStorage.setItem("currentChat", JSON.stringify(this.messages));
       await this.updateChatHistories();
     },
     loadChatFromSidebar(chat) {
       this.messages = chat.messages;
       this.chatSummary = chat.summary;
-      localStorage.setItem('currentChat', JSON.stringify(this.messages));
+      localStorage.setItem("currentChat", JSON.stringify(this.messages));
     },
     startNewChat() {
       this.messages = [];
       this.chatSummary = null;
-      localStorage.setItem('currentChat', JSON.stringify(this.messages));
+      localStorage.setItem("currentChat", JSON.stringify(this.messages));
     },
     deleteChat(index) {
       this.chats.splice(index, 1);
-      localStorage.setItem('chatHistories', JSON.stringify(this.chats));
+      localStorage.setItem("chatHistories", JSON.stringify(this.chats));
 
       if (this.chats.length === 0) {
         this.startNewChat();
@@ -106,33 +134,41 @@ export default {
         try {
           this.chatSummary = await getChatSummary(this.messages);
         } catch (error) {
-          console.error('Error fetching chat summary:', error);
-          this.chatSummary = 'Conversation Summary';
+          console.error("Error fetching chat summary:", error);
+          this.chatSummary = "Conversation Summary";
         }
       }
 
       const newChat = { summary: this.chatSummary, messages: this.messages };
-      const existingChats = JSON.parse(localStorage.getItem('chatHistories')) || [];
+      const existingChats =
+        JSON.parse(localStorage.getItem("chatHistories")) || [];
 
-      const updatedChats = existingChats.filter(chat => chat.summary !== newChat.summary);
+      const updatedChats = existingChats.filter(
+        (chat) => chat.summary !== newChat.summary
+      );
       updatedChats.push(newChat);
 
-      localStorage.setItem('chatHistories', JSON.stringify(updatedChats));
+      localStorage.setItem("chatHistories", JSON.stringify(updatedChats));
       this.chats = updatedChats;
     },
     formatMessage(message) {
       return message
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-        .replace(/\*(.*?)\*/g, '<em>$1</em>')
-        .replace(/\n/g, '<br>')
+        .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+        .replace(/\*(.*?)\*/g, "<em>$1</em>")
+        .replace(/\n/g, "<br>")
         .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
         .replace(/^\d+\.\s/gm, (match) => `<br>${match}`);
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style scoped>
+
+#view{
+  width: 100wh;
+  height: 75vh;
+}
 .chat-layout {
   display: flex;
   height: 100vh;

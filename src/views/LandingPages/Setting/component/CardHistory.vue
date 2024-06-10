@@ -6,6 +6,7 @@
         <small class="text-muted mb-4">Anda dapat melihat daftar history konsultasi anda disini!</small>
       </p>
     </div>
+    <hr class="hairline" />
     <div class="card-body m-3">
       <div v-if="loading" class="text-center">
         <img src="@/assets/loading_2.svg" alt="Loading" />
@@ -155,6 +156,13 @@ textarea {
   border: 1px solid #ddd;
   border-radius: 4px;
   resize: none;
+}
+
+.hairline {
+  width: 100%;
+  border: 0;
+  border-top: 1px solid #141e2a;
+  margin-bottom: 20px;
 }
 
 .btn-outline-danger:disabled {

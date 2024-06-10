@@ -16,6 +16,7 @@
               </h4>
               <button type="button" class="bi bi-x" @click="close"></button>
             </div>
+            <hr class="hairline" />
             <div class="alert alert-primary modal-body mx-2 p-2" role="alert" id="alert">
               <div class="row">
                 <div class="col-auto ms-1">
@@ -323,5 +324,12 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.hairline {
+  width: 100%;
+  border: 0;
+  border-top: 1px solid #141e2a;
+  margin-bottom: 20px;
 }
 </style>

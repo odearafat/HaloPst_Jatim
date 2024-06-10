@@ -1,7 +1,5 @@
 <template>
   <div class="sidebar">
-    <img class="logo" src="@/assets/img/halopst-logo.svg" alt="Logo" />
-    <hr class="hairline" />
     <button class="new-chat-button" @click="startNewChat">Obrolan Baru</button>
     <div class="chat-history">
       <h3>Kenangan bersama AIDA:</h3>
@@ -49,16 +47,10 @@ export default {
   box-sizing: border-box;
 }
 
-.logo {
-  width: 100%;
-  height: auto;
-  margin-bottom: 20px;
-}
-
 .hairline {
   width: 100%;
   border: 0;
-  border-top: 1px solid #cbd5e1;
+  border-top: 1px solid #141e2a;
   margin-bottom: 20px;
 }
 
