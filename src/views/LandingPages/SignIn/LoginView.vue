@@ -1,6 +1,6 @@
 <script setup>
 import { ref, reactive, onMounted } from "vue";
-import router from "@/router";
+import { useRouter } from "vue-router";
 import { decodeCredential, googleLogout, GoogleLogin } from "vue3-google-login";
 import { apiService } from "@/api/ApiService.js";
 import NavbarLogin from "@/examples/navbars/NavbarLogin.vue";
@@ -10,7 +10,6 @@ import MaterialButton from "@/components/MaterialButton.vue";
 import MaterialSwitch from "@/components/MaterialSwitch.vue";
 import setMaterialInput from "@/assets/js/material-input.js";
 import bg0 from "@/assets/img/bg9.jpg";
-import { RouterLink } from "vue-router";
 
 const user = reactive({
   name: "",
@@ -26,6 +25,7 @@ const user = reactive({
 });
 
 const loggedIn = ref(false);
+const router = useRouter();
 
 const callback = async (response) => {
   try {
@@ -47,7 +47,7 @@ const callback = async (response) => {
       foto: user.picture,
     };
 
-    localStorage.setItem("loggedIn", true);
+    localStorage.setItem("loggedIn", "true");
     localStorage.setItem("id_token", id_token);
     await verifyToken(id_token);
     const apiResponse = await apiService.addUser(userData);
@@ -58,7 +58,7 @@ const callback = async (response) => {
         window.location.reload();
       });
     } else {
-      console.error("API gagal:", apiResponse);
+      console.error("API failed:", apiResponse);
     }
   } catch (error) {
     handleError(error);
@@ -80,7 +80,7 @@ const verifyToken = async (token) => {
 
     if (res.ok) {
       localStorage.setItem("token", data.token);
-      console.log("berhasil login google");
+      console.log("Google login successful");
     } else {
       console.error("Verification failed:", data.error);
     }
@@ -105,9 +105,9 @@ const handleError = (error) => {
 const login = async () => {
   try {
     const response = await apiService.login(user.email, user.password);
-    console.log("API berhasil dilakukan:", response.data);
-    localStorage.setItem("user", JSON.stringify(response.data.data));  
-    this.$router.push("/settings/profil").then(() => {
+    console.log("API login successful:", response.data);
+    localStorage.setItem("user", JSON.stringify(response.data.data));
+    router.push("/settings/profil").then(() => {
       window.location.reload();
     });
   } catch (error) {
@@ -117,17 +117,10 @@ const login = async () => {
 
 const logout = () => {
   googleLogout();
-  user.name = "";
-  user.email = "";
-  user.picture = "";
-  user.given_name = "";
-  user.family_name = "";
-  user.email_google = "";
-  user.nama_pengguna = "";
-  user.foto = "";
+  Object.keys(user).forEach(key => user[key] = "");
   loggedIn.value = false;
   localStorage.removeItem("user");
-  localStorage.setItem("loggedIn", false);
+  localStorage.setItem("loggedIn", "false");
 };
 
 onMounted(() => {
@@ -172,26 +165,27 @@ onMounted(() => {
                   </div>
                 </div>
                 <div class="card-body">
-                  <form role="form" class="text-start">
+                  <form role="form" class="text-start" @submit.prevent="login">
                     <MaterialInput
                       id="email"
                       class="input-group-outline my-3"
                       :label="{ text: 'Email', class: 'form-label' }"
                       type="email"
+                      v-model="user.email"
                     />
                     <MaterialInput
                       id="password"
                       class="input-group-outline mb-3"
                       :label="{ text: 'Password', class: 'form-label' }"
                       type="password"
+                      v-model="user.password"
                     />
                     <MaterialSwitch
                       class="d-flex align-items-center mb-3"
                       id="rememberMe"
                       labelClass="mb-0 ms-3"
                       checked
-                      >Ingat saya</MaterialSwitch
-                    >
+                    >Ingat saya</MaterialSwitch>
 
                     <div class="text-center">
                       <MaterialButton
@@ -199,22 +193,9 @@ onMounted(() => {
                         variant="gradient"
                         color="success"
                         fullWidth
-                        >Log in</MaterialButton
-                      >
+                      >Log in</MaterialButton>
                     </div>
                     <p class="mt-4 text-sm text-center">Tidak memiliki akun?</p>
-                    <!-- <div class="row" v-if="loggedIn">
-                      <div class="col-12">
-                        <div class="d-flex gap-3 flex-column mt-3">
-                          <MaterialButton @click="logout"
-                            >LogOut</MaterialButton
-                          >
-                          <h2>The name is: {{ user.nama_pengguna }}</h2>
-                          <h2>The email is: {{ user.email_google }}</h2>
-                          <img :src="user.foto" />
-                        </div>
-                      </div>
-                    </div> -->
                     <div class="row">
                       <div class="col-12 text-center">
                         <div

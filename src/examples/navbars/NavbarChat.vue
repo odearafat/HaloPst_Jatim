@@ -1,8 +1,9 @@
 <script setup>
-import { ref, reactive, onMounted, watch } from "vue";
-import { RouterLink, useRouter } from "vue-router";
-import { googleLogout } from "vue3-google-login";
+import { RouterLink } from "vue-router";
+import { ref, watch } from "vue";
 import { useWindowsWidth } from "../../assets/js/useWindowsWidth";
+import bootstrap from "bootstrap/dist/js/bootstrap.min.js";
+
 
 // images
 import ArrDark from "@/assets/img/down-arrow-dark.svg";
@@ -10,54 +11,47 @@ import DownArrWhite from "@/assets/img/down-arrow-white.svg";
 import haloPstBPS from "@/assets/img/halopst-bps.svg";
 import haloPST from "@/assets/img/halopst-logo.svg";
 
-// Props
 const props = defineProps({
-  
+  konsultasi: {
+    type: Object,
+    required: true,
+    default: () => ({
+      route: "/login",
+      color: "bg-gradient-success",
+      label: "Login"
+    }),
+    validator: value => {
+      return (
+        typeof value.route === 'string' &&
+        typeof value.color === 'string' &&
+        typeof value.label === 'string'
+      );
+    }
+  },
   transparent: {
     type: Boolean,
-    default: false,
+    default: false
   },
   light: {
     type: Boolean,
-    default: false,
+    default: false
   },
   dark: {
     type: Boolean,
-    default: false,
+    default: false
   },
   sticky: {
     type: Boolean,
-    default: false,
+    default: false
   },
   darkText: {
     type: Boolean,
-    default: false,
-  },
-});
-
-// Data reaktif untuk pengguna dan status login
-const user = reactive({
-  name: "",
-  email: "",
-  picture: "",
-});
-const loggedIn = ref(false);
-
-// Inisialisasi state dari localStorage
-onMounted(() => {
-  const storedUser = localStorage.getItem("user");
-  const storedLoggedIn = localStorage.getItem("loggedIn");
-
-  if (storedUser && storedLoggedIn) {
-    Object.assign(user, JSON.parse(storedUser));
-    loggedIn.value = storedLoggedIn === "true";
+    default: false
   }
 });
 
-
-
 // set arrow color
-const getArrowColor = () => {
+function getArrowColor() {
   if (props.transparent && textDark.value) {
     return ArrDark;
   } else if (props.transparent) {
@@ -65,26 +59,29 @@ const getArrowColor = () => {
   } else {
     return ArrDark;
   }
-};
+}
 
 // set text color
 const getTextColor = () => {
+  let color;
   if (props.transparent && textDark.value) {
-    return "text-dark";
+    color = "text-dark";
   } else if (props.transparent) {
-    return "text-white";
+    color = "text-white";
   } else {
-    return "text-dark";
+    color = "text-dark";
   }
+
+  return color;
 };
 
 // set nav color on mobile && desktop
-const textDark = ref(props.darkText);
+let textDark = ref(props.darkText);
 const { type } = useWindowsWidth();
 
 if (type.value === "mobile") {
   textDark.value = true;
-} else if (type.value === "desktop" && textDark.value === false) {
+} else if (type.value === "desktop" && textDark.value == false) {
   textDark.value = false;
 }
 
@@ -109,7 +106,7 @@ watch(
       'my-3 blur border-radius-lg z-index-3 py-2 shadow py-2 start-0 end-0 mx-4 position-absolute mt-4':
         props.sticky,
       'navbar-light bg-white py-3': props.light,
-      'navbar-dark bg-gradient-dark z-index-3 py-3': props.dark,
+      'navbar-dark bg-gradient-dark z-index-3 py-3': props.dark
     }"
   >
     <div
@@ -124,14 +121,18 @@ watch(
         :class="[
           (props.transparent && textDark.value) || !props.transparent
             ? 'text-dark font-weight-bolder ms-sm-3'
-            : 'text-white font-weight-bolder ms-sm-3',
+            : 'text-white font-weight-bolder ms-sm-3'
         ]"
         :to="{ name: 'presentation' }"
         rel="tooltip"
         title="Halo PST BPS Jawa Timur"
         data-placement="bottom"
       >
-        <img :src="haloPstBPS" alt="Halo PST BPS Jawa Timur" class="arrow" />
+        <img
+          :src="haloPstBPS"
+          alt="Halo PST BPS Jawa Timur"
+          class="arrow"
+        />
       </RouterLink>
       <RouterLink
         class="navbar-brand d-block d-md-none"
@@ -145,13 +146,16 @@ watch(
         title="Halo PST BPS Jawa Timur"
         data-placement="bottom"
       >
-        <img :src="haloPST" alt="Halo PST BPS Jawa Timur" class="arrow" />
+        <img
+          :src="haloPST"
+          alt="Halo PST BPS Jawa Timur"
+          class="arrow"
+        />
       </RouterLink>
-      <a
-        href="/konsultasi"
+      <RouterLink
+        :to="{ name: 'konsultasi' }"
         class="btn btn-sm bg-gradient-success mb-0 ms-auto d-lg-none d-block"
-        >Konsultasi</a
-      >
+      >Konsultasi</RouterLink>
       <button
         class="navbar-toggler shadow-none ms-2"
         type="button"
@@ -174,10 +178,10 @@ watch(
         <ul class="navbar-nav navbar-nav-hover ms-auto">
           <li class="nav-item dropdown dropdown-hover mx-2">
             <RouterLink
-              :to="{ name: 'presentation' }"
+              :to="{ name: 'tentang' }"
               class="nav-link ps-2 d-flex cursor-pointer align-items-center"
             >
-              <span>Tentang Kami</span>
+              <span>Tentang</span>
             </RouterLink>
           </li>
           <li class="nav-item dropdown dropdown-hover mx-2">
@@ -196,27 +200,19 @@ watch(
               <span>Konsultasi</span>
             </RouterLink>
           </li>
+        </ul>
+        <ul class="navbar-nav d-lg-block d-none">
           <li class="nav-item mx-2">
-              <div class="">
-                <a
-                  href="/settings/profil"
-                  class="badge d-flex align-items-center p-1 pe-2 text-info bg-info-subtle border border-info rounded-pill"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  <img
-                    :src="user.foto"
-                    alt="User Profile"
-                    width="32"
-                    height="32"
-                    class="rounded-circle me-2"
-                  />
-                  Akun
-                </a>
-              </div>
-            </li>
+            <RouterLink
+              :to="konsultasi.route"
+              class="btn btn-sm mb-0"
+              :class="konsultasi.color"
+              @click.native="smoothToPricing('pricing-soft-ui')"
+            >{{ konsultasi.label }}</RouterLink>
+          </li>
         </ul>
       </div>
     </div>
   </nav>
+  <!-- End Navbar -->
 </template>

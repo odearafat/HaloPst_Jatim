@@ -11,6 +11,7 @@ import CardDetailBooking from "../views/LandingPages/Setting/component/CardDetai
 import CardDetailHistory from "../views/LandingPages/Setting/component/CardDetailHistory.vue";
 import CardNotif from "../views/LandingPages/Setting/component/CardNotif.vue";
 import SearchView from "../views/LandingPages/Search/SearchView.vue";
+import TentangView from "../views/LandingPages/Tentang/TentangView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -76,6 +77,11 @@ const router = createRouter({
       path: "/search",
       name: "search",
       component: SearchView,
+    },
+    {
+      path: "/tentang",
+      name: "tentang",
+      component: TentangView,
     },
   ],
 });

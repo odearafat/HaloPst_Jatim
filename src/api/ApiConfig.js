@@ -35,12 +35,16 @@ apiClient.interceptors.response.use(
       if (status === 500) {
         // Clear token from localStorage
         localStorage.removeItem('id_token');
+        localStorage.removeItem('user');
+        localStorage.removeItem('loggedIn');
         localStorage.clear
         // Redirect to login page
         router.push({ name: 'login' });
       } else if (status === 401) {
         // Clear token from localStorage
         localStorage.removeItem('id_token');
+        localStorage.removeItem('user');
+        localStorage.removeItem('loggedIn');
         localStorage.clear
         // Redirect to login page
         router.push({ name: 'login' });

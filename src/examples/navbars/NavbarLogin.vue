@@ -2,6 +2,8 @@
 import { RouterLink } from "vue-router";
 import { ref, watch } from "vue";
 import { useWindowsWidth } from "../../assets/js/useWindowsWidth";
+import bootstrap from "bootstrap/dist/js/bootstrap.min.js";
+
 
 // images
 import ArrDark from "@/assets/img/down-arrow-dark.svg";
@@ -148,11 +150,12 @@ watch(
         class="arrow"
       />
       </RouterLink>
-      <a
-        href="/konsultasi"
+      <RouterLink
+        :to="{ name: 'konsultasi' }"
         class="btn btn-sm bg-gradient-success mb-0 ms-auto d-lg-none d-block"
-        >Konsultasi</a
       >
+        <span>Konsultasi</span>
+      </RouterLink>
       <button
         class="navbar-toggler shadow-none ms-2"
         type="button"
@@ -173,14 +176,6 @@ watch(
         id="navigation"
       >
         <ul class="navbar-nav navbar-nav-hover ms-auto">
-          <li class="nav-item dropdown dropdown-hover mx-2">
-            <RouterLink
-              :to="{ name: 'presentation' }"
-              class="nav-link ps-2 d-flex cursor-pointer align-items-center"
-            >
-              <span>Tentang Kami</span>
-            </RouterLink>
-          </li>
           <li class="nav-item dropdown dropdown-hover mx-2">
             <RouterLink
               :to="{ name: 'presentation' }"

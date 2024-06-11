@@ -1,8 +1,8 @@
 <script setup>
-import { ref, reactive, onMounted, watch } from "vue";
-import { RouterLink, useRouter } from "vue-router";
-import { googleLogout } from "vue3-google-login";
+import { RouterLink } from "vue-router";
+import { ref, watch, onMounted } from "vue";
 import { useWindowsWidth } from "../../assets/js/useWindowsWidth";
+import bootstrap from "bootstrap/dist/js/bootstrap.min.js";
 
 // images
 import ArrDark from "@/assets/img/down-arrow-dark.svg";
@@ -10,15 +10,22 @@ import DownArrWhite from "@/assets/img/down-arrow-white.svg";
 import haloPstBPS from "@/assets/img/halopst-bps.svg";
 import haloPST from "@/assets/img/halopst-logo.svg";
 
-// Props
 const props = defineProps({
   konsultasi: {
     type: Object,
+    required: true,
     default: () => ({
       route: "/login",
       color: "bg-gradient-success",
       label: "Login",
     }),
+    validator: (value) => {
+      return (
+        typeof value.route === "string" &&
+        typeof value.color === "string" &&
+        typeof value.label === "string"
+      );
+    },
   },
   transparent: {
     type: Boolean,
@@ -42,40 +49,20 @@ const props = defineProps({
   },
 });
 
-// Data reaktif untuk pengguna dan status login
-const user = reactive({
-  name: "",
-  email: "",
-  picture: "",
-});
-const loggedIn = ref(false);
+let isLoggedIn = ref(false);
+let user = ref(null);
 
-// Inisialisasi state dari localStorage
 onMounted(() => {
-  const storedUser = localStorage.getItem("user");
-  const storedLoggedIn = localStorage.getItem("loggedIn");
-
-  if (storedUser && storedLoggedIn) {
-    Object.assign(user, JSON.parse(storedUser));
-    loggedIn.value = storedLoggedIn === "true";
+  const userData = localStorage.getItem("user");
+  const loggedIn = localStorage.getItem('loggedIn');
+  if (loggedIn === 'true' && userData) {
+    user.value = JSON.parse(userData);
+    isLoggedIn.value = true;
   }
 });
 
-// Fungsi logout
-const logout = () => {
-  googleLogout();
-  user.name = "";
-  user.email = "";
-  user.picture = "";
-  loggedIn.value = false;
-
-  // Hapus data pengguna dan status login dari penyimpanan lokal
-  localStorage.removeItem("user");
-  localStorage.setItem("loggedIn", false);
-};
-
 // set arrow color
-const getArrowColor = () => {
+function getArrowColor() {
   if (props.transparent && textDark.value) {
     return ArrDark;
   } else if (props.transparent) {
@@ -83,26 +70,29 @@ const getArrowColor = () => {
   } else {
     return ArrDark;
   }
-};
+}
 
 // set text color
 const getTextColor = () => {
+  let color;
   if (props.transparent && textDark.value) {
-    return "text-dark";
+    color = "text-dark";
   } else if (props.transparent) {
-    return "text-white";
+    color = "text-white";
   } else {
-    return "text-dark";
+    color = "text-dark";
   }
+
+  return color;
 };
 
 // set nav color on mobile && desktop
-const textDark = ref(props.darkText);
+let textDark = ref(props.darkText);
 const { type } = useWindowsWidth();
 
 if (type.value === "mobile") {
   textDark.value = true;
-} else if (type.value === "desktop" && textDark.value === false) {
+} else if (type.value === "desktop" && textDark.value == false) {
   textDark.value = false;
 }
 
@@ -165,11 +155,21 @@ watch(
       >
         <img :src="haloPST" alt="Halo PST BPS Jawa Timur" class="arrow" />
       </RouterLink>
-      <a
-        href="/konsultasi"
-        class="btn btn-sm bg-gradient-success mb-0 ms-auto d-lg-none d-block"
-        >Konsultasi</a
-      >
+      <template v-if="!isLoggedIn">
+        <RouterLink
+          :to="{ name: 'login' }"
+          class="btn btn-sm bg-gradient-success mb-0 ms-auto d-lg-none d-block"
+          >Login</RouterLink
+        >
+      </template>
+      <template v-else>
+        <RouterLink
+          to="/settings/profil"
+          class="btn btn-sm bg-gradient-info mb-0 ms-auto d-lg-none d-block"
+        >
+          Akun
+        </RouterLink>
+      </template>
       <button
         class="navbar-toggler shadow-none ms-2"
         type="button"
@@ -192,10 +192,10 @@ watch(
         <ul class="navbar-nav navbar-nav-hover ms-auto">
           <li class="nav-item dropdown dropdown-hover mx-2">
             <RouterLink
-              :to="{ name: 'presentation' }"
+              :to="{ name: 'tentang' }"
               class="nav-link ps-2 d-flex cursor-pointer align-items-center"
             >
-              <span>Tentang Kami</span>
+              <span>Tentang</span>
             </RouterLink>
           </li>
           <li class="nav-item dropdown dropdown-hover mx-2">
@@ -216,42 +216,49 @@ watch(
           </li>
         </ul>
         <ul class="navbar-nav d-lg-block d-none">
-          <li class="nav-item mx-2" v-if="!loggedIn">
-            <RouterLink
-              :to="{ name: 'login' }"
-              class="btn btn-sm mb-0"
-              :class="konsultasi.color"
-              >{{ konsultasi.label }}</RouterLink
-            >
-          </li>
-          <template v-else>
-            <li class="nav-item mx-2">
-              <div class="">
+          <li class="nav-item mx-2">
+            <template v-if="!isLoggedIn">
+              <RouterLink
+                :to="konsultasi.route"
+                class="btn btn-sm mb-0"
+                :class="konsultasi.color"
+                @click.native="smoothToPricing('pricing-soft-ui')"
+                >{{ konsultasi.label }}</RouterLink
+              >
+            </template>
+            <template v-else>
+              <div
+                class="dropdown text-end badge d-flex align-items-center p-1 pe-2 text-info bg-info-subtle border border-info rounded-pill"
+              >
                 <a
-                  href="/settings/profil"
-                  class="badge d-flex align-items-center p-1 pe-2 text-info bg-info-subtle border border-info rounded-pill"
+                  href="#"
+                  class="d-block link-body-emphasis text-decoration-none dropdown-toggle me-2"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
                   <img
-                    :src="user.foto"
-                    alt="User Profile"
+                    :src="
+                      user.foto ||
+                      'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'
+                    "
                     width="32"
                     height="32"
-                    class="rounded-circle me-2"
+                    class="rounded-circle me-1"
                   />
-                  Akun
                 </a>
-                <!-- <ul class="dropdown-menu text-small shadow dropdown-menu-end">
-                  <li><a class="dropdown-item" href="/settings/profil">Settings</a></li>
+                <ul class="dropdown-menu dropdown-menu-end text-small">
+                  <li><a class="dropdown-item" href="#">Settings</a></li>
+                  <li><a class="dropdown-item" href="#">Profile</a></li>
+                  <li><a class="dropdown-item" href="#">Notification</a></li>
                   <li><hr class="dropdown-divider" /></li>
-                  <li><a class="dropdown-item" @click="logout" href="/login">Sign out</a></li>
-                </ul> -->
+                  <li><a class="dropdown-item" href="#">Sign out</a></li>
+                </ul>
               </div>
-            </li>
-          </template>
+            </template>
+          </li>
         </ul>
       </div>
     </div>
   </nav>
+  <!-- End Navbar -->
 </template>
