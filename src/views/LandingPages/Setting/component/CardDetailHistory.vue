@@ -153,10 +153,5 @@ export default {
   width: 100%;
   margin-top: 1rem;
 }
-.hairline {
-  width: 100%;
-  border: 0;
-  border-top: 1px solid #141e2a;
-  margin-bottom: 20px;
-}
+
 </style>

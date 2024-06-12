@@ -13,7 +13,7 @@
             </small>
           </p>
         </div>
-        <hr class="hairline" />
+        <hr class="hairline mb-0" />
         <div class="card-body m-3">
           <table
             class="table table-bordered"

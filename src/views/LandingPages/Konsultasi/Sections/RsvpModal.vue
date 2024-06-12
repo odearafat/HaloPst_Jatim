@@ -6,9 +6,9 @@
           <div class="modal-content rounded-4 shadow px-2">
             <div class="modal-header border-bottom-0">
               <h4 class="modal-title fw-semibold text-success d-block">RESERVASI KONSULTASI ONLINE</h4>
-              <button type="button" class="bi bi-x" @click="close"></button>
+              <button type="button" class="bi bi-x btn-close-white" @click="close"></button>
             </div>
-            <hr class="hairline" />
+            <hr class="hairline mt-0" />
             <div class="alert alert-primary modal-body mx-2 p-2" role="alert" id="alert">
               <div class="row">
                 <div class="col-auto ms-1">
@@ -35,28 +35,31 @@
                   <i class="bi bi-person-vcard me-2"></i>
                   <div class="pe-2">
                     <p class="fw-semibold mb-0 text-muted">Data Pengguna:</p>
-                    <p class="mb-0"><small>{{ pengguna.name }}</small></p>
-                    <p><small>{{ pengguna.email }}</small></p>
+                    <p class="mb-0"><small>{{ pengguna.nama_pengguna }}</small></p>
+                    <p><small>{{ pengguna.email_google }}</small></p>
                   </div>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-12">
                   <h5>Jadwal Konsultasi:</h5>
-                  <div class="form-group">
-                    <label for="tanggal">Tanggal:</label>
+                  <div class="form-group d-flex align-items-center">
+                    <label for="tanggal" class="me-2">Tanggal:</label>
                     <input type="date" id="tanggal" v-model="tanggal" class="form-control ps-2 pe-2" :min="minDate" style="border: 1px solid #ced4da;"/>
-                    <small v-if="invalidDate" class="text-danger">
-                      Tanggal yang dipilih tidak valid. Pilih hari antara Senin hingga Jumat.
-                    </small>
                   </div>
-                  <div class="form-group mt-3">
-                    <label for="jam">Jam:</label>
-                    <input type="time" id="jam" v-model="jam" class="form-control ps-2 pe-2" style="border: 1px solid #ced 4da;" />
-                    <small v-if="invalidTime" class="text-danger">
-                      Jam yang dipilih tidak valid. Pilih jam antara 08.00-12.00 atau 13.00-16.00.
-                    </small>
+                  <small v-if="invalidDate" class="text-danger">
+                    Tanggal yang dipilih tidak valid. Pilih hari antara Senin hingga Jumat.
+                  </small>
+                  <div class="form-group mt-3 d-flex align-items-center">
+                    <label for="jam" class="me-2">Jam:</label>
+                    <input type="time" id="jam" v-model="jam" class="form-control ps-2 pe-2" style="border: 1px solid #ced4da;" />
                   </div>
+                  <small v-if="invalidTime && !invalidTimeToday" class="text-danger">
+                    Jam yang dipilih tidak valid. Pilih jam antara 08.00-12.00 atau 13.00-16.00.
+                  </small>
+                  <small v-if="invalidTimeToday" class="text-danger">
+                    Jam yang dipilih tidak valid. Pilih jam yang lebih dari 1 jam dari sekarang.
+                  </small>
                 </div>
               </div>
               <div class="row mt-3">
@@ -97,16 +100,19 @@ export default {
   },
   data() {
     return {
+      
       tanggal: "",
       minDate: "",
       jam: "",
       topik: "",
       invalidTime: false,
+      invalidTimeToday: false,
       invalidDate: false,
     };
   },
   created() {
     this.setMinDate();
+    this.loadUser
   },
   methods: {
     setMinDate() {
@@ -132,13 +138,16 @@ export default {
 
       if (!validTime) {
         this.invalidTime = true;
+        this.invalidTimeToday = false;
       } else if (
         this.isToday(this.tanggal) &&
         !this.validateTimeForToday(hour, minute)
       ) {
-        this.invalidTime = true;
+        this.invalidTimeToday = true;
+        this.invalidTime = false;
       } else {
         this.invalidTime = false;
+        this.invalidTimeToday = false;
       }
     },
     validateTimeForToday(hour, minute) {
@@ -174,6 +183,10 @@ export default {
         today.getDate() === selectedDate.getDate()
       );
     },
+    loadUser(){
+      this.pengguna = JSON.parse(localStorage.getItem("user"))
+      console.log(this.pengguna)
+    },
     submitReservation() {
       this.validateJam();
       this.validateTanggal();
@@ -182,6 +195,7 @@ export default {
 
       if (
         !this.invalidTime &&
+        !this.invalidTimeToday &&
         !this.invalidDate &&
         this.tanggal &&
         this.jam &&
@@ -251,5 +265,20 @@ export default {
   border: 0;
   border-top: 1px solid #141e2a;
   margin-bottom: 20px;
+}
+
+.form-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  min-width: 120px; /* Set a fixed width for the label */
+  margin-right: 10px;
+}
+
+.form-control {
+  flex: 1;
 }
 </style>

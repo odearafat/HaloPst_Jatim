@@ -6,7 +6,7 @@
         <small class="text-muted mb-4">Anda dapat melihat daftar history konsultasi anda disini!</small>
       </p>
     </div>
-    <hr class="hairline" />
+    <hr class="hairline mb-0" />
     <div class="card-body m-3">
       <div v-if="loading" class="text-center">
         <img src="@/assets/loading_2.svg" alt="Loading" />
