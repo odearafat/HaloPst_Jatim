@@ -37,7 +37,7 @@ apiClient.interceptors.response.use(
         localStorage.removeItem('id_token');
         localStorage.removeItem('user');
         localStorage.removeItem('loggedIn');
-        localStorage.clear
+        localStorage.clear()
         // Redirect to login page
         router.push({ name: 'login' });
       } else if (status === 401) {
@@ -45,7 +45,7 @@ apiClient.interceptors.response.use(
         localStorage.removeItem('id_token');
         localStorage.removeItem('user');
         localStorage.removeItem('loggedIn');
-        localStorage.clear
+        localStorage.clear()
         // Redirect to login page
         router.push({ name: 'login' });
       }

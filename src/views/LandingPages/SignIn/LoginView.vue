@@ -25,9 +25,11 @@ const user = reactive({
 });
 
 const loggedIn = ref(false);
+const loading = ref(false);
 const router = useRouter();
 
 const callback = async (response) => {
+  loading.value = true;
   try {
     const decoded = decodeCredential(response.credential);
     user.name = decoded.name ?? "-";
@@ -62,6 +64,8 @@ const callback = async (response) => {
     }
   } catch (error) {
     handleError(error);
+  } finally {
+    loading.value = false;
   }
 };
 
@@ -103,6 +107,7 @@ const handleError = (error) => {
 };
 
 const login = async () => {
+  loading.value = true;
   try {
     const response = await apiService.login(user.email, user.password);
     console.log("API login successful:", response.data);
@@ -112,6 +117,8 @@ const login = async () => {
     });
   } catch (error) {
     handleError(error);
+  } finally {
+    loading.value = false;
   }
 };
 
@@ -219,5 +226,48 @@ onMounted(() => {
         </div>
       </div>
     </Header>
+
+    <!-- Loading Modal -->
+    <div v-if="loading" class="modal-backdrop">
+      <div class="modal position-static d-block">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content rounded-4 shadow">
+            <div class="modal-body py-5">
+              <div class="d-flex justify-content-center align-items-center">
+                <div class="spinner-border text-success" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <span class="ms-3">Loading</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 </template>
+
+<style scoped>
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+}
+.modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+</style>

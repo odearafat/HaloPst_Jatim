@@ -87,8 +87,8 @@ export default {
       this.$emit("close");
     },
     async cancelReservation() {
-      if (this.cancelReason.length < 30) {
-        alert("Harap isikan minimal 30 kata untuk alasan pembatalan.");
+      if (this.cancelReason.length < 10) {
+        alert("Harap isikan minimal 10 kata untuk alasan pembatalan.");
         return;
       }
       this.$emit("loading", true);

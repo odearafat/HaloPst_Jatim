@@ -1,5 +1,5 @@
 <template>
-  <div class="card shadow-sm  border-0 ">
+  <div class="card shadow-sm border-0">
     <div class="card-header p-4 pb-2">
       <h4 class="card-title mb-3">Lihat/Ubah Data Diri</h4>
       <p class="card-text">
@@ -24,10 +24,7 @@
             <label :for="input.id" class="form-label">{{ input.label }}</label>
             <select
               v-if="input.type === 'select'"
-              :class="[
-                'form-select',
-                { 'is-invalid': !apiData[input.id] && input.required },
-              ]"
+              :class="['form-select', { 'is-invalid': !apiData[input.id] && input.required }]"
               :id="input.id"
               v-model="apiData[input.id]"
               @change="validateField(input.id)"
@@ -45,14 +42,13 @@
             <input
               v-else
               :type="input.type"
-              :class="[
-                'form-control',
-                { 'is-invalid': !apiData[input.id] && input.required },
-              ]"
+              :class="['form-control', { 'is-invalid': !apiData[input.id] && input.required }]"
               :id="input.id"
               v-model="apiData[input.id]"
+              class="ps-2 pe-2"
               @input="validateField(input.id)"
               :required="input.required"
+              style="border: 1px solid #ced4da;"
             />
             <div class="invalid-feedback">{{ input.error }}</div>
           </div>
@@ -112,11 +108,11 @@ export default {
           required: true,
           options: [
             { label: "Pelajar/Mahasiswa", value: "Pelajar/Mahasiswa" },
-            { label: "Peneliti", value: "peneliti" },
-            { label: "Karyawan Swasta", value: "karyawan_swasta" },
-            { label: "Wiraswasta", value: "wiraswasta" },
-            { label: "Peneliti", value: "Peneliti" },
-            { label: "Aparatur Sipil Negara", value: "Aparatur Sipil Negara" },
+            { label: "Peneliti/Dosen", value: "Peneliti/Dosen" },
+            { label: "Pegawai Swasta", value: "Pegawai Swasta" },
+            { label: "Pegawai BUMN/BUMD", value: "Pegawai BUMN/BUMD" },
+            { label: "Wiraswasta", value: "Wiraswasta" },
+            { label: "ASN/TNI/Polri", value: "ASN/TNI/Polri" },
           ],
         },
         {
@@ -161,9 +157,9 @@ export default {
           type: "select",
           required: true,
           options: [
-            { label: "SMA Sederajat", value: "SMA Sederajat" },
-            { label: "Diploma", value: "Diploma" },
-            { label: "S1", value: "S1" },
+            { label: "<= SLTA Sederajat", value: "<= SLTA Sederajat" },
+            { label: "D1/D2/D3", value: "D1/D2/D3" },
+            { label: "D4/S1", value: "D4/S1" },
             { label: "S2", value: "S2" },
             { label: "S3", value: "S3" },
           ],
@@ -320,7 +316,6 @@ export default {
 </script>
 
 <style scoped>
-
 .card-header {
   border-bottom: none;
 }
@@ -359,6 +354,7 @@ export default {
 .invalid-feedback {
   display: block;
 }
+
 .hairline {
   width: 100%;
   border: 0;

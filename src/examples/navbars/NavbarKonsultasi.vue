@@ -1,7 +1,8 @@
 <script setup>
-import { RouterLink } from "vue-router";
+import { RouterLink, useRouter } from "vue-router";
 import { ref, watch, onMounted } from "vue";
 import { useWindowsWidth } from "../../assets/js/useWindowsWidth";
+import { googleLogout } from "vue3-google-login";
 import bootstrap from "bootstrap/dist/js/bootstrap.min.js";
 
 // images
@@ -51,11 +52,12 @@ const props = defineProps({
 
 let isLoggedIn = ref(false);
 let user = ref(null);
+const router = useRouter();
 
 onMounted(() => {
   const userData = localStorage.getItem("user");
-  const loggedIn = localStorage.getItem('loggedIn');
-  if (loggedIn === 'true' && userData) {
+  const loggedIn = localStorage.getItem("loggedIn");
+  if (loggedIn === "true" && userData) {
     user.value = JSON.parse(userData);
     isLoggedIn.value = true;
   }
@@ -95,6 +97,16 @@ if (type.value === "mobile") {
 } else if (type.value === "desktop" && textDark.value == false) {
   textDark.value = false;
 }
+
+const logout = () => {
+  googleLogout();
+  Object.keys(user.value).forEach((key) => (user.value[key] = ""));
+  isLoggedIn.value = false;
+  localStorage.removeItem("user");
+  localStorage.setItem("loggedIn", "false");
+  localStorage.clear();
+  router.push("/login");
+};
 
 watch(
   () => type.value,
@@ -247,11 +259,32 @@ watch(
                   />
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end text-small">
-                  <li><a class="dropdown-item" href="#">Settings</a></li>
-                  <li><a class="dropdown-item" href="#">Profile</a></li>
-                  <li><a class="dropdown-item" href="#">Notification</a></li>
+                  <li>
+                    <RouterLink
+                      to="/settings/profil"
+                      class="nav-link ps-2 d-flex cursor-pointer align-items-center"
+                    >
+                      <span>Settings</span>
+                    </RouterLink>
+                  </li>
+                  <li>
+                    <RouterLink
+                      to="/settings/booking"
+                      class="nav-link ps-2 d-flex cursor-pointer align-items-center"
+                    >
+                      <span>Reservasi</span>
+                    </RouterLink>
+                  </li>
+                  <li>
+                    <RouterLink
+                      to="/settings/notif"
+                      class="nav-link ps-2 d-flex cursor-pointer align-items-center"
+                    >
+                      <span>Notifikasi</span>
+                    </RouterLink>
+                  </li>
                   <li><hr class="dropdown-divider" /></li>
-                  <li><a class="dropdown-item" href="#">Sign out</a></li>
+                  <li><a class="dropdown-item" @click="logout">Sign out</a></li>
                 </ul>
               </div>
             </template>

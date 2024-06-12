@@ -90,7 +90,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const isLoggedIn = localStorage.getItem("loggedIn") === "true";
 
-  if ((to.path.startsWith('/settings') || to.path === '/aida') && !isLoggedIn) {
+  if ((to.path === '/aida'||to.path.startsWith('/settings') ) && !isLoggedIn) {
     next({ name: 'login' }); // Redirect ke halaman login jika belum login
   } else {
     next(); // Lanjutkan ke rute yang diminta jika sudah login

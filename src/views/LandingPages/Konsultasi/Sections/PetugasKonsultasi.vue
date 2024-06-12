@@ -1,11 +1,11 @@
 <script setup>
-import { ref, onMounted } from "vue";
-import CariWilayah from "./CariWilayahKonsultasi.vue";
-import PetugasKonsultasiCard from "@/examples/cards/teamCards/PetugasKonsultasiCard.vue";
-import MaterialPagination from "@/components/MaterialPagination.vue";
-import MaterialPaginationItem from "@/components/MaterialPaginationItem.vue";
-import SpesialisasiKonsultasi from "./SpesialisasiKonsultasi.vue";
-import { apiService } from "@/api/ApiService";
+import { ref, onMounted } from 'vue';
+import CariWilayah from './CariWilayahKonsultasi.vue';
+import PetugasKonsultasiCard from '@/examples/cards/teamCards/PetugasKonsultasiCard.vue';
+import MaterialPagination from '@/components/MaterialPagination.vue';
+import MaterialPaginationItem from '@/components/MaterialPaginationItem.vue';
+import SpesialisasiKonsultasi from './SpesialisasiKonsultasi.vue';
+import { apiService } from '@/api/ApiService';
 
 const petugasKonsultasi = ref([]);
 const loading = ref(true);
@@ -15,9 +15,8 @@ const fetchPetugas = async () => {
   try {
     const response = await apiService.getAllOfficers();
     petugasKonsultasi.value = response.data.data;
-    console.log(petugasKonsultasi.value);
   } catch (error) {
-    console.error("Error fetching petugas konsultasi:", error);
+    console.error('Error fetching petugas konsultasi:', error);
   } finally {
     loading.value = false;
   }
@@ -28,20 +27,21 @@ const fetchPetugasBySatker = async (satker) => {
   try {
     const response = await apiService.getOfficersBySatker(satker);
     petugasKonsultasi.value = response.data.data;
-    console.log(petugasKonsultasi.value);
   } catch (error) {
-    console.error("Error fetching petugas konsultasi by satker:", error);
+    console.error('Error fetching petugas konsultasi by satker:', error);
   } finally {
     loading.value = false;
   }
 };
 
 const handleCariWilayahInput = (satker) => {
-  fetchPetugasBySatker(satker);
+  // fetchPetugasBySatker(satker);
+  console.log(satker)
 };
 
 onMounted(fetchPetugas);
 </script>
+
 <template>
   <section class="pb-5 satker-relative bg-gradient-dark mx-n3">
     <div class="container">
@@ -52,8 +52,7 @@ onMounted(fetchPetugas);
         <div class="col-md-12 text-start mb-5">
           <h3 class="text-white z-index-1 satker-relative">Konsultasi Umum</h3>
           <p class="text-white text-dark mb-0">
-            Pilih petugas layanan berikut jika Anda ingin berkonsultasi terkait
-            data statistik secara umum
+            Pilih petugas layanan berikut jika Anda ingin berkonsultasi terkait data statistik secara umum
           </p>
         </div>
       </div>

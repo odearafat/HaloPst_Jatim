@@ -58,13 +58,20 @@ export default {
       userInput: '',
       messages: JSON.parse(localStorage.getItem('currentChat')) || [],
       chats: JSON.parse(localStorage.getItem('chatHistories')) || [],
-      userAvatar: 'https://cdn.icon-icons.com/icons2/2643/PNG/512/male_boy_person_people_avatar_icon_159358.png',
+      userAvatar: '',
       aiAvatar: 'https://images.playground.com/627e2753d36d422d8d8dab3dd2e9b8d1.jpeg',
       chatSummary: null,
       isSidebarVisible: true // Menambah data untuk mengatur visibilitas sidebar
     };
   },
+  created(){
+    this.loadUser()
+  },
   methods: {
+    loadUser(){
+      const storedUser = JSON.parse(localStorage.getItem("user"));
+      this.userAvatar=storedUser.foto
+    },
     toggleSidebar() {
       this.isSidebarVisible = !this.isSidebarVisible;
     },
