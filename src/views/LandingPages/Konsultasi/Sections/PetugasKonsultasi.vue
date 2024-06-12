@@ -35,8 +35,7 @@ const fetchPetugasBySatker = async (satker) => {
 };
 
 const handleCariWilayahInput = (satker) => {
-  // fetchPetugasBySatker(satker);
-  console.log(satker)
+  fetchPetugasBySatker(satker);
 };
 
 onMounted(fetchPetugas);

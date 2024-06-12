@@ -26,6 +26,7 @@
               v-if="input.type === 'select'"
               :class="['form-select', { 'is-invalid': !apiData[input.id] && input.required }]"
               :id="input.id"
+              class="pe-2"
               v-model="apiData[input.id]"
               @change="validateField(input.id)"
               :required="input.required"

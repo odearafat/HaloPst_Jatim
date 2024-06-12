@@ -13,12 +13,15 @@
     </div>
     <ul v-if="showOptions" class="options-list">
       <li
-        v-for="(option, index) in filteredOptions"
+        v-for="(option, index) in visibleOptions"
         :key="index"
         class="option-item"
         @click="selectOption(option)"
       >
-        {{ option }}
+        {{ option.label }}
+      </li>
+      <li v-if="filteredOptions.length > maxOptionsToShow" class="option-item show-more" @click="showAllOptions">
+        Show more...
       </li>
     </ul>
   </div>
@@ -30,33 +33,76 @@ export default {
     return {
       searchQuery: '',
       options: [
-        'Provinsi Jawa Timur',
-        'Kabupaten Pacitan',
-        'Kabupaten Tulungagung',
-        'Kota Surabaya',
-        'Kota Batu'
+        { label: "Jawa Timur", value: "3500" },
+        { label: "Kab. Bangkalan", value: "3526" },
+        { label: "Kab. Banyuwangi", value: "3510" },
+        { label: "Kab. Blitar", value: "3505" },
+        { label: "Kab. Bojonegoro", value: "3522" },
+        { label: "Kab. Bondowoso", value: "3511" },
+        { label: "Kab. Gresik", value: "3525" },
+        { label: "Kab. Jember", value: "3509" },
+        { label: "Kab. Jombang", value: "3517" },
+        { label: "Kab. Kediri", value: "3506" },
+        { label: "Kab. Lamongan", value: "3524" },
+        { label: "Kab. Lumajang", value: "3508" },
+        { label: "Kab. Madiun", value: "3519" },
+        { label: "Kab. Magetan", value: "3520" },
+        { label: "Kab. Malang", value: "3507" },
+        { label: "Kab. Mojokerto", value: "3516" },
+        { label: "Kab. Nganjuk", value: "3518" },
+        { label: "Kab. Ngawi", value: "3521" },
+        { label: "Kab. Pacitan", value: "3501" },
+        { label: "Kab. Pamekasan", value: "3528" },
+        { label: "Kab. Pasuruan", value: "3514" },
+        { label: "Kab. Ponorogo", value: "3502" },
+        { label: "Kab. Probolinggo", value: "3513" },
+        { label: "Kab. Sampang", value: "3527" },
+        { label: "Kab. Sidoarjo", value: "3515" },
+        { label: "Kab. Situbondo", value: "3512" },
+        { label: "Kab. Sumenep", value: "3529" },
+        { label: "Kab. Trenggalek", value: "3503" },
+        { label: "Kab. Tuban", value: "3523" },
+        { label: "Kab. Tulungagung", value: "3504" },
+        { label: "Kota Batu", value: "3579" },
+        { label: "Kota Blitar", value: "3572" },
+        { label: "Kota Kediri", value: "3571" },
+        { label: "Kota Madiun", value: "3577" },
+        { label: "Kota Malang", value: "3573" },
+        { label: "Kota Mojokerto", value: "3576" },
+        { label: "Kota Pasuruan", value: "3575" },
+        { label: "Kota Probolinggo", value: "3574" },
+        { label: "Kota Surabaya", value: "3578" },
       ],
-      showOptions: false
+      showOptions: false,
+      maxOptionsToShow: 5,
+      showAll: false
     };
   },
   computed: {
     filteredOptions() {
       return this.options.filter(option =>
-        option.toLowerCase().includes(this.searchQuery.toLowerCase())
+        option.label.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
+    },
+    visibleOptions() {
+      return this.showAll ? this.filteredOptions : this.filteredOptions.slice(0, this.maxOptionsToShow);
     }
   },
   methods: {
     toggleOptions() {
       this.showOptions = !this.showOptions;
     },
-    filterOptions(event) {
-      this.searchQuery = event.target.value;
+    filterOptions() {
       this.showOptions = true;
+      this.showAll = false;
     },
     selectOption(option) {
-      this.searchQuery = option;
+      this.searchQuery = option.label;
       this.showOptions = false;
+      this.$emit('input', option.value); // Emit the selected option's value
+    },
+    showAllOptions() {
+      this.showAll = true;
     }
   }
 };
@@ -65,7 +111,7 @@ export default {
 <style scoped>
 .select-container {
   position: relative;
-  width: 250px; /* Sesuaikan lebarnya */
+  width: 250px;
 }
 
 .input-container {
@@ -73,8 +119,8 @@ export default {
 }
 
 .select-input {
-  width: 100%; /* Sesuaikan lebarnya */
-  padding: 8px 30px 8px 8px; /* Sesuaikan paddingnya */
+  width: 100%;
+  padding: 8px 30px 8px 8px;
 }
 
 .search-icon {
@@ -89,7 +135,7 @@ export default {
   padding: 0;
   margin: 0;
   position: absolute;
-  top: calc(100% + 5px); /* Sesuaikan jaraknya */
+  top: calc(100% + 5px);
   left: 0;
   width: 100%;
   border: 1px solid #ccc;
@@ -106,5 +152,10 @@ export default {
 
 .option-item:hover {
   background-color: #f0f0f0;
+}
+
+.show-more {
+  text-align: center;
+  font-weight: bold;
 }
 </style>
