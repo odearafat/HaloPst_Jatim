@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import router from "@/router";
 import MaterialBadge from "../../../components/MaterialBadge.vue";
 import Modal from "../../../views/LandingPages/Konsultasi/Sections/RsvpModal.vue";
@@ -10,13 +10,14 @@ const props = defineProps({
     type: Object,
     required: true,
     id: Number,
-    nama_petugas: String,
+    nama_panggilan: String,
     email_bps: String,
     id_satker: String,
     jabatan: String,
     foto: String,
     satker: Object,
     keahlian: Array,
+    jenis_kelamin: Number,
   },
 });
 
@@ -26,6 +27,16 @@ const isLoading = ref(false);
 const isSuccess = ref(false);
 const isModalMainVisible = ref(true);
 const user = ref(JSON.parse(localStorage.getItem("user")) || {});
+
+// Computed property untuk menambahkan 'cak' atau 'ning' berdasarkan jenis kelamin
+const namaLengkap = computed(() => {
+  if (props.petugas.jenis_kelamin === 1) {
+    return `Cak ${props.petugas.nama_panggilan}`;
+  } else if (props.petugas.jenis_kelamin === 2) {
+    return `Ning ${props.petugas.nama_panggilan}`;
+  }
+  return props.petugas.nama_panggilan;
+});
 
 function showModal() {
   const isLogin = localStorage.getItem("loggedIn");
@@ -64,12 +75,12 @@ function closeSuccessModal() {
     <div class="row">
       <div class="col-lg-4 col-md-6 col-12 mt-n5">
         <div class="p-3 pe-md-0">
-          <img class="w-100 border-radius-md shadow-lg" :src="petugas.foto" :alt="petugas.nama_petugas" />
+          <img class="w-100 border-radius-md shadow-lg" :src="petugas.foto" :alt="namaLengkap" />
         </div>
       </div>
       <div class="col-lg-8 col-md-6 col-12 my-auto">
         <div class="card-body ps-lg-0">
-          <h6 class="mb-0">{{ petugas.nama_petugas }}</h6>
+          <h6 class="mb-0">{{ namaLengkap }}</h6>
           <p class="text-weight-bold text-sm mb-0 text-success">{{ petugas.satker.nama_satker }}</p>
           <p class="mb-2 text-xs">
             <i class="fa fa-briefcase text-xs margin-right-4"></i>
@@ -147,3 +158,48 @@ function closeSuccessModal() {
     </div>
   </div>
 </template>
+
+<style>
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #0000009c;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  box-shadow: 2px 2px 20px 1px;
+  overflow-x: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header,
+.modal-footer {
+  padding: 15px;
+  display: flex;
+}
+
+.modal-header {
+  position: relative;
+  border-bottom: 1px solid #eeeeee;
+  color: #4aae9b;
+  justify-content: space-between;
+}
+
+.modal-footer {
+  border-top: 1px solid #eeeeee;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.modal-body {
+  position: relative;
+}
+
+</style>
