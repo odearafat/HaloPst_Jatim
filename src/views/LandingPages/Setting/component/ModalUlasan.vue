@@ -18,7 +18,7 @@
             </h5>
             <button
               type="button"
-              class="btn-close"
+              class="btn-close-white"
               data-bs-dismiss="modal"
               aria-label="Close"
               @click="close"
@@ -35,6 +35,46 @@
                       >Berikan Nilai dan Ulasan terkait pelayanan kami</label
                     >
                     <div class="rating">
+                      <input
+                        type="radio"
+                        name="rating"
+                        value="10"
+                        id="10"
+                        class="star"
+                        v-model="rating"
+                      /><label for="10" class="star">☆</label>
+                      <input
+                        type="radio"
+                        name="rating"
+                        value="9"
+                        id="9"
+                        class="star"
+                        v-model="rating"
+                      /><label for="9" class="star">☆</label>
+                      <input
+                        type="radio"
+                        name="rating"
+                        value="8"
+                        id="8"
+                        class="star"
+                        v-model="rating"
+                      /><label for="8" class="star">☆</label>
+                      <input
+                        type="radio"
+                        name="rating"
+                        value="7"
+                        id="7"
+                        class="star"
+                        v-model="rating"
+                      /><label for="7" class="star">☆</label>
+                      <input
+                        type="radio"
+                        name="rating"
+                        value="6"
+                        id="6"
+                        class="star"
+                        v-model="rating"
+                      /><label for="6" class="star">☆</label>
                       <input
                         type="radio"
                         name="rating"

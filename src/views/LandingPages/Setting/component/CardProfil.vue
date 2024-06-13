@@ -1,6 +1,6 @@
 <template>
   <div class="card shadow-sm border-0">
-    <div class="card-header p-4 pb-2">
+    <div class="card-header px-4 pt-4 pb-2">
       <h4 class="card-title mb-3">Lihat/Ubah Data Diri</h4>
       <p class="card-text">
         <small class="text-muted mb-2">Silahkan lengkapi data diri anda!</small>

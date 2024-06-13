@@ -75,5 +75,15 @@ export const apiService = {
 
   getAllSatker() {
     return apiClient.get('satker');
+  }, 
+
+  getNotification(email_user){
+    return apiClient.get(`notifikasi/${email_user}`);
+  },
+
+  setNotificationRead(email_user,id_notif){
+    return apiClient.get(`notifikasi/${email_user}/mark-as-read/${id_notif}`);
   }
+
+  
 };

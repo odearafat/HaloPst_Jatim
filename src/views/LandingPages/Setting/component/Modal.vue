@@ -16,7 +16,7 @@
               </h1>
               <button
                 type="button"
-                class="btn-close"
+                class="btn-close-white"
                 aria-label="Close"
                 @click="close"
               >

@@ -4,7 +4,7 @@
     <div v-if="!selectedBooking">
       <div class="card border-0 shadow-sm">
         <!-- Konten card booking -->
-        <div class="card-header p-4">
+        <div class="card-header px-4 pt-4 pb-2">
           <h4 class="card-title">Daftar Reservasi</h4>
           <p class="card-text">
             <small class="text-muted mb-4">
