@@ -46,7 +46,7 @@ onMounted(fetchPetugas);
     <div class="container">
       <div class="row">
         <div class="col-md-6 text-start mb-3 mt-5">
-          <CariWilayah @input="handleCariWilayahInput" />
+          <CariWilayah @data="handleCariWilayahInput" />
         </div>
         <div class="col-md-12 text-start mb-5">
           <h3 class="text-white z-index-1 satker-relative">Konsultasi Umum</h3>

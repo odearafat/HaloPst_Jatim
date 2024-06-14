@@ -6,7 +6,9 @@
         class="select-input"
         v-model="searchQuery"
         @click="toggleOptions"
-        @input="filterOptions"
+        @blur="handleBlur"
+        @keyup.enter="handleEnter"
+        @keyup="handleKeyup"
         placeholder="Cari wilayah..."
       />
       <i class="fa fa-search search-icon" aria-hidden="true"></i>
@@ -99,10 +101,34 @@ export default {
     selectOption(option) {
       this.searchQuery = option.label;
       this.showOptions = false;
-      this.$emit('input', option.value); // Emit the selected option's value
+      this.$emit('data', option.value);
+      this.$emit('input', option.value);
     },
     showAllOptions() {
       this.showAll = true;
+    },
+    handleInput() {
+      this.filterOptions();
+    },
+    handleBlur() {
+      if (!this.searchQuery) {
+        this.searchQuery = this.options.find(option => option.value === '3500').label;
+        this.$emit('input', '3500');
+      }
+    },
+    handleEnter() {
+      const selectedOption = this.options.find(option => option.label.toLowerCase() === this.searchQuery.toLowerCase());
+      if (selectedOption) {
+        this.selectOption(selectedOption);
+      } else {
+        this.searchQuery = this.options.find(option => option.value === '3500').label;
+        this.$emit('data', '3500');
+      }
+    },
+    handleKeyup() {
+      if (!this.searchQuery) {
+        this.$emit('input', '3500');
+      }
     }
   }
 };

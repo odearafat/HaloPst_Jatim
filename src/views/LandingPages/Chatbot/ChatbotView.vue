@@ -32,6 +32,10 @@
             <img :src="message.role === 'user' ? userAvatar : aiAvatar" class="avatar" />
             <div class="text" v-html="formatMessage(message.content)"></div>
           </div>
+          <div v-if="isLoading" class="message ai">
+            <img :src="aiAvatar" class="avatar" />
+            <div class="text-italic">Tunggu sebentar ya, AIDA sedang mengetik...</div>
+          </div>
         </div>
         <div class="input-box">
           <input v-model="userInput" @keyup.enter="sendMessage" placeholder="Ketik curhatanmu ke Ning AIDA (misal: berikan insight tentang Data Kemiskinan) . . ." />
@@ -43,9 +47,9 @@
 </template>
 
 <script>
-import NavbarChat from "../../../examples/navbars/NavbarChat.vue";
+import NavbarChat from "@/examples/navbars/NavbarChat.vue";
 import Sidebar from './SidebarChat.vue';
-import { getAiResponse, getChatSummary } from '../../../api/GeminiApi';
+import { getAiResponse, getChatSummary } from '@/api/GeminiApi.js';
 
 export default {
   name: 'ChatbotView',
@@ -59,19 +63,23 @@ export default {
       messages: JSON.parse(localStorage.getItem('currentChat')) || [],
       chats: JSON.parse(localStorage.getItem('chatHistories')) || [],
       userAvatar: '',
-      aiAvatar: 'https://images.playground.com/627e2753d36d422d8d8dab3dd2e9b8d1.jpeg',
+      aiAvatar: 'https://res.cloudinary.com/bpsjatim/image/upload/f_auto,q_auto/aida_mr3usj',
       chatSummary: null,
-      isSidebarVisible: true // Menambah data untuk mengatur visibilitas sidebar
+      isSidebarVisible: true,
+      isLoading: false
     };
   },
-  created(){
-    this.loadUser()
+  created() {
+    const storedUser = localStorage.getItem("user");
+    const storedLoggedIn = localStorage.getItem("loggedIn");
+
+    if (storedUser && storedLoggedIn) {
+      const parsedUser = JSON.parse(storedUser);
+      this.userAvatar = parsedUser.foto;
+    }
   },
   methods: {
-    loadUser(){
-      const storedUser = JSON.parse(localStorage.getItem("user"));
-      this.userAvatar=storedUser.foto
-    },
+   
     toggleSidebar() {
       this.isSidebarVisible = !this.isSidebarVisible;
     },
@@ -79,13 +87,16 @@ export default {
       this.messages.push({ role: 'user', content: message });
       this.saveMessages();
 
+      this.isLoading = true;
       try {
         const aiResponse = await getAiResponse(this.messages);
         this.messages.push({ role: 'ai', content: aiResponse });
+        this.isLoading = false;
         this.saveMessages();
       } catch (error) {
         console.error('Error fetching AI response:', error);
         this.messages.push({ role: 'ai', content: 'Sorry, there was an error getting the response.' });
+        this.isLoading = false;
         this.saveMessages();
       }
     },
@@ -97,13 +108,16 @@ export default {
       this.userInput = '';
       this.saveMessages();
 
+      this.isLoading = true;
       try {
         const aiResponse = await getAiResponse(this.messages);
         this.messages.push({ role: 'ai', content: aiResponse });
+        this.isLoading = false;
         this.saveMessages();
       } catch (error) {
         console.error('Error fetching AI response:', error);
         this.messages.push({ role: 'ai', content: 'Sorry, there was an error getting the response.' });
+        this.isLoading = false;
         this.saveMessages();
       }
     },
@@ -151,12 +165,22 @@ export default {
       this.chats = updatedChats;
     },
     formatMessage(message) {
-      return message
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-        .replace(/\*(.*?)\*/g, '<em>$1</em>')
-        .replace(/\n/g, '<br>')
-        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>')
-        .replace(/^\d+\.\s/gm, (match) => `<br>${match}`);
+      // Replace **bold** with <strong>
+      message = message.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      
+      // Replace *italic* with <em>
+      message = message.replace(/\*(.*?)\*/g, '<em>$1</em>'); 
+      
+      // Replace newlines with <br>
+      message = message.replace(/\n/g, '<br>');
+
+      // Replace [text](url) with <a href="$2" target="_blank">$1</a>
+      message = message.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+
+      // Replace numbered lists
+      message = message.replace(/^\d+\.\s/gm, (match) => `<br>${match}`);
+
+      return message;
     }
   }
 };
@@ -173,7 +197,7 @@ export default {
   display: flex;
   flex-direction: column;
   background-color: white;
-  height: 100vh; /* Ensure chat window takes full screen height */
+  height: 100vh;
 }
 
 .messages {
@@ -235,8 +259,8 @@ export default {
   padding: 10px;
   background-color: #f1f5f9;
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-  position: sticky; /* Make the input box sticky */
-  bottom: 0; /* Stick to the bottom */
+  position: sticky;
+  bottom: 0;
 }
 
 input {
@@ -284,14 +308,14 @@ button:hover {
   }
 
   .chat-window {
-    height: calc(100vh - 50px); /* Adjust to make room for breadcrumb */
+    height: calc(100vh - 50px);
   }
 
   .loading-spinner {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 }
 </style>
