@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from "vue";
-import router from "@/router";
+import { useRouter } from "vue-router";
 import MaterialBadge from "../../../components/MaterialBadge.vue";
 import Modal from "../../../views/LandingPages/Konsultasi/Sections/RsvpModal.vue";
 
@@ -27,6 +27,8 @@ const isLoading = ref(false);
 const isSuccess = ref(false);
 const isModalMainVisible = ref(true);
 const user = ref(JSON.parse(localStorage.getItem("user")) || {});
+const router = useRouter();
+
 
 // Computed property untuk menambahkan 'cak' atau 'ning' berdasarkan jenis kelamin
 const namaLengkap = computed(() => {
@@ -66,7 +68,7 @@ function hideMainModal() {
 
 function closeSuccessModal() {
   isSuccess.value = false;
-  window.location.href = "/settings/booking";
+  router.push({ name: "CardBooking" });
 }
 </script>
 

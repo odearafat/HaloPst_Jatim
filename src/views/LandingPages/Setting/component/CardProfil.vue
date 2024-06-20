@@ -67,10 +67,42 @@
       </div>
     </div>
 
-    <!-- Modal for Success Notification -->
-    <div v-if="showModal" class="modal-backdrop">
-      <div class="modal-content">
-        <p>Perubahan berhasil disimpan!</p>
+    <!-- Modal Loading -->
+    <div v-if="isLoading" class="modal-backdrop">
+      <div class="modal position-static d-block p-4 py-md-5">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content rounded-4 shadow px-2">
+            <div class="modal-body py-5">
+              <div class="d-flex justify-content-center align-items-center">
+                <div class="spinner-border text-success" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <span class="ms-3">Memproses Perubahan...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Success -->
+    <div v-if="isSuccess" class="modal-backdrop">
+      <div class="modal position-static d-block p-4 py-md-5">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content rounded-4 shadow px-2">
+            <div class="modal-body py-5">
+              <div class="d-flex justify-content-center align-items-center">
+                <i class="bi bi-check-circle text-success" style="font-size: 2rem"></i>
+                <span class="ms-3">Perubahan berhasil dilakukan.</span>
+              </div>
+              <div class="d-flex justify-content-center mt-3">
+                <button type="button" class="btn btn-success" @click="closeSuccessModal">
+                  Tutup
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -172,8 +204,9 @@ export default {
         { label: "Nama Depan", value: this.user.given_name },
         { label: "Nama Belakang", value: this.user.family_name },
       ],
-      showModal: false, // State for controlling modal visibility
-      isLoading: true,
+      showModal: false, // State for controlling success modal visibility
+      isLoading: false, // State for controlling loading modal visibility
+      isSuccess: false, // State for controlling success modal visibility
     };
   },
   computed: {
@@ -189,6 +222,7 @@ export default {
   },
   methods: {
     fetchData() {
+      this.isLoading = true; // Show loading modal
       const storedUser = localStorage.getItem("user");
       const storedLoggedIn = localStorage.getItem("loggedIn");
 
@@ -212,9 +246,10 @@ export default {
         this.user.family_name = parsedUser.family_name ?? "-";
         this.user.foto = parsedUser.foto ?? "";
       }
-      this.isLoading = false;
+      this.isLoading = false; // Hide loading modal
     },
     saveData() {
+      this.isLoading = true; // Show loading modal
       try {
         const storedUser = localStorage.getItem("user");
         if (!storedUser) {
@@ -234,26 +269,32 @@ export default {
             console.log("User updated successfully");
 
             // Show success modal
-            this.showModal = true;
+            this.isSuccess = true;
 
-            // Hide modal after 2 seconds
+            // Hide success modal after 2 seconds
             setTimeout(() => {
-              this.showModal = false;
-            }, 1000);
+              this.isSuccess = false;
+            }, 2000);
 
             const dataUserBaru = response.data.data;
             // Simpan data yang telah diubah kembali ke local storage
             localStorage.setItem("user", JSON.stringify(dataUserBaru));
 
-            this.isLoading = true;
-            this.fetchData();
+            this.fetchData(); // Refresh data
           })
           .catch((error) => {
             console.error("Error:", error.message);
+          })
+          .finally(() => {
+            this.isLoading = false; // Hide loading modal
           });
       } catch (error) {
         console.error("Error:", error.message);
+        this.isLoading = false; // Hide loading modal
       }
+    },
+    closeSuccessModal() {
+      this.isSuccess = false; // Close success modal
     },
     validateField(field) {
       const input = this.formInputs.find((input) => input.id === field);

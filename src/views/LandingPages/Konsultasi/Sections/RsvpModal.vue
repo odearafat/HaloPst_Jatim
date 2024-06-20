@@ -222,7 +222,7 @@ export default {
             .catch((error) => {
               console.error("Error submitting reservation", error);
               this.$emit("loading", false);
-              alert("Terjadi kesalahan saat mengirim reservasi. Silakan coba lagi.");
+              alert("Terjadi kesalahan saat mengirim reservasi. Silakan Login kembali.");
             });
         } else {
           alert("Pengguna tidak ditemukan. Silakan login kembali.");

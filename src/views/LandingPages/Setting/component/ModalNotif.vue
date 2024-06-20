@@ -61,9 +61,10 @@
 <script>
 import { useRouter } from 'vue-router';
 import { defineComponent } from 'vue';
+const router = useRouter();
 
 export default defineComponent({
-  name: "ModalUlasan",
+  name: "ModalNotif",
   props: {
     notif: {
       type: Object,
@@ -71,11 +72,11 @@ export default defineComponent({
     },
   },
   setup() {
-    const router = useRouter();
+    
 
     const navigateToSettings = () => {
-      // router.push('/settings/notif');
-      this.$router.go(0);
+      router.push({ name: "CardNotif" });
+      // this.$router.go(0);
     };
 
     return {
@@ -86,7 +87,8 @@ export default defineComponent({
     close() {
       this.$emit("close");
       // Refresh the page after closing the modal
-      window.location.reload();
+      // router.push({ name: "CardProfil" });
+      this.$router.go(0);
     },
   },
 });

@@ -116,10 +116,11 @@
                 </div>
                 <textarea
                   v-model="review"
-                  class="form-control mt-3"
+                  class="form-control mt-3 ps-2"
                   id="review"
                   rows="3"
                   placeholder="Silahkan masukan saran"
+                  style="border: 1px solid #ced4da;"
                 ></textarea>
                 <p class="mt-3">
                   <small>
