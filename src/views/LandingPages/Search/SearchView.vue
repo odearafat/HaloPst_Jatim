@@ -300,6 +300,7 @@ export default {
         this.resultPub = [];
         this.resultTable = [];
         try {
+          window.scrollTo(0, 0); // Scroll to top
           if (type === "table") {
             this.key = "statictable";
             this.resultType = "resultTable";
@@ -352,6 +353,7 @@ export default {
     },
     async handlePageChange(pageNumber) {
       if (pageNumber >= 1 && pageNumber <= this.totalPages) {
+        window.scrollTo(0, 0); // Scroll to top
         this.currentPage = pageNumber;
         this.makeApiCall(this.key, this.selectedRegion, pageNumber);
       }

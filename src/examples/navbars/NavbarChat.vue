@@ -2,6 +2,7 @@
 import { RouterLink, useRouter } from "vue-router";
 import { ref, watch, onMounted } from "vue";
 import { useWindowsWidth } from "../../assets/js/useWindowsWidth";
+import { googleLogout } from "vue3-google-login";
 import bootstrap from "bootstrap/dist/js/bootstrap.min.js";
 
 // images
@@ -87,6 +88,16 @@ if (type.value === "mobile") {
 let isLoggedIn = ref(false);
 let user = ref(null);
 const router = useRouter();
+
+const logout = () => {
+  googleLogout();
+  Object.keys(user.value).forEach((key) => (user.value[key] = ""));
+  isLoggedIn.value = false;
+  localStorage.removeItem("user");
+  localStorage.setItem("loggedIn", "false");
+  localStorage.clear();
+  router.push("/login");
+};
 
 onMounted(() => {
   const userData = localStorage.getItem("user");
