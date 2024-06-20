@@ -59,6 +59,7 @@ const callback = async (response) => {
       localStorage.setItem("user", JSON.stringify(apiResponse.data.data));
       router.push({ name: "CardProfil" }).then(() => {
         // window.location.reload();
+        this.$router.go(0);
       });
     } else {
       console.error("API failed:", apiResponse);
