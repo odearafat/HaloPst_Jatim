@@ -58,7 +58,6 @@ const callback = async (response) => {
     if (apiResponse && apiResponse.status === 200) {
       localStorage.setItem("user", JSON.stringify(apiResponse.data.data));
       router.push({ name: "CardProfil" }).then(() => {
-        // window.location.reload();
         this.$router.go(0);
       });
     } else {
@@ -109,21 +108,6 @@ const handleError = (error) => {
   console.error("Error config:", error.config);
 };
 
-const login = async () => {
-  loading.value = true;
-  try {
-    const response = await apiService.login(user.email, user.password);
-    console.log("API login successful:", response.data);
-    localStorage.setItem("user", JSON.stringify(response.data.data));
-    router.push("/settings/profil").then(() => {
-      window.location.reload();
-    });
-  } catch (error) {
-    handleError(error);
-  } finally {
-    loading.value = false;
-  }
-};
 
 const logout = () => {
   googleLogout();

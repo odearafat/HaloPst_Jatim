@@ -74,7 +74,8 @@ export default defineComponent({
     const router = useRouter();
 
     const navigateToSettings = () => {
-      router.push('/settings/notif');
+      // router.push('/settings/notif');
+      this.$router.go(0);
     };
 
     return {
