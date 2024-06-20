@@ -109,6 +109,10 @@
       </div>
 
       <!-- HASIL PENCARIAN -->
+      <div v-if="noData" class="alert alert-warning" role="alert">
+        Maaf, data tidak tersedia.
+      </div>
+
       <div class="tab-content" id="pills-tabContent">
         <div
           class="tab-pane fade"
@@ -122,9 +126,6 @@
             <div v-for="pub in resultPub" :key="pub.pub_id">
               <CardPub :item="pub" :keyword="searchResult" />
             </div>
-          </div>
-          <div v-else>
-            <p>Maaf, data tidak tersedia.</p>
           </div>
         </div>
         <div
@@ -140,9 +141,6 @@
               <CardTable :item="table" />
             </div>
           </div>
-          <div v-else>
-            <p>Maaf, data tidak tersedia.</p>
-          </div>
         </div>
         <div
           class="tab-pane fade"
@@ -157,9 +155,6 @@
               <CardNews :item="news" />
             </div>
           </div>
-          <div v-else>
-            <p>Maaf, data tidak tersedia.</p>
-          </div>
         </div>
       </div>
 
@@ -168,15 +163,19 @@
       <div class="container pt-5">
         <div class="row">
           <div class="col-lg-4 mx-auto">
-            <MaterialPagination :style="{ marginLeft: '80px' }">
-              <MaterialPaginationItem prev />
-              <MaterialPaginationItem label="1" active />
-              <MaterialPaginationItem label="2" />
-              <MaterialPaginationItem label="3" />
-              <MaterialPaginationItem label="4" />
-              <MaterialPaginationItem label="5" />
-              <MaterialPaginationItem next />
-            </MaterialPagination>
+            <div class="pagination-container">
+              <MaterialPagination>
+                <MaterialPaginationItem prev @click="handlePageChange(currentPage - 1)" />
+                <MaterialPaginationItem
+                  v-for="page in totalPages"
+                  :key="page"
+                  :label="page"
+                  :active="page === currentPage"
+                  @click="handlePageChange(page)"
+                />
+                <MaterialPaginationItem next @click="handlePageChange(currentPage + 1)" />
+              </MaterialPagination>
+            </div>
           </div>
         </div>
       </div>
@@ -222,6 +221,7 @@ export default {
       selectedRegion: "3500",
       currentPage: 1,
       totalPages: 1,
+      noData: false,
       regions: [
         { label: "Jawa Timur", value: "3500" },
         { label: "Kab. Bangkalan", value: "3526" },
@@ -279,7 +279,7 @@ export default {
       this.resultPub = [];
       this.resultTable = [];
       this.loading = true;
-      this.makeApiCall(this.key, newRegion);
+      this.makeApiCall(this.key, newRegion, 1); // Reset to first page on region change
     },
   },
   methods: {
@@ -312,34 +312,36 @@ export default {
           }
           this.loading = true;
           this.currentPage = 1; // Reset current page when changing search type
-          this.makeApiCall(this.key, this.selectedRegion);
+          this.makeApiCall(this.key, this.selectedRegion, this.currentPage);
         } catch (error) {
           this.loading = false;
           console.error("Error during API request:", error);
         }
       }
     },
-    async makeApiCall(key, region) {
+    async makeApiCall(key, region, page) {
       try {
         const encodedQuery = encodeURIComponent(this.searchResult);
         const response = await axios.get(
-          `https://webapi.bps.go.id/v1/api/list/model/${key}/lang/ind/domain/${region}/keyword/${encodedQuery}/key/${apiKey}?page=${this.currentPage}`
+          `https://webapi.bps.go.id/v1/api/list/model/${key}/lang/ind/domain/${region}/keyword/${encodedQuery}/key/${apiKey}?page=${page}`
         );
 
-        // Update total pages based on response
-        this.totalPages = response.data.data[0].pages;
+        const paginationInfo = response.data.data[0];
+        this.totalPages = paginationInfo.pages;
 
         const responseData = response.data.data[1];
         if (responseData.length === 0) {
-          // Display a message to the user if no data was found
-          this.$refs.noDataMessage.innerHTML = `No data found for "${this.searchResult}"`;
+          this.noData = true;
+          this[this.resultType] = [];
         } else {
+          this.noData = false;
           this[this.resultType] = responseData;
         }
         this.loading = false;
       } catch (error) {
         console.error("Error during API request:", error);
         this.loading = false;
+        this.noData = true;
         this.resultNews = [];
         this.resultPub = [];
         this.resultTable = [];
@@ -349,17 +351,18 @@ export default {
       this.handleButtonClick("table");
     },
     async handlePageChange(pageNumber) {
-      this.currentPage = pageNumber;
-      this.makeApiCall(this.key, this.selectedRegion);
+      if (pageNumber >= 1 && pageNumber <= this.totalPages) {
+        this.currentPage = pageNumber;
+        this.makeApiCall(this.key, this.selectedRegion, pageNumber);
+      }
     },
   },
 };
 </script>
 <style scoped>
-.pagination {
+.pagination-container {
   display: flex;
   justify-content: center;
-  margin: 20px 0;
 }
 
 .btn-secondary {

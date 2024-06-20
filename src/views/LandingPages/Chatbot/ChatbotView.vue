@@ -63,7 +63,7 @@ export default {
       messages: JSON.parse(localStorage.getItem('currentChat')) || [],
       chats: JSON.parse(localStorage.getItem('chatHistories')) || [],
       userAvatar: '',
-      aiAvatar: 'https://res.cloudinary.com/bpsjatim/image/upload/f_auto,q_auto/aida_mr3usj',
+      aiAvatar: 'https://res.cloudinary.com/bpsjatim/image/upload/f_auto,q_auto/tzpygq8dcjgr6phg4ny0',
       chatSummary: null,
       isSidebarVisible: true,
       isLoading: false

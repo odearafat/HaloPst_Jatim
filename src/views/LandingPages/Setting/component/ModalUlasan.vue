@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-backdrop">
+  <div class="modal-backdrop" v-if="isModalMainVisible">
     <div
       class="modal position-static d-block p-4 py-md-5"
       id="ratingModal"
@@ -27,123 +27,114 @@
             </button>
           </div>
           <div class="modal-body">
-            <form>
-              <div class="mb-3">
-                <div class="d-flex justify-content-center">
-                  <div class="text-center mb-5">
-                    <label for="review" class="form-label"
-                      >Berikan Nilai dan Ulasan terkait pelayanan kami</label
-                    >
-                    <div class="rating">
-                      <input
-                        type="radio"
-                        name="rating"
-                        value="10"
-                        id="10"
-                        class="star"
-                        v-model="rating"
-                      /><label for="10" class="star">☆</label>
-                      <input
-                        type="radio"
-                        name="rating"
-                        value="9"
-                        id="9"
-                        class="star"
-                        v-model="rating"
-                      /><label for="9" class="star">☆</label>
-                      <input
-                        type="radio"
-                        name="rating"
-                        value="8"
-                        id="8"
-                        class="star"
-                        v-model="rating"
-                      /><label for="8" class="star">☆</label>
-                      <input
-                        type="radio"
-                        name="rating"
-                        value="7"
-                        id="7"
-                        class="star"
-                        v-model="rating"
-                      /><label for="7" class="star">☆</label>
-                      <input
-                        type="radio"
-                        name="rating"
-                        value="6"
-                        id="6"
-                        class="star"
-                        v-model="rating"
-                      /><label for="6" class="star">☆</label>
-                      <input
-                        type="radio"
-                        name="rating"
-                        value="5"
-                        id="5"
-                        class="star"
-                        v-model="rating"
-                      /><label for="5" class="star">☆</label>
-                      <input
-                        type="radio"
-                        name="rating"
-                        value="4"
-                        id="4"
-                        class="star"
-                        v-model="rating"
-                      /><label for="4" class="star">☆</label>
-                      <input
-                        type="radio"
-                        name="rating"
-                        value="3"
-                        id="3"
-                        class="star"
-                        v-model="rating"
-                      /><label for="3" class="star">☆</label>
-                      <input
-                        type="radio"
-                        name="rating"
-                        value="2"
-                        id="2"
-                        class="star"
-                        v-model="rating"
-                      /><label for="2" class="star">☆</label>
-                      <input
-                        type="radio"
-                        name="rating"
-                        value="1"
-                        id="1"
-                        class="star"
-                        v-model="rating"
-                      /><label for="1" class="star">☆</label>
-                    </div>
-                    <div class="mb-3">
-                      <textarea
-                        v-model="review"
-                        class="w-100 p-2"
-                        id="review"
-                        rows="3"
-                        placeholder="Silahkan masukan saran"
-                      ></textarea>
-                      <p class="mt-3">
-                        <small
-                          >Penilaian dan ulasan Anda sangat penting bagi kami
-                          untuk meningkatkan kualitas layanan Konsultasi Online
-                          BPS Provinsi Jawa Timur.
-                        </small>
-                      </p>
-                    </div>
-                    <div class="buttons mt-0">
-                      <button
-                        type="button"
-                        class="btn btn-success py-1 rounded rounded-4"
-                        @click="sendReview"
-                        :disabled="review.length < 0 && rating.value < 0"
-                      >
-                        Submit
-                      </button>
-                    </div>
-                  </div>
+            <form @submit.prevent="sendReview">
+              <div class="mb-3 text-center">
+                <label for="review" class="form-label">
+                  Berikan Nilai dan Ulasan terkait pelayanan kami
+                </label>
+                <div class="rating">
+                  <input
+                    type="radio"
+                    name="rating"
+                    value="10"
+                    id="10"
+                    class="star"
+                    v-model="rating"
+                  /><label for="10" class="star">☆</label>
+                  <input
+                    type="radio"
+                    name="rating"
+                    value="9"
+                    id="9"
+                    class="star"
+                    v-model="rating"
+                  /><label for="9" class="star">☆</label>
+                  <input
+                    type="radio"
+                    name="rating"
+                    value="8"
+                    id="8"
+                    class="star"
+                    v-model="rating"
+                  /><label for="8" class="star">☆</label>
+                  <input
+                    type="radio"
+                    name="rating"
+                    value="7"
+                    id="7"
+                    class="star"
+                    v-model="rating"
+                  /><label for="7" class="star">☆</label>
+                  <input
+                    type="radio"
+                    name="rating"
+                    value="6"
+                    id="6"
+                    class="star"
+                    v-model="rating"
+                  /><label for="6" class="star">☆</label>
+                  <input
+                    type="radio"
+                    name="rating"
+                    value="5"
+                    id="5"
+                    class="star"
+                    v-model="rating"
+                  /><label for="5" class="star">☆</label>
+                  <input
+                    type="radio"
+                    name="rating"
+                    value="4"
+                    id="4"
+                    class="star"
+                    v-model="rating"
+                  /><label for="4" class="star">☆</label>
+                  <input
+                    type="radio"
+                    name="rating"
+                    value="3"
+                    id="3"
+                    class="star"
+                    v-model="rating"
+                  /><label for="3" class="star">☆</label>
+                  <input
+                    type="radio"
+                    name="rating"
+                    value="2"
+                    id="2"
+                    class="star"
+                    v-model="rating"
+                  /><label for="2" class="star">☆</label>
+                  <input
+                    type="radio"
+                    name="rating"
+                    value="1"
+                    id="1"
+                    class="star"
+                    v-model="rating"
+                  /><label for="1" class="star">☆</label>
                 </div>
+                <textarea
+                  v-model="review"
+                  class="form-control mt-3"
+                  id="review"
+                  rows="3"
+                  placeholder="Silahkan masukan saran"
+                ></textarea>
+                <p class="mt-3">
+                  <small>
+                    Penilaian dan ulasan Anda sangat penting bagi kami untuk
+                    meningkatkan kualitas layanan Konsultasi Online BPS Provinsi
+                    Jawa Timur.
+                  </small>
+                </p>
+                <button
+                  type="submit"
+                  class="btn btn-success py-1 rounded rounded-4"
+                  :disabled="!isFormValid"
+                >
+                  Submit
+                </button>
               </div>
             </form>
           </div>
@@ -162,6 +153,10 @@ export default {
     historyId: {
       required: true,
     },
+    isModalMainVisible: {
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return {
@@ -169,39 +164,32 @@ export default {
       rating: "",
     };
   },
+  computed: {
+    isFormValid() {
+      return this.review.trim() && this.rating;
+    },
+  },
   methods: {
     async sendReview() {
-      console.log(this.historyId);
-      try {
-        // Validasi
-        if (!this.rating) {
-          throw new Error("Harap pilih nilai rating.");
-        }
-        if (!this.review.trim()) {
-          throw new Error("Harap isi bagian ulasan.");
-        }
+      if (!this.isFormValid) {
+        throw new Error(
+          "Harap isi semua bagian ulasan dan pilih nilai rating."
+        );
+      }
 
-        // Persiapan data untuk dikirim
+      this.$emit("loading", true);
+      this.$emit("hideMainModal");
+      try {
         const data = {
           rating: this.rating,
           kritik_saran: this.review,
         };
-
-        // Kirim ulasan menggunakan API Service
         await apiService.giveFeedback(this.historyId, data);
-
-        // Tampilkan pesan sukses
-        console.log(data);
-        console.log(`Booking ID ${this.historyId} sudah di review.`);
-        alert("Ulasan berhasil dikirim.");
-
-        // Tutup modal
-        this.close();
-
-        // Reload halaman
-        window.location.reload();
+        console.log(`History ID ${this.historyId} sudah di review.`);
+        this.$emit("loading", false);
+        this.$emit("success", true);
       } catch (error) {
-        // Tangani kesalahan
+        this.$emit("loading", false);
         console.error("Error saat melakukan review:", error.message);
         alert("Gagal mengirim ulasan. Silakan coba lagi.");
       }
@@ -213,7 +201,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -240,25 +228,13 @@ export default {
 }
 
 .modal-header {
-  position: relative;
   border-bottom: 1px solid #eeeeee;
-  color: #4aae9b;
   justify-content: space-between;
-}
-
-.modal-footer {
-  border-top: 1px solid #eeeeee;
-  flex-direction: column;
-  justify-content: flex-end;
+  color: #4aae9b;
 }
 
 .modal-body {
   position: relative;
-}
-
-.rate {
-  border-bottom-right-radius: 12px;
-  border-bottom-left-radius: 12px;
 }
 
 .rating {
@@ -297,10 +273,5 @@ export default {
 
 .rating:hover > input:checked ~ label:before {
   opacity: 0.4;
-}
-
-.buttons {
-  position: relative;
-  top: 36px;
 }
 </style>

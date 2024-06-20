@@ -3,7 +3,9 @@
     <div class="card-header px-4 pt-4 pb-2">
       <h4 class="card-title">Daftar History</h4>
       <p class="card-text">
-        <small class="text-muted mb-4">Anda dapat melihat daftar history konsultasi anda disini!</small>
+        <small class="text-muted mb-4">
+          Anda dapat melihat daftar history konsultasi anda disini!
+        </small>
       </p>
     </div>
     <hr class="hairline mb-0" />
@@ -24,20 +26,44 @@
           </thead>
           <tbody>
             <tr v-for="(history, index) in histories" :key="index">
-              <td><small>{{ history.tanggal_konsultasi }}</small></td>
-              <td><small>{{ history.petugas.nama_petugas }}</small></td>
               <td>
-                <span class="badge bg-success" v-if="history.status === 'Selesai'">Selesai</span>
-                <span class="badge bg-danger" v-else-if="history.status === 'Dibatalkan'">Dibatalkan</span>
+                <small>{{ history.tanggal_konsultasi }}</small>
+              </td>
+              <td>
+                <small>{{ history.petugas.nama_petugas }}</small>
+              </td>
+              <td>
+                <span
+                  class="badge bg-success"
+                  v-if="history.status === 'Selesai'"
+                  >Selesai</span
+                >
+                <span
+                  class="badge bg-danger"
+                  v-else-if="history.status === 'Dibatalkan'"
+                  >Dibatalkan</span
+                >
               </td>
               <td class="d-flex justify-content-center align-items-center">
-                <button class="btn btn-info me-2 btn-sm" v-if="history.status === 'Selesai' && history.rating==null" @click="showModal(history.id)">
+                <button
+                  class="btn btn-info me-2 btn-sm"
+                  v-if="history.status === 'Selesai' && history.rating == null"
+                  @click="showModal(history.id)"
+                >
                   Ulasan
                 </button>
-                <button class="btn btn-warning me-2 btn-sm" v-if="history.status === 'Selesai'" @click="showDetail(history.id)">
+                <button
+                  class="btn btn-warning me-2 btn-sm"
+                  v-if="history.status === 'Selesai'"
+                  @click="showDetail(history.id)"
+                >
                   Detail
                 </button>
-                <button class="btn btn-warning btn-sm" v-else-if="history.status === 'Dibatalkan'" @click="showDetail(history.id)">
+                <button
+                  class="btn btn-warning btn-sm"
+                  v-else-if="history.status === 'Dibatalkan'"
+                  @click="showDetail(history.id)"
+                >
                   Detail
                 </button>
               </td>
@@ -45,11 +71,65 @@
           </tbody>
         </table>
         <div v-else class="text-center">
-          <p>Tidak ada History Ditemukan </p>
+          <p>Tidak ada History Ditemukan</p>
         </div>
       </div>
     </div>
-    <ModalUlasan v-if="isModalVisible" :historyId="historyId" @close="closeModal" />
+    <ModalUlasan
+      v-if="isModalVisible"
+      :historyId="historyId"
+      @close="closeModal"
+      @loading="setLoading"
+      @hideMainModal="hideMainModal"
+      @success="setSuccess"
+      :isModalMainVisible="isModalMainVisible"
+    />
+
+    <!-- Modal Loading -->
+    <div v-if="isLoading" class="modal-backdrop">
+      <div class="modal position-static d-block p-4 py-md-5">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content rounded-4 shadow px-2">
+            <div class="modal-body py-5">
+              <div class="d-flex justify-content-center align-items-center">
+                <div class="spinner-border text-success" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <span class="ms-3">Memproses ulasan...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Success -->
+    <div v-if="isSuccess" class="modal-backdrop">
+      <div class="modal position-static d-block p-4 py-md-5">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content rounded-4 shadow px-2">
+            <div class="modal-body py-5">
+              <div class="d-flex justify-content-center align-items-center">
+                <i
+                  class="bi bi-check-circle text-success"
+                  style="font-size: 2rem"
+                ></i>
+                <span class="ms-3">Ulasan berhasil dikirim.</span>
+              </div>
+              <div class="d-flex justify-content-center mt-3">
+                <button
+                  type="button"
+                  class="btn btn-success"
+                  @click="closeSuccessModal"
+                >
+                  Tutup
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -64,7 +144,10 @@ export default {
       histories: [],
       loading: true,
       isModalVisible: false,
-      historyId: "",  // Tambahkan ini
+      historyId: "",
+      isLoading: false,
+      isSuccess: false,
+      isModalMainVisible: true,
     };
   },
   mounted() {
@@ -79,7 +162,9 @@ export default {
         if (parsedUser) {
           const response = await apiService.getHistoryByUser(parsedUser.id);
           const sortedHistory = response.data.data.sort((a, b) => {
-            return new Date(b.tanggal_konsultasi) - new Date(a.tanggal_konsultasi);
+            return (
+              new Date(b.tanggal_konsultasi) - new Date(a.tanggal_konsultasi)
+            );
           });
           this.histories = sortedHistory;
         } else {
@@ -98,11 +183,25 @@ export default {
       });
     },
     showModal(historyId) {
-      this.historyId = historyId;  // Set nilai historyId
+      this.historyId = historyId;
       this.isModalVisible = true;
+      this.isModalMainVisible = true;
     },
     closeModal() {
       this.isModalVisible = false;
+    },
+    setLoading(isLoading) {
+      this.isLoading = isLoading;
+    },
+    setSuccess(isSuccess) {
+      this.isSuccess = isSuccess;
+    },
+    hideMainModal() {
+      this.isModalMainVisible = false;
+    },
+    closeSuccessModal() {
+      this.isSuccess = false;
+      window.location.href = "/settings/history";
     },
   },
 };

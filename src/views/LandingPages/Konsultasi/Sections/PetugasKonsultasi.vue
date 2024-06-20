@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import CariWilayah from './CariWilayahKonsultasi.vue';
 import PetugasKonsultasiCard from '@/examples/cards/teamCards/PetugasKonsultasiCard.vue';
 import MaterialPagination from '@/components/MaterialPagination.vue';
@@ -9,6 +9,8 @@ import { apiService } from '@/api/ApiService';
 
 const petugasKonsultasi = ref([]);
 const loading = ref(true);
+const currentPage = ref(1);
+const itemsPerPage = ref(6);
 
 const fetchPetugas = async () => {
   loading.value = true;
@@ -36,6 +38,22 @@ const fetchPetugasBySatker = async (satker) => {
 
 const handleCariWilayahInput = (satker) => {
   fetchPetugasBySatker(satker);
+};
+
+const paginatedPetugas = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value;
+  const end = start + itemsPerPage.value;
+  return petugasKonsultasi.value.slice(start, end);
+});
+
+const totalPages = computed(() => {
+  return Math.ceil(petugasKonsultasi.value.length / itemsPerPage.value);
+});
+
+const changePage = (page) => {
+  if (page >= 1 && page <= totalPages.value) {
+    currentPage.value = page;
+  }
 };
 
 onMounted(fetchPetugas);
@@ -66,7 +84,7 @@ onMounted(fetchPetugas);
         <div
           v-else
           class="col-lg-4 col-6 mb-4"
-          v-for="petugas in petugasKonsultasi"
+          v-for="petugas in paginatedPetugas"
           :key="petugas.id"
         >
           <PetugasKonsultasiCard class="mt-4" :petugas="petugas" />
@@ -77,13 +95,15 @@ onMounted(fetchPetugas);
           <div class="col-lg-4">
             <div class="pagination-container">
               <MaterialPagination>
-                <MaterialPaginationItem prev />
-                <MaterialPaginationItem label="1" active />
-                <MaterialPaginationItem label="2" />
-                <MaterialPaginationItem label="3" />
-                <MaterialPaginationItem label="4" />
-                <MaterialPaginationItem label="5" />
-                <MaterialPaginationItem next />
+                <MaterialPaginationItem prev @click="changePage(currentPage - 1)" />
+                <MaterialPaginationItem
+                  v-for="page in totalPages"
+                  :key="page"
+                  :label="page"
+                  :active="page === currentPage"
+                  @click="changePage(page)"
+                />
+                <MaterialPaginationItem next @click="changePage(currentPage + 1)" />
               </MaterialPagination>
             </div>
           </div>

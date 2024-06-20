@@ -2,19 +2,23 @@
 <template>
   <section class="py-4">
     <div class="container">
-      <div class="row align-items-center">
-        <div class="col-lg-4 ">
-          <div class="row justify-content-center text-center ">
+      <div class="row align-items-center justify-content-center">
+        
+          <div class="col-lg-3 row justify-content-center text-center ">
             <DefaultInfoCard
               :image="tahap1"
               class="cursor-pointer"
               description="Pilih ingin dengan siapa Anda berkonsultasi dan buat reservasi konsultasi"
               @click="tahap1Clicked"
             />
-          </div>
+
         </div>
-        <div class="col-lg-4">
-          <div class="row justify-content-center text-center">
+        <!-- Arrow -->
+        <div class="col-lg-1 text-center d-lg-block d-none ">
+          <img src="@/assets/img/illustrations/panah-kanan.png" alt="Arrow" class="img-fluid" />
+        </div>
+        
+          <div class="col-lg-3 row justify-content-center text-center">
             <DefaultInfoCard
               :image="tahap2"
               class="cursor-pointer"
@@ -22,9 +26,13 @@
               @click="tahap23Clicked"
             />
           </div>
+        
+        <!-- Arrow -->
+        <div class="col-lg-1 text-center d-lg-block d-none ">
+          <img src="@/assets/img/illustrations/panah-kanan.png" alt="Arrow" class="img-fluid" />
         </div>
-        <div class="col-lg-4">
-          <div class="row justify-content-center text-center">
+        
+          <div class="col-lg-3 row justify-content-center text-center">
             <DefaultInfoCard
               :image="tahap3"
               class="cursor-pointer"
@@ -32,7 +40,7 @@
               @click="tahap23Clicked"
             />
           </div>
-        </div>
+        
       </div>
     </div>
   </section>
@@ -57,3 +65,21 @@ function tahap23Clicked(){
   router.push('/settings/booking');
 }
 </script>
+
+<style scoped>
+.row {
+    display: flex;
+    align-items: center;
+  }
+
+  .col-lg-3, .col-lg-1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .col-lg-1 img {
+    width: 100%;
+    max-width: 50px; /* Adjust as necessary */
+  }
+</style>
