@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import store from "../store/index.js";
 import HomeView from "../views/Home/HomeView.vue";
 import ChatbotView from "../views/LandingPages/Chatbot/ChatbotView.vue";
 import KonsultasiView from "../views/LandingPages/Konsultasi/KonsultasiView.vue";
@@ -77,6 +78,7 @@ const router = createRouter({
       path: "/search",
       name: "search",
       component: SearchView,
+      props: (route) => ({ mfd: route.query.mfd }), // Pass mfd as a prop
     },
     {
       path: "/tentang",
@@ -90,10 +92,21 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const isLoggedIn = localStorage.getItem("loggedIn") === "true";
 
-  if ((to.path === '/aida'||to.path.startsWith('/settings') ) && !isLoggedIn) {
-    next({ name: 'login' }); // Redirect ke halaman login jika belum login
+  if ((to.path === "/aida" || to.path.startsWith("/settings")) && !isLoggedIn) {
+    next({ name: "login" }); // Redirect ke halaman login jika belum login
   } else {
     next(); // Lanjutkan ke rute yang diminta jika sudah login
+  }
+});
+
+// Nilai default jika parameter `mfd` tidak ada di URL
+// Global guard to handle mfd parameter
+router.beforeEach((to, from, next) => {
+  if (!to.query.mfd) {
+    // If mfd is not present in the URL, set a default value
+    next({ ...to, query: { ...to.query, mfd: "3500" } });
+  } else {
+    next();
   }
 });
 

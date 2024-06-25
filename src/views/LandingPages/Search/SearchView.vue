@@ -103,9 +103,7 @@
       </div>
 
       <div v-else>
-        <p class="mb-3">
-          Hasil Pencarian : {{ searchResult }}
-        </p>
+        <p class="mb-3">Hasil Pencarian : {{ searchResult }}</p>
       </div>
 
       <!-- HASIL PENCARIAN -->
@@ -165,7 +163,10 @@
           <div class="col-lg-4 mx-auto">
             <div class="pagination-container">
               <MaterialPagination>
-                <MaterialPaginationItem prev @click="handlePageChange(currentPage - 1)" />
+                <MaterialPaginationItem
+                  prev
+                  @click="handlePageChange(currentPage - 1)"
+                />
                 <MaterialPaginationItem
                   v-for="page in totalPages"
                   :key="page"
@@ -173,7 +174,10 @@
                   :active="page === currentPage"
                   @click="handlePageChange(page)"
                 />
-                <MaterialPaginationItem next @click="handlePageChange(currentPage + 1)" />
+                <MaterialPaginationItem
+                  next
+                  @click="handlePageChange(currentPage + 1)"
+                />
               </MaterialPagination>
             </div>
           </div>
@@ -207,7 +211,13 @@ export default {
     DefaultFooter,
     NavbarLogin,
     MaterialPagination,
-    MaterialPaginationItem
+    MaterialPaginationItem,
+  },
+  props: {
+    mfd: {
+      type: String,
+      default: "3500",
+    },
   },
   data() {
     return {
@@ -218,7 +228,7 @@ export default {
       activeTab: "table",
       key: "",
       resultType: "resultTable",
-      selectedRegion: "3500",
+      selectedRegion: this.mfd,
       currentPage: 1,
       totalPages: 1,
       noData: false,
@@ -269,6 +279,10 @@ export default {
   created() {
     this.key = this.$route.query.searchQuery || "";
     this.searchResult = this.$route.query.searchQuery || "";
+
+    // // Ambil nilai mfd dari URL dan gunakan sebagai selectedRegion
+    // this.selectedRegion = this.$route.query.mfd || "3575"; //SETTING MFD
+
     if (this.searchResult) {
       this.handleButtonSearch();
     }
@@ -280,6 +294,10 @@ export default {
       this.resultTable = [];
       this.loading = true;
       this.makeApiCall(this.key, newRegion, 1); // Reset to first page on region change
+    },
+    "$route.query.mfd": function (newMfd) {
+      this.selectedRegion = newMfd || "3575"; // setting MFD
+      this.makeApiCall(this.key, this.selectedRegion, this.currentPage);
     },
   },
   methods: {
@@ -295,6 +313,7 @@ export default {
     },
     async handleButtonClick(type) {
       this.activeTab = type;
+      // console.log(this.selectedRegion)
       if (this.searchResult) {
         this.resultNews = [];
         this.resultPub = [];
@@ -361,6 +380,7 @@ export default {
   },
 };
 </script>
+
 <style scoped>
 .pagination-container {
   display: flex;

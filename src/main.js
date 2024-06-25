@@ -2,6 +2,7 @@ import { createApp } from "vue";
 import { createPinia } from "pinia";
 import App from "./App.vue";
 import router from "./router";
+import store from './store'
 import gAuthPlugin from "vue3-google-login";
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
@@ -23,6 +24,7 @@ app.use(gAuthPlugin, {
 
 app.use(createPinia());
 app.use(router);
+app.use(store)
 app.use(materialKit);
 app.use(VueSweetalert2);
 
