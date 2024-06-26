@@ -55,6 +55,8 @@ const callback = async (response) => {
     await verifyToken(id_token);
     const apiResponse = await apiService.addUser(userData);
 
+    // console.log(apiResponse);
+
     if (apiResponse && apiResponse.status === 200) {
       localStorage.setItem("user", JSON.stringify(apiResponse.data.data));
       router.push({ name: "CardProfil" }).then(() => {
@@ -72,9 +74,10 @@ const callback = async (response) => {
 
 const verifyToken = async (token) => {
   try {
-    const res = await fetch("http://127.0.0.1:8000/api/verify-google-token", {
+    const res = await fetch("https://halopst.web.bps.go.id/backend/api/verify-google-token", {
       method: "POST",
       headers: {
+        "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ token }),
