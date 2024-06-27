@@ -1,71 +1,46 @@
 <script setup>
-// example components
+import { ref, onMounted, defineEmits } from "vue";
+import axios from "axios";
 import InfoCard from "../../../../examples/cards/infoCards/InfoCard.vue";
+import { apiService } from "@/api/ApiService";
 
-// icon tahapan
-import timeseries from "@/assets/img/illustrations/timeseries.png";
-import sosduk from "@/assets/img/illustrations/sosduk.png";
-import pertanian from "@/assets/img/illustrations/pertanian.png";
-import ekonomi from "@/assets/img/illustrations/ekonomi.png";
-import pertambangan from "@/assets/img/illustrations/pertambangan.png";
-import inflasi from "@/assets/img/illustrations/inflasi.png";
+const keahlianData = ref([]);
 
+// Emit function to send events to parent component
+const emit = defineEmits(['item']);
+
+// Function to handle click event and emit itemId
+const clickKeahlian = (itemId) => {
+  emit('item', itemId);
+  console.log("Keahlian clicked:", itemId);
+};
+
+// Fetch data from the API when the component is mounted
+onMounted(async () => {
+  try {
+    const response = await apiService.getKeahlian();
+    keahlianData.value = response.data.data;
+  } catch (error) {
+    console.error("Error fetching keahlian data:", error);
+  }
+});
 </script>
+
 <template>
   <section class="py-0">
     <div class="container">
-      <div class="row align-items-top">
-        <div class="col-lg-2">
-          <div class="row justify-content-center text-center">
-            <InfoCard 
-              :image="timeseries"
-              description="Time Series"
-              :url="'/konsultasi'"
-            />
-          </div>
-        </div>
-        <div class="col-lg-2">
+      <div class="row justify-content-center align-items-top">
+        <div
+          v-for="item in keahlianData"
+          :key="item.id"
+          class="col-lg-2 d-flex justify-content-center"
+        >
           <div class="row justify-content-center text-center">
             <InfoCard
-              :image="sosduk"
-              description="Sosial & Kependudukan"
-              :url="'/konsultasi'"
-            />
-          </div>
-        </div>
-        <div class="col-lg-2">
-          <div class="row justify-content-center text-center">
-            <InfoCard
-              :image="pertanian"
-              description="Pertanian"
-              :url="'/konsultasi'"
-            />
-          </div>
-        </div>
-        <div class="col-lg-2">
-          <div class="row justify-content-center text-center">
-            <InfoCard
-              :image="ekonomi"
-              description="Ekonomi"
-              :url="'/konsultasi'"
-            />
-          </div>
-        </div>
-        <div class="col-lg-2">
-          <div class="row justify-content-center text-center">
-            <InfoCard
-              :image="inflasi"
-              description="Inflasi"
-              :url="'/konsultasi'"
-            />
-          </div>
-        </div>
-        <div class="col-lg-2">
-          <div class="row justify-content-center text-center">
-            <InfoCard
-              :image="pertambangan"
-              description="Pertambangan, Energi, dan Konstruksi"
-              :url="'/konsultasi'"
+              :image="item.icon"
+              :description="item.nama_keahlian"
+              class=" cursor-pointer"
+              @click="clickKeahlian(item.id)"
             />
           </div>
         </div>

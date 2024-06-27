@@ -132,9 +132,9 @@ export default {
 
       const validTime =
         (hour >= 8 && hour < 12) ||
-        (hour === 12 && minute === 0) ||
+        (hour == 12 && minute == 0) ||
         (hour >= 13 && hour < 16) ||
-        (hour === 16 && minute === 0);
+        (hour == 16 && minute == 0);
 
       if (!validTime) {
         this.invalidTime = true;
@@ -167,7 +167,7 @@ export default {
       const selectedDate = new Date(this.tanggal);
       const day = selectedDate.getUTCDay();
 
-      if (day === 0 || day === 6) {
+      if (day == 0 || day == 6) {
         this.invalidDate = true;
       } else {
         this.invalidDate = false;
@@ -178,9 +178,9 @@ export default {
       const selectedDate = new Date(date);
 
       return (
-        today.getFullYear() === selectedDate.getFullYear() &&
-        today.getMonth() === selectedDate.getMonth() &&
-        today.getDate() === selectedDate.getDate()
+        today.getFullYear() == selectedDate.getFullYear() &&
+        today.getMonth() == selectedDate.getMonth() &&
+        today.getDate() == selectedDate.getDate()
       );
     },
     loadUser(){

@@ -1,8 +1,8 @@
-import apiClient from './ApiConfig';
+import apiClient from "./ApiConfig";
 
 export const apiService = {
   addUser(data) {
-    return apiClient.post('pengguna/', data);
+    return apiClient.post("pengguna/", data);
   },
 
   updateUser(id, data) {
@@ -10,7 +10,7 @@ export const apiService = {
   },
 
   addConsultation(data) {
-    return apiClient.post('konsultasi/', data);
+    return apiClient.post("konsultasi/", data);
   },
 
   getConsultationsByUser(idPengguna) {
@@ -38,7 +38,7 @@ export const apiService = {
   },
 
   getAllOfficers() {
-    return apiClient.get('petugas');
+    return apiClient.get("petugas");
   },
 
   getOfficersBySatker(idSatker) {
@@ -50,7 +50,7 @@ export const apiService = {
   },
 
   getAllKabupaten() {
-    return apiClient.get('kabupaten');
+    return apiClient.get("kabupaten");
   },
 
   getKabupatenByProvinsi(idProv) {
@@ -58,11 +58,11 @@ export const apiService = {
   },
 
   getAllProvinces() {
-    return apiClient.get('provinsi');
+    return apiClient.get("provinsi");
   },
 
   getAllUsers() {
-    return apiClient.get('pengguna');
+    return apiClient.get("pengguna");
   },
 
   getUser(idPengguna) {
@@ -70,20 +70,29 @@ export const apiService = {
   },
 
   getAllConsultations() {
-    return apiClient.get('konsultasi');
+    return apiClient.get("konsultasi");
   },
 
   getAllSatker() {
-    return apiClient.get('satker');
-  }, 
+    return apiClient.get("satker");
+  },
 
-  getNotification(email_user){
+  getNotification(email_user) {
     return apiClient.get(`notifikasi/${email_user}`);
   },
 
-  setNotificationRead(email_user,id_notif){
+  setNotificationRead(email_user, id_notif) {
     return apiClient.get(`notifikasi/${email_user}/mark-as-read/${id_notif}`);
-  }
+  },
 
-  
+  getKeahlian() {
+    return apiClient.get("keahlian");
+  },
+
+  getPetugasByKeahlian(id_keahlian) {
+    return apiClient.get(`petugas-by-keahlian/${id_keahlian}`);
+  },
+  getVerify() {
+    return apiClient.post("verify-google-token");
+  },
 };

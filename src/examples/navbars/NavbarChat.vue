@@ -22,9 +22,9 @@ const props = defineProps({
     }),
     validator: (value) => {
       return (
-        typeof value.route === "string" &&
-        typeof value.color === "string" &&
-        typeof value.label === "string"
+        typeof value.route == "string" &&
+        typeof value.color == "string" &&
+        typeof value.label == "string"
       );
     },
   },

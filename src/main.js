@@ -7,7 +7,7 @@ import gAuthPlugin from "vue3-google-login";
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 let CLIENT_ID =
-  "419217866084-u5ma3234i42kff8vmpobidqap87ae2q6.apps.googleusercontent.com";
+  "320659382153-hsbpa3c5oop22n0c9jsqjau4enj80svp.apps.googleusercontent.com";
 
 // Nucleo Icons
 import "./assets/css/nucleo-icons.css";

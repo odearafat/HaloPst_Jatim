@@ -32,9 +32,9 @@ const router = useRouter();
 
 // Computed property untuk menambahkan 'cak' atau 'ning' berdasarkan jenis kelamin
 const namaLengkap = computed(() => {
-  if (props.petugas.jenis_kelamin === 1) {
+  if (props.petugas.jenis_kelamin == 1) {
     return `Cak ${props.petugas.nama_panggilan}`;
-  } else if (props.petugas.jenis_kelamin === 2) {
+  } else if (props.petugas.jenis_kelamin == 2) {
     return `Ning ${props.petugas.nama_panggilan}`;
   }
   return props.petugas.nama_panggilan;
@@ -42,7 +42,7 @@ const namaLengkap = computed(() => {
 
 function showModal() {
   const isLogin = localStorage.getItem("loggedIn");
-  if (isLogin === "true") {
+  if (isLogin == "true") {
     isModalVisible.value = true;
     isModalMainVisible.value = true;
   } else {

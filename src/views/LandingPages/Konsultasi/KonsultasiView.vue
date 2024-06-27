@@ -23,7 +23,7 @@
     <div class="card card-body shadow-xl mx-3 mx-md-4 mt-n6 pb-0">
       <Tahapan @tahap1Clicked="scrollToPetugasKonsultasi" />
       <div ref="petugasSection">
-        <PetugasKonsultasi />
+        <PetugasKonsultasi @keahlianClicked="scrollToPetugasKonsultasi"/>
       </div>
     </div>
     <DefaultFooter />
