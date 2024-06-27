@@ -2,7 +2,7 @@ import apiClient from './ApiConfig';
 
 export const apiService = {
   addUser(data) {
-    return apiClient.post('pengguna/', data);
+    return apiClient.post('pengguna', data);
   },
 
   updateUser(id, data) {
@@ -10,7 +10,7 @@ export const apiService = {
   },
 
   addConsultation(data) {
-    return apiClient.post('konsultasi/', data);
+    return apiClient.post('konsultasi', data);
   },
 
   getConsultationsByUser(idPengguna) {

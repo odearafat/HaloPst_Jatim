@@ -5,7 +5,6 @@ import router from '@/router'; // Import router from your project
 const apiClient = axios.create({
   baseURL: 'https://halopst.web.bps.go.id/backend/api/',
   headers: {
-    "Access-Control-Allow-Origin": "GET",
     'Content-Type': 'application/json',
   },
 });
