@@ -79,9 +79,9 @@ const getTextColor = () => {
 let textDark = ref(props.darkText);
 const { type } = useWindowsWidth();
 
-if (type.value === "mobile") {
+if (type.value == "mobile") {
   textDark.value = true;
-} else if (type.value === "desktop" && textDark.value == false) {
+} else if (type.value == "desktop" && textDark.value == false) {
   textDark.value = false;
 }
 
@@ -102,7 +102,7 @@ const logout = () => {
 onMounted(() => {
   const userData = localStorage.getItem("user");
   const loggedIn = localStorage.getItem("loggedIn");
-  if (loggedIn === "true" && userData) {
+  if (loggedIn == "true" && userData) {
     user.value = JSON.parse(userData);
     isLoggedIn.value = true;
   }
@@ -111,7 +111,7 @@ onMounted(() => {
 watch(
   () => type.value,
   (newValue) => {
-    if (newValue === "mobile") {
+    if (newValue == "mobile") {
       textDark.value = true;
     } else {
       textDark.value = false;

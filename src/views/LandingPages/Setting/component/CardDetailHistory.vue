@@ -12,13 +12,13 @@
         <p>Loading...</p>
       </div>
       <div v-else class="container">
-        <div v-if="history.status === 'Selesai'">
+        <div v-if="history.status == 'Selesai'">
           <h5 class="fw-semibold text-success mb-0">
             <i class="bi bi-check2-circle me-2"></i>Konsultasi Telah Selesai
             Dilaksanakan
           </h5>
         </div>
-        <div v-else-if="history.status === 'Dibatalkan'">
+        <div v-else-if="history.status == 'Dibatalkan'">
           <h5 class="fw-semibold text-danger mb-0">
             <i class="bi bi-x-circle-fill me-2"></i>Reservasi Konsultasi Telah
             di Batalkan
@@ -33,10 +33,10 @@
             <p class="text-muted mb-1 fw-semibold">
               <i class="bi bi-camera-video-fill me-2"></i>Link Pertemuan:
             </p>
-            <span class="ms-4" v-if="history.status === 'Selesai'">
+            <span class="ms-4" v-if="history.status == 'Selesai'">
               Konsultasi telah dilaksanakan
             </span>
-            <span class="ms-4" v-else-if="history.status === 'Dibatalkan'">
+            <span class="ms-4" v-else-if="history.status == 'Dibatalkan'">
               Konsultasi telah dibatalkan
             </span>
           </div>
@@ -66,7 +66,7 @@
           </div>
         </div>
         <hr />
-        <div class="mt-3" v-if="history.status === 'Dibatalkan'">
+        <div class="mt-3" v-if="history.status == 'Dibatalkan'">
           <h4 class="fw-semibold">Informasi Pembatalan</h4>
           <div class="mt-3">
             <p class="text-muted mb-1 fw-semibold">

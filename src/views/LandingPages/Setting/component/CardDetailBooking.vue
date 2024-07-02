@@ -13,13 +13,13 @@
         <p>Loading...</p>
       </div>
       <div v-else class="container">
-        <div v-if="booking.status === 'Diajukan'">
+        <div v-if="booking.status == 'Diajukan'">
           <h5 class="fw-semibold text-warning mb-0">
             <i class="bi bi-hourglass-split me-2"></i> Reservasi Konsultasi Sedang Diajukan
           </h5>
           <small class="mb-4 text-muted">Anda akan segera menerima email konfirmasi.</small>
         </div>
-        <div v-else-if="booking.status === 'Disetujui'">
+        <div v-else-if="booking.status == 'Disetujui'">
           <h5 class="fw-semibold text-info mb-0">
             <i class="bi bi-check-circle-fill me-2"></i> Reservasi Konsultasi Sudah Disetujui
           </h5>
@@ -31,10 +31,10 @@
             <p class="text-muted mb-1 fw-semibold">
               <i class="bi bi-camera-video-fill me-2"></i> Link Pertemuan:
             </p>
-            <span class="ms-4" v-if="booking.status === 'Diajukan'">
+            <span class="ms-4" v-if="booking.status == 'Diajukan'">
               Link akan diberitahukan setelah reservasi disetujui.
             </span>
-            <span class="ms-4" v-else-if="booking.status === 'Disetujui'">
+            <span class="ms-4" v-else-if="booking.status == 'Disetujui'">
               <a :href="booking.link_meeting" target="_blank">{{ booking.link_meeting }}</a>
             </span>
           </div>

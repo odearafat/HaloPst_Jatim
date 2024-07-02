@@ -23,7 +23,7 @@
           <div v-for="input in formInputs" :key="input.id" class="mb-3">
             <label :for="input.id" class="form-label">{{ input.label }}</label>
             <select
-              v-if="input.type === 'select'"
+              v-if="input.type == 'select'"
               :class="['form-select', { 'is-invalid': !apiData[input.id] && input.required }]"
               :id="input.id"
               class="pe-2"
@@ -297,7 +297,7 @@ export default {
       this.isSuccess = false; // Close success modal
     },
     validateField(field) {
-      const input = this.formInputs.find((input) => input.id === field);
+      const input = this.formInputs.find((input) => input.id == field);
       input.error =
         this.apiData[field] || !input.required ? "" : "Kolom ini harus diisi";
     },
@@ -307,7 +307,7 @@ export default {
         .then((response) => {
           const provinces = response.data.data;
           const provinceInput = this.formInputs.find(
-            (input) => input.id === "id_prov"
+            (input) => input.id == "id_prov"
           );
           if (provinceInput) {
             provinceInput.options = provinces.map((province) => ({
@@ -326,7 +326,7 @@ export default {
         .then((response) => {
           const cities = response.data.data;
           const cityInput = this.formInputs.find(
-            (input) => input.id === "id_kab"
+            (input) => input.id == "id_kab"
           );
           if (cityInput) {
             cityInput.options = cities.map((city) => ({
@@ -346,7 +346,7 @@ export default {
         this.fetchCities(newProvinceId);
       } else {
         const cityInput = this.formInputs.find(
-          (input) => input.id === "id_kab"
+          (input) => input.id == "id_kab"
         );
         if (cityInput) {
           cityInput.options = [];
