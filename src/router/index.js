@@ -31,6 +31,7 @@ const router = createRouter({
       path: "/konsultasi",
       name: "konsultasi",
       component: KonsultasiView,
+      props: (route) => ({ mfd: route.query.mfd }), // Pass mfd as a prop
     },
     {
       path: "/login",

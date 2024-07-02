@@ -16,7 +16,7 @@
           >
             <li class="nav-item" role="presentation">
               <button
-                :class="{ active: activeTab === 'table' }"
+                :class="{ active: activeTab == 'table' }"
                 class="btn btn-outline-secondary m-1 rounded rounded-3"
                 id="table-search-tab"
                 data-bs-toggle="pill"
@@ -32,7 +32,7 @@
             </li>
             <li class="nav-item" role="presentation">
               <button
-                :class="{ active: activeTab === 'pub' }"
+                :class="{ active: activeTab == 'pub' }"
                 class="btn btn-outline-secondary m-1"
                 id="pub-search-tab"
                 data-bs-toggle="pill"
@@ -49,7 +49,7 @@
 
             <li class="nav-item" role="presentation">
               <button
-                :class="{ active: activeTab === 'news' }"
+                :class="{ active: activeTab == 'news' }"
                 class="btn btn-outline-secondary m-1"
                 id="news-search-tab"
                 data-bs-toggle="pill"
@@ -114,7 +114,7 @@
       <div class="tab-content" id="pills-tabContent">
         <div
           class="tab-pane fade"
-          :class="{ 'show active': activeTab === 'pub' }"
+          :class="{ 'show active': activeTab == 'pub' }"
           id="pub-search"
           role="tabpanel"
           aria-labelledby="pub-search-tab"
@@ -128,7 +128,7 @@
         </div>
         <div
           class="tab-pane fade show active"
-          :class="{ 'show active': activeTab === 'table' }"
+          :class="{ 'show active': activeTab == 'table' }"
           id="table-search"
           role="tabpanel"
           aria-labelledby="table-search-tab"
@@ -142,7 +142,7 @@
         </div>
         <div
           class="tab-pane fade"
-          :class="{ 'show active': activeTab === 'news' }"
+          :class="{ 'show active': activeTab == 'news' }"
           id="news-search"
           role="tabpanel"
           aria-labelledby="news-search-tab"
@@ -171,7 +171,7 @@
                   v-for="page in totalPages"
                   :key="page"
                   :label="page"
-                  :active="page === currentPage"
+                  :active="page == currentPage"
                   @click="handlePageChange(page)"
                 />
                 <MaterialPaginationItem
@@ -296,14 +296,14 @@ export default {
       this.makeApiCall(this.key, newRegion, 1); // Reset to first page on region change
     },
     "$route.query.mfd": function (newMfd) {
-      this.selectedRegion = newMfd || "3575"; // setting MFD
+      this.selectedRegion = newMfd || "3500"; // setting MFD
       this.makeApiCall(this.key, this.selectedRegion, this.currentPage);
     },
   },
   methods: {
     async handleSearchUpdate(query) {
       this.searchResult = query.trim();
-      if (this.searchResult === "") {
+      if (this.searchResult == "") {
         this.resultNews = [];
         this.resultPub = [];
         this.resultTable = [];
@@ -320,13 +320,13 @@ export default {
         this.resultTable = [];
         try {
           window.scrollTo(0, 0); // Scroll to top
-          if (type === "table") {
+          if (type == "table") {
             this.key = "statictable";
             this.resultType = "resultTable";
-          } else if (type === "pub") {
+          } else if (type == "pub") {
             this.key = "publication";
             this.resultType = "resultPub";
-          } else if (type === "news") {
+          } else if (type == "news") {
             this.key = "pressrelease";
             this.resultType = "resultNews";
           }
@@ -350,7 +350,7 @@ export default {
         this.totalPages = paginationInfo.pages;
 
         const responseData = response.data.data[1];
-        if (responseData.length === 0) {
+        if (responseData.length == 0) {
           this.noData = true;
           this[this.resultType] = [];
         } else {
