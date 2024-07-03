@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import CariWilayah from "./CariWilayahKonsultasi.vue";
 import PetugasKonsultasiCard from "@/examples/cards/teamCards/PetugasKonsultasiCard.vue";
 import MaterialPagination from "@/components/MaterialPagination.vue";
@@ -8,16 +8,22 @@ import SpesialisasiKonsultasi from "./SpesialisasiKonsultasi.vue";
 import { apiService } from "@/api/ApiService";
 
 const emit = defineEmits(['keahlianClicked']);
+const props = defineProps({
+  mfd: {
+    type: String,
+    required: true,
+  },
+});
 
 const petugasKonsultasi = ref([]);
 const loading = ref(true);
 const currentPage = ref(1);
 const itemsPerPage = ref(6);
 
-const fetchPetugas = async () => {
+const fetchPetugas = async (mfd) => {
   loading.value = true;
   try {
-    const response = await apiService.getAllOfficers();
+    const response = await apiService.getOfficersBySatker(mfd);
     petugasKonsultasi.value = response.data.data;
   } catch (error) {
     console.error("Error fetching petugas konsultasi:", error);
@@ -57,8 +63,13 @@ const handleCariWilayahInput = (satker) => {
 function keahlianClicked(){
   emit('keahlianClicked')
 }
+
 const handleKeahlian = (itemId) => {
   fetchPetugasByKeahlian(itemId);
+};
+
+const handleHapusFilter = () => {
+  fetchPetugas(props.mfd);
 };
 
 const paginatedPetugas = computed(() => {
@@ -77,7 +88,13 @@ const changePage = (page) => {
   }
 };
 
-onMounted(fetchPetugas);
+onMounted(() => {
+  fetchPetugas(props.mfd);
+});
+
+watch(() => props.mfd, (newMfd) => {
+  fetchPetugas(newMfd);
+});
 </script>
 
 <template>
@@ -87,11 +104,13 @@ onMounted(fetchPetugas);
         <div class="col-md-6 text-start mb-3 mt-5">
           <CariWilayah @data="handleCariWilayahInput" />
         </div>
+        <div class="col-md-6 text-end mb-3 mt-5">
+          <button class="btn btn-danger" @click="handleHapusFilter">Hapus Filter</button>
+        </div>
         <div class="col-md-12 text-start mb-5">
           <h3 class="text-white z-index-1 satker-relative">Konsultasi Umum</h3>
           <p class="text-white text-dark mb-0">
-            Pilih petugas layanan berikut jika Anda ingin berkonsultasi terkait
-            data statistik secara umum
+            Pilih petugas layanan berikut jika Anda ingin berkonsultasi terkait data statistik secara umum
           </p>
         </div>
       </div>
@@ -100,15 +119,10 @@ onMounted(fetchPetugas);
           <img src="/assets/loading_2.svg" alt="Loading..." />
           <p class="fw-bold fs-3 text-light">Loading...</p>
         </div>
-        <div v-else-if="petugasKonsultasi.length === 0" class="text-center">
+        <div v-else-if="petugasKonsultasi.length == 0" class="text-center">
           <p>Tidak ada petugas ditemukan.</p>
         </div>
-        <div
-          v-else
-          class="col-lg-4 col-6 mb-4"
-          v-for="petugas in paginatedPetugas"
-          :key="petugas.id"
-        >
+        <div v-else class="col-lg-4 col-6 mb-4" v-for="petugas in paginatedPetugas" :key="petugas.id">
           <PetugasKonsultasiCard class="mt-4" :petugas="petugas" />
         </div>
       </div>
@@ -117,21 +131,15 @@ onMounted(fetchPetugas);
           <div class="col-lg-4">
             <div class="pagination-container">
               <MaterialPagination>
-                <MaterialPaginationItem
-                  prev
-                  @click="changePage(currentPage - 1)"
-                />
+                <MaterialPaginationItem prev @click="changePage(currentPage - 1)" />
                 <MaterialPaginationItem
                   v-for="page in totalPages"
                   :key="page"
                   :label="page"
-                  :active="page === currentPage"
+                  :active="page == currentPage"
                   @click="changePage(page)"
                 />
-                <MaterialPaginationItem
-                  next
-                  @click="changePage(currentPage + 1)"
-                />
+                <MaterialPaginationItem next @click="changePage(currentPage + 1)" />
               </MaterialPagination>
             </div>
           </div>
@@ -139,15 +147,13 @@ onMounted(fetchPetugas);
       </div>
       <div class="row pt-3">
         <div class="col-md-8 text-start mb-5 mt-2">
-          <h3 class="text-white z-index-1 satker-relative">
-            Cari Statistisi Ahli atau Spesialisasi
-          </h3>
+          <h3 class="text-white z-index-1 satker-relative">Cari Statistisi Ahli atau Spesialisasi</h3>
           <p class="text-white text-dark mb-0">
             Pilih kategori yang tersedia sesuai masalah Anda
           </p>
         </div>
       </div>
-      <SpesialisasiKonsultasi @item="handleKeahlian" @click="keahlianClicked"/>
+      <SpesialisasiKonsultasi @item="handleKeahlian" @click="keahlianClicked" />
     </div>
   </section>
 </template>

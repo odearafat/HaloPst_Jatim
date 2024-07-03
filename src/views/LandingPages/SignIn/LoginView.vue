@@ -55,7 +55,7 @@ const callback = async (response) => {
     await verifyToken(id_token);
     const apiResponse = await apiService.addUser(userData);
 
-    if (apiResponse && apiResponse.status === 200) {
+    if (apiResponse && apiResponse.status == 200) {
       localStorage.setItem("user", JSON.stringify(apiResponse.data.data));
       router.push({ name: "CardProfil" }).then(() => {
         this.$router.go(0);
@@ -122,7 +122,7 @@ onMounted(() => {
   const storedUser = localStorage.getItem("user");
   const storedLoggedIn = localStorage.getItem("loggedIn");
 
-  if (storedUser && storedLoggedIn === "true") {
+  if (storedUser && storedLoggedIn == "true") {
     const parsedUser = JSON.parse(storedUser);
     Object.assign(user, parsedUser);
     loggedIn.value = true;

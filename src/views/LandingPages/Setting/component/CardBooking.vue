@@ -36,13 +36,13 @@
                 <td>
                   <span
                     class="badge bg-warning"
-                    v-if="booking.status === 'Diajukan'"
+                    v-if="booking.status == 'Diajukan'"
                   >
                     Diajukan
                   </span>
                   <span
                     class="badge bg-info"
-                    v-else-if="booking.status === 'Disetujui'"
+                    v-else-if="booking.status == 'Disetujui'"
                   >
                     Disetujui
                   </span>

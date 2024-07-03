@@ -31,6 +31,7 @@ const router = createRouter({
       path: "/konsultasi",
       name: "konsultasi",
       component: KonsultasiView,
+      props: (route) => ({ mfd: route.query.mfd }), // Pass mfd as a prop
     },
     {
       path: "/login",
@@ -90,9 +91,9 @@ const router = createRouter({
 
 // Navigation guard global
 router.beforeEach((to, from, next) => {
-  const isLoggedIn = localStorage.getItem("loggedIn") === "true";
+  const isLoggedIn = localStorage.getItem("loggedIn") == "true";
 
-  if ((to.path === "/aida" || to.path.startsWith("/settings")) && !isLoggedIn) {
+  if ((to.path == "/aida" || to.path.startsWith("/settings")) && !isLoggedIn) {
     next({ name: "login" }); // Redirect ke halaman login jika belum login
   } else {
     next(); // Lanjutkan ke rute yang diminta jika sudah login

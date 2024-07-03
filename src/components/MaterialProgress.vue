@@ -31,11 +31,11 @@ defineProps({
 const getColor = (color, variant) => {
   let colorValue;
 
-  if (variant === "gradient") {
+  if (variant == "gradient") {
     colorValue = `bg-gradient-${color}`;
-  } else if (variant === "contained") {
+  } else if (variant == "contained") {
     colorValue = `bg-${color}`;
-  } else if (variant === "striped") {
+  } else if (variant == "striped") {
     colorValue = `progress-bar-striped bg-${color}`;
   }
 

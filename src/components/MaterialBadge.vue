@@ -40,7 +40,7 @@ defineProps({
 function getClasses(variant, color, size, rounded) {
   let colorValue, sizeValue, roundedValue;
 
-  if (variant === "gradient") {
+  if (variant == "gradient") {
     colorValue = `bg-gradient-${color}`;
   } else {
     colorValue = `badge-${color} bg-${color}`;

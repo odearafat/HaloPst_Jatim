@@ -44,9 +44,9 @@ function getClasses(variant, color, size, fullWidth, disabled) {
   let colorValue, sizeValue, fullWidthValue, activeValue;
 
   // Setting the button variant and color
-  if (variant === "gradient") {
+  if (variant == "gradient") {
     colorValue = `bg-gradient-${color}`;
-  } else if (variant === "outline") {
+  } else if (variant == "outline") {
     colorValue = `btn-outline-${color}`;
   } else {
     colorValue = `btn-${color}`;
