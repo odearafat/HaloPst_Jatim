@@ -32,7 +32,7 @@ apiClient.interceptors.response.use(
     // Check if the error response exists and has a response status
     if (error.response) {
       const { status, data } = error.response;
-      if (status === 500) {
+      if (status == 500) {
         // Clear token from localStorage
         localStorage.removeItem('id_token');
         localStorage.removeItem('user');
@@ -40,7 +40,7 @@ apiClient.interceptors.response.use(
         localStorage.clear()
         // Redirect to login page
         router.push({ name: 'login' });
-      } else if (status === 401) {
+      } else if (status == 401) {
         // Clear token from localStorage
         localStorage.removeItem('id_token');
         localStorage.removeItem('user');

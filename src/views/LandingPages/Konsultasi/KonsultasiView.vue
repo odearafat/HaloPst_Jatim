@@ -23,7 +23,7 @@
     <div class="card card-body shadow-xl mx-3 mx-md-4 mt-n6 pb-0">
       <Tahapan @tahap1Clicked="scrollToPetugasKonsultasi" />
       <div ref="petugasSection">
-        <PetugasKonsultasi @keahlianClicked="scrollToPetugasKonsultasi"/>
+        <PetugasKonsultasi :mfd="mfd" @keahlianClicked="scrollToPetugasKonsultasi"/>
       </div>
     </div>
     <DefaultFooter />
@@ -32,6 +32,7 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
+import { useRoute } from 'vue-router';
 import NavbarKonsultasi from '../../../examples/navbars/NavbarKonsultasi.vue';
 import DefaultFooter from '../../../examples/footers/FooterDefault.vue';
 import bg0 from '@/assets/img/bg9.jpg';
@@ -39,6 +40,9 @@ import Tahapan from './Sections/TahapKonsultasi.vue';
 import PetugasKonsultasi from './Sections/PetugasKonsultasi.vue';
 
 const petugasSection = ref(null);
+const route = useRoute();
+
+const mfd = ref(route.query.mfd);
 
 function scrollToPetugasKonsultasi() {
   petugasSection.value.scrollIntoView({ behavior: 'smooth' });

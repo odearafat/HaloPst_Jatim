@@ -78,16 +78,16 @@ const getTextColor = () => {
 let textDark = ref(props.darkText);
 const { type } = useWindowsWidth();
 
-if (type.value === "mobile") {
+if (type.value == "mobile") {
   textDark.value = true;
-} else if (type.value === "desktop" && textDark.value == false) {
+} else if (type.value == "desktop" && textDark.value == false) {
   textDark.value = false;
 }
 
 watch(
   () => type.value,
   (newValue) => {
-    if (newValue === "mobile") {
+    if (newValue == "mobile") {
       textDark.value = true;
     } else {
       textDark.value = false;

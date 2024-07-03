@@ -35,33 +35,33 @@
               <td>
                 <span
                   class="badge bg-success"
-                  v-if="history.status === 'Selesai'"
+                  v-if="history.status == 'Selesai'"
                   >Selesai</span
                 >
                 <span
                   class="badge bg-danger"
-                  v-else-if="history.status === 'Dibatalkan'"
+                  v-else-if="history.status == 'Dibatalkan'"
                   >Dibatalkan</span
                 >
               </td>
               <td class="d-flex justify-content-center align-items-center">
                 <button
                   class="btn btn-info me-2 btn-sm"
-                  v-if="history.status === 'Selesai' && history.rating == null"
+                  v-if="history.status == 'Selesai' && history.rating == null"
                   @click="showModal(history.id)"
                 >
                   Ulasan
                 </button>
                 <button
                   class="btn btn-warning me-2 btn-sm"
-                  v-if="history.status === 'Selesai'"
+                  v-if="history.status == 'Selesai'"
                   @click="showDetail(history.id)"
                 >
                   Detail
                 </button>
                 <button
                   class="btn btn-warning btn-sm"
-                  v-else-if="history.status === 'Dibatalkan'"
+                  v-else-if="history.status == 'Dibatalkan'"
                   @click="showDetail(history.id)"
                 >
                   Detail

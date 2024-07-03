@@ -1,8 +1,9 @@
-import apiClient from "./ApiConfig";
+
+import apiClient from './ApiConfig.js';
 
 export const apiService = {
   addUser(data) {
-    return apiClient.post("pengguna/", data);
+    return apiClient.post('pengguna', data);
   },
 
   updateUser(id, data) {
@@ -10,7 +11,7 @@ export const apiService = {
   },
 
   addConsultation(data) {
-    return apiClient.post("konsultasi/", data);
+    return apiClient.post('konsultasi', data);
   },
 
   getConsultationsByUser(idPengguna) {
@@ -38,7 +39,7 @@ export const apiService = {
   },
 
   getAllOfficers() {
-    return apiClient.get("petugas");
+    return apiClient.get('petugas');
   },
 
   getOfficersBySatker(idSatker) {
@@ -50,7 +51,7 @@ export const apiService = {
   },
 
   getAllKabupaten() {
-    return apiClient.get("kabupaten");
+    return apiClient.get('kabupaten');
   },
 
   getKabupatenByProvinsi(idProv) {
@@ -58,11 +59,11 @@ export const apiService = {
   },
 
   getAllProvinces() {
-    return apiClient.get("provinsi");
+    return apiClient.get('provinsi');
   },
 
   getAllUsers() {
-    return apiClient.get("pengguna");
+    return apiClient.get('pengguna');
   },
 
   getUser(idPengguna) {
@@ -70,11 +71,11 @@ export const apiService = {
   },
 
   getAllConsultations() {
-    return apiClient.get("konsultasi");
+    return apiClient.get('konsultasi');
   },
 
   getAllSatker() {
-    return apiClient.get("satker");
+    return apiClient.get('satker');
   },
 
   getNotification(email_user) {
@@ -86,13 +87,31 @@ export const apiService = {
   },
 
   getKeahlian() {
-    return apiClient.get("keahlian");
+    return apiClient.get('keahlian');
   },
 
   getPetugasByKeahlian(id_keahlian) {
     return apiClient.get(`petugas-by-keahlian/${id_keahlian}`);
   },
+
   getVerify() {
-    return apiClient.post("verify-google-token");
+    return apiClient.post('verify-google-token');
+  },
+
+  // New AIDA API methods
+  addAida(data) {
+    return apiClient.post('aida', data);
+  },
+
+  getAidaByUser(idPengguna) {
+    return apiClient.get(`aida-by-pengguna/${idPengguna}`);
+  },
+
+  updateAidaConversation(idAida, data) {
+    return apiClient.put(`aida-update-conv/${idAida}/update`, data);
+  },
+
+  deleteAidaConversation(idAida) {
+    return apiClient.put(`aida-hapus-conv/${idAida}`);
   },
 };

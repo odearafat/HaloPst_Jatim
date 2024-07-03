@@ -6,7 +6,7 @@
           v-for="card in cards"
           :key="card.id"
           class="list-group-item btn btn-outline-dark bg-outline-dark text-start"
-          :class="{ active: $route.name === card.id }"
+          :class="{ active: $route.name == card.id }"
           @click="$emit('select-card', card.id)"
         >
           <i :class="card.icon"></i> {{ card.title }}
