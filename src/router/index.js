@@ -7,6 +7,7 @@ import LoginView from "../views/LandingPages/SignIn/LoginView.vue";
 import ProfileView from "../views/LandingPages/Setting/ProfileView.vue";
 import CerdProfile from "../views/LandingPages/Setting/component/CardProfil.vue";
 import CardBooking from "../views/LandingPages/Setting/component/CardBooking.vue";
+import CardForbidden from "../views/LandingPages/Setting/component/CardForbidden.vue"
 import CardHistory from "../views/LandingPages/Setting/component/CardHistory.vue";
 import CardDetailBooking from "../views/LandingPages/Setting/component/CardDetailBooking.vue";
 import CardDetailHistory from "../views/LandingPages/Setting/component/CardDetailHistory.vue";
@@ -59,12 +60,12 @@ const router = createRouter({
           component: CardHistory,
         },
         {
-          path: "booking/:id",
+          path: "booking/:uuid",
           name: "CardDetailBooking",
           component: CardDetailBooking,
         },
         {
-          path: "history/:id",
+          path: "history/:uuid",
           name: "CardDetailHistory",
           component: CardDetailHistory,
         },
@@ -72,6 +73,11 @@ const router = createRouter({
           path: "notif",
           name: "CardNotif",
           component: CardNotif,
+        },
+        {
+          path: "fobidden",
+          name: "CardForbidden",
+          component: CardForbidden,
         },
       ],
     },

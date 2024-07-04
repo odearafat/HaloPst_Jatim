@@ -3,7 +3,8 @@ import router from '@/router'; // Import router from your project
 
 // Create an instance of axios
 const apiClient = axios.create({
-  baseURL: 'https://halopst.web.bps.go.id/backend/api/',
+  // baseURL: 'https://halopst.web.bps.go.id/backend/api/',
+  baseURL: 'http://localhost:8000/api/',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -12,7 +13,7 @@ const apiClient = axios.create({
 // Add a request interceptor to include the token in every request
 apiClient.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('id_token');
+      const token = localStorage.getItem('id_token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

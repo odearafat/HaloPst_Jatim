@@ -55,14 +55,14 @@
                 <button
                   class="btn btn-warning me-2 btn-sm"
                   v-if="history.status == 'Selesai'"
-                  @click="showDetail(history.id)"
+                  @click="showDetail(history.uuid)"
                 >
                   Detail
                 </button>
                 <button
                   class="btn btn-warning btn-sm"
                   v-else-if="history.status == 'Dibatalkan'"
-                  @click="showDetail(history.id)"
+                  @click="showDetail(history.uuid)"
                 >
                   Detail
                 </button>
@@ -179,7 +179,7 @@ export default {
     showDetail(historyId) {
       this.$router.push({
         name: "CardDetailHistory",
-        params: { id: historyId },
+        params: { uuid: historyId },
       });
     },
     showModal(historyId) {

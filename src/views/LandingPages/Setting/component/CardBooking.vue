@@ -32,7 +32,7 @@
               <tr v-for="(booking, index) in bookings" :key="index">
                 <td>{{ booking.tanggal_konsultasi }}</td>
                 <td>{{ booking.waktu_konsultasi }}</td>
-                <td>{{ booking.petugas.nama_petugas }}</td>
+                <td>{{ booking.petugas.nama_petugas}}</td>
                 <td>
                   <span
                     class="badge bg-warning"
@@ -50,7 +50,7 @@
                 <td class="d-flex justify-content-center align-items-center">
                   <button
                     class="btn btn-danger btn-sm"
-                    @click="showDetail(booking.id)"
+                    @click="showDetail(booking.uuid)"
                   >
                     Detail >>
                   </button>
@@ -110,11 +110,11 @@ export default {
       }
     };
 
-    const showDetail = (bookingId) => {
-      console.log("booking id" + bookingId);
+    const showDetail = (bookingUuid) => {
+      console.log("booking id" + bookingUuid);
       router.push({
         name: "CardDetailBooking",
-        params: { id: bookingId },
+        params: { uuid: bookingUuid },
       });
     };
 

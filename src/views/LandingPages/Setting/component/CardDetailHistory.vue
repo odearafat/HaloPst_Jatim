@@ -110,7 +110,7 @@ export default {
     return {
       history: {},
       loading: true,
-      historyId: this.$route.params.id,
+      historyId: this.$route.params.uuid,
     };
   },
   created() {
@@ -122,6 +122,11 @@ export default {
       try {
         const response = await apiService.getConsultation(historyId);
         this.history = response.data.data;
+        if(response.data==404){
+          this.$router.push({
+            name: "CardForbidden"
+          });
+        }
       } catch (error) {
         console.error("Error fetching booking details:", error);
       } finally {

@@ -235,6 +235,9 @@ export default {
       ];
     },
     formatMessage(message) {
+      if (typeof message !== 'string') {
+      return '';
+    }
       message = message.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
       message = message.replace(/\*(.*?)\*/g, "<em>$1</em>");
       message = message.replace(/\n/g, "<br>");
