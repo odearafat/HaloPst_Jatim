@@ -149,7 +149,7 @@ export default {
       isLoading: false,
       isSuccess: false,
       isModalMainVisible: true,
-      bookingId: this.$route.params.id, // Ambil parameter dari route
+      bookingId: this.$route.params.uuid, // Ambil parameter dari route
     };
   },
   created() {
@@ -161,6 +161,12 @@ export default {
       try {
         const response = await apiService.getConsultation(bookingId);
         this.booking = response.data.data;
+        if(response.data==404){
+          this.$router.push({
+            name: "CardForbidden"
+          });
+        }
+        // console.log(response);
       } catch (error) {
         console.error("Error fetching booking details:", error);
       } finally {
