@@ -72,8 +72,8 @@ const callback = async (response) => {
 
 const verifyToken = async (token) => {
   try {
-    // const res = await fetch("https://halopst.web.bps.go.id/backend/api/verify-google-token", {
-    const res = await fetch("http://localhost:8000/api/verify-google-token", {
+    const res = await fetch("https://halopst.web.bps.go.id/backend/api/verify-google-token", {
+    // const res = await fetch("http://localhost:8000/api/verify-google-token", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

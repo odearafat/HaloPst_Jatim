@@ -3,8 +3,8 @@ import router from '@/router'; // Import router from your project
 
 // Create an instance of axios
 const apiClient = axios.create({
-  // baseURL: 'https://halopst.web.bps.go.id/backend/api/',
-  baseURL: 'http://localhost:8000/api/',
+  baseURL: 'https://halopst.web.bps.go.id/backend/api/',
+  // baseURL: 'http://localhost:8000/api/',
   headers: {
     'Content-Type': 'application/json',
   },
