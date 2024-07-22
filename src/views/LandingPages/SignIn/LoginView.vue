@@ -51,7 +51,7 @@ const callback = async (response) => {
 
     localStorage.setItem("loggedIn", "true");
     localStorage.setItem("id_token", id_token);
-    console.log("ID_TOKEN"+id_token)
+    //console.log("ID_TOKEN"+id_token)
     await verifyToken(id_token);
     const apiResponse = await apiService.addUser(userData);
 
@@ -82,17 +82,17 @@ const verifyToken = async (token) => {
     });
 
     const data = await res.json();
-    console.log("Backend response:", data);
+    //console.log("Backend response:", data);
 
     if (res.ok) {
       localStorage.setItem("token", data.token);
-      console.log("Google login successful");
-      console.log("TOKEN"+data.token)
+      //console.log("Google login successful");
+      //console.log("TOKEN"+data.token)
     } else {
-      console.error("Verification failed:", data.error);
+      //console.error("Verification failed:", data.error);
     }
   } catch (error) {
-    console.error("Error during verification:", error);
+    //console.error("Error during verification:", error);
   }
 };
 

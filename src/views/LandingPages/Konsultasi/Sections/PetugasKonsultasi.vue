@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, onMounted, watch } from "vue";
 import CariWilayah from "./CariWilayahKonsultasi.vue";
+import { useRouter } from "vue-router";
 import PetugasKonsultasiCard from "@/examples/cards/teamCards/PetugasKonsultasiCard.vue";
 import MaterialPagination from "@/components/MaterialPagination.vue";
 import MaterialPaginationItem from "@/components/MaterialPaginationItem.vue";
@@ -19,12 +20,19 @@ const petugasKonsultasi = ref([]);
 const loading = ref(true);
 const currentPage = ref(1);
 const itemsPerPage = ref(6);
+const router = useRouter();
 
 const fetchPetugas = async (mfd) => {
   loading.value = true;
   try {
     const response = await apiService.getOfficersBySatker(mfd);
-    petugasKonsultasi.value = response.data.data;
+    //console.log(response.data);
+    if(response.data==400){
+      router.push({ name: 'login' });
+    }else{
+      petugasKonsultasi.value = response.data.data;
+    }
+    
   } catch (error) {
     console.error("Error fetching petugas konsultasi:", error);
   } finally {
@@ -122,8 +130,8 @@ watch(() => props.mfd, (newMfd) => {
         <div v-else-if="petugasKonsultasi.length == 0" class="text-center">
           <p>Tidak ada petugas ditemukan.</p>
         </div>
-        <div v-else class="col-lg-4 col-6 mb-4" v-for="petugas in paginatedPetugas" :key="petugas.id">
-          <PetugasKonsultasiCard class="mt-4" :petugas="petugas" />
+        <div v-else class="col-lg-4 col-6 mb-6" v-for="petugas in paginatedPetugas" :key="petugas.id">
+            <PetugasKonsultasiCard style="height: 100%;" class="mt-4" :petugas="petugas" />
         </div>
       </div>
       <div class="container pt-5">
