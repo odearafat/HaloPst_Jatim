@@ -81,7 +81,7 @@ function closeSuccessModal() {
         </div>
       </div>
       <div class="col-lg-8 col-md-6 col-12 my-auto">
-        <div class="card-body ps-lg-0">
+        <div class="card-body ps-lg-0 mb-0 pb-1">
           <h6 class="mb-0">{{ namaLengkap }}</h6>
           <p class="text-weight-bold text-sm mb-0 text-success">{{ petugas.satker.nama_satker }}</p>
           <p class="mb-2 text-xs">

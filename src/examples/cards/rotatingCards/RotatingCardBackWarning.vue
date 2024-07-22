@@ -36,16 +36,23 @@ const props = defineProps({
       <p class="text-white">
         {{ props.description }}
       </p>
-      <div class="buttons-group">
-        <RouterLink
-          v-for="({ route, color, label }, index) in props.action"
+      <div v-for="({ route, color, label }, index) in props.action" class="buttons-group">
+        <a
+            :href=route
+            class="btn btn-sm mt-3 inline-block ms-1"
+            :class="`${color ? `btn-${color}` : 'btn-white'}`"
+          >
+          {{ label }}
+        </a> 
+        <!-- <RouterLink
+          
           :key="index"
           :to="route"
           class="btn btn-sm mt-3 inline-block ms-1"
           :class="`${color ? `btn-${color}` : 'btn-white'}`"
         >
           {{ label }}
-        </RouterLink>
+        </RouterLink> -->
       </div>
     </div>
   </div>
